@@ -38,8 +38,8 @@ def find_dup(cols):
 
 def find_att_values(node, col):
 	relname, colname = extract_rel_col(col)
-	low = (MIN_MD[relname])[colname]
-	high = (MAX_MD[relname])[colname]
+	low = int((MIN_MD[relname])[colname])
+	high = int((MAX_MD[relname])[colname])
 
 	key = ''
 	if node['Node Type'] == 'Seq Scan':
@@ -72,13 +72,16 @@ def find_att_values(node, col):
 			except:
 				high = ((node[key].split('<'))[1].split(' '))[0]
 			high = int(high)-1
-	return low, high
+	return int(low), int(high)
 
 def find_left_col(node):
 	return node['Index Cond'].split('=')[1].split(')')[0].strip()
 
 def find_right_col(node):
 	return node['Index Cond'].split('=')[0].split('(')[1].strip()
+
+def find_col(node):
+	return node['Index Cond'].split('>=')[0].split('((')[1].strip()
 #----------------------------------------------------------------
 
 #---------------------Main Method---------------------------------
@@ -150,31 +153,31 @@ def seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num_fi
 #Index Scan
 def index_scan(node, parent_node):
 	if parent_node == {}:
-		col = find_right_col(node)
-		path = 'index_scan_predictor/' + node['Relation Name'] + '/'
-		attStart, attEnd = find_att_values(node, col)
+		col = find_col(node)
+		print(col)
+		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + col + '/'
+		attStart, attEnd = find_att_values(node, node['Relation Name']+'.'+col)
 		predTime, predCard = index_scan_predict(path, attStart, attEnd)
 		return predTime
 	elif node['Parent Relationship'] == 'Outer':
 		col = find_left_col(parent_node['Plans'][1])
-		path = 'index_scan_predictor/' + node['Relation Name'] + '/'
+		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + extract_rel_col(col)[1] + '/'
 		attStart, attEnd = find_att_values(node, col)
 		predTime, predCard = index_scan_predict(path, attStart, attEnd)
 		return predTime
 	else:
-		path = 'index_scan_predictor/' + node['Relation Name'] + '/'
-		attStart = 0
-		attEnd = 0
-		col = find_left_col(node)
-		leftCorr = find_corr([col])[0]
-		leftDup = find_dup([col])[0]
-		attStart, attEnd = find_att_values(parent_node['Plans'][0], col)
+		leftcol = find_left_col(node)
+		rightcol = find_right_col(node)
+		leftCorr = find_corr([leftcol])[0]
+		leftDup = find_dup([leftcol])[0]
+		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + rightcol + '/'
+		attStart, attEnd = find_att_values(parent_node['Plans'][0], leftcol)
 
 		timeInIsolation, cardInIsolation = index_scan_predict(path, attStart, attEnd)
 		timeInIsolation = timeInIsolation * (1 - leftDup)
 		timeInIsolation += parent_node['Plans'][0]['Actual Rows'] * leftDup * TIME_PER_DUPLICATE_TUPLE
 
-		path = 'nestloop_index_predictor/' + node['Relation Name'] + '/'
+		path = 'nestloop_index_predictor/' + node['Relation Name'] + '/' + rightcol + '/'
 		timeInJoin = nestloop_index_scan_predict([parent_node['Plans'][0]['Actual Rows']*(1 - leftDup)], [parent_node['Actual Rows']], path)
 		if parent_node['Actual Loops'] > 1:
 			print('Parent Node of Index Scan has multiple loops!')

@@ -80,10 +80,10 @@ def main(filename):
 
 if __name__ == "__main__":
 
-	# main('sample_plans/seq_scan.json')
-	# main('sample_plans/index_scan.json')
-	# main('sample_plans/nlj_seq_seq.json')
-	# main('sample_plans/nlj_seq_index.json')
+	main('sample_plans/seq_scan.json')
+	main('sample_plans/index_scan.json')
+	main('sample_plans/nlj_seq_seq.json')
+	main('sample_plans/nlj_seq_index.json')
 	main('sample_plans/nlj_index_index.json')
 
 	

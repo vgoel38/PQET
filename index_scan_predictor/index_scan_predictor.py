@@ -27,13 +27,14 @@ def index_scan_train(path, numLines):
 def index_scan_predict(path, attStart, attEnd):
 
 	inflectionPoints = np.loadtxt(path+'inflection_points')
-	numLines = 3
+	numLines = 2
 	attToCard, cardToTime, numCurves = index_scan_train(path, numLines)
 
 	if len(inflectionPoints) != numCurves + 1:
 		print("#inflectionPoints = ", len(inflectionPoints), "#segments = ", numCurves, "mismatch")
 		return 0
 
+	print(attStart, attEnd)
 	if attStart > attEnd:
 		return 0
 	if attStart < inflectionPoints[0] and attEnd < inflectionPoints[0]:
@@ -77,7 +78,7 @@ def index_scan_predict(path, attStart, attEnd):
 				predictedTimeStart = max(cardToTime[i].predict(predictedCardStart),0)
 				predictedTimeEnd = max(cardToTime[i].predict(predictedCardEnd),0)
 				predictedTime = max(predictedTimeEnd - predictedTimeStart,0)
-				print("predictedCardStart=", predictedCardStart, "predictedCardEnd=", predictedCardEnd, "predictedTimeStart = ", predictedTimeStart, "predictedTimeEnd = ", predictedTimeEnd, i, j)
+				print("tempStart=", tempStart, "tempEnd=", tempEnd, "predictedCardStart=", predictedCardStart, "predictedCardEnd=", predictedCardEnd, "predictedTimeStart = ", predictedTimeStart, "predictedTimeEnd = ", predictedTimeEnd, i, j)
 				executionTimePerSegment[j]+=predictedTime
 				numContributingCurvesPerSegment[j]+=1
 
@@ -92,10 +93,10 @@ def index_scan_predict(path, attStart, attEnd):
 
 if __name__ == "__main__":
 
-	path = "movie_info/"
-	attStart = 0 
+	path = "cast_info/movie_id/"
+	attStart = 0
 	attEnd = 10000
 
-	# attToCard, cardToTime, numCurves = train(relname, numLines)
+	# attToCard, cardToTime = index_scan_train(path, numLines)
 	# print(attToCard[0].predict(200000), cardToTime[0].predict(1000005))
 	print(index_scan_predict(path, attStart, attEnd))

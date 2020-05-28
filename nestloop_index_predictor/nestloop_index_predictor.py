@@ -99,7 +99,7 @@ def parse_input_plans(filename):
 
 if __name__ == "__main__":
 
-	path = 'movie_info/'
+	path = 'movie_info/movie_id'
 	trainingDistinctLeftRows, trainingRightPagesScanned, trainingExecutionTime, trainingOutputCard = parse_input_plans(path + "nest_index_plans.txt")
 
 	num_lines = 3

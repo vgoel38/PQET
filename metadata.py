@@ -1,7 +1,7 @@
 #metadata for sorting
 CORR_MD = {
-	'cast_info' : {'id':1},
-	'ci': {'id':1},
+	'cast_info' : {'id':1, 'movie_id':0.00578},
+	'ci': {'id':1, 'movie_id':0.00578},
 	'movie_id': {'movie_info':0.11},
 	'mi': {'movie_info':0.11},
 	'link_type': {'id':1},
@@ -9,8 +9,8 @@ CORR_MD = {
 }
 
 DUP_MD = {
-	'cast_info': {'id':0},
-	'ci': {'id':0},
+	'cast_info': {'id':0, 'movie_id':0.93},
+	'ci': {'id':0, 'movie_id':0.93},
 	'movie_id': {'movie_info':0.11},
 	'mi': {'movie_info':0.11},
 	'link_type': {'id':0},
@@ -21,14 +21,18 @@ MIN_MD = {
 	'link_type': {'id':0},
 	'lt': {'id':0},
 	'cast_info': {'movie_id':1},
-	'ci':{'movie_id':1}
+	'ci':{'movie_id':1},
+	'movie_info': {'movie_id':1},
+	'mi': {'movie_id':1}
 }
 
 MAX_MD = {
 	'link_type': {'id':100},
 	'lt': {'id':100},
 	'cast_info': {'movie_id':2525975},
-	'ci':{'movie_id':2525975}
+	'ci':{'movie_id':2525975},
+	'movie_info': {'movie_id':2526430},
+	'mi': {'movie_id':2526430}
 }
 
 #metadata for join
