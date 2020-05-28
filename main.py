@@ -32,6 +32,9 @@ def find_output_plan(input_plan_dict):
 	output_plan_dict['Postgres Weighted Qerror'] /= output_plan_dict['Actual Plan Time']
 	output_plan_dict['Our Weighted Qerror'] /= output_plan_dict['Actual Plan Time']
 
+	output_plan_dict['Postgres Qerror'] = qerror(output_plan_dict['Actual Plan Time'], output_plan_dict['Postgres Estimated Plan Time'])
+	output_plan_dict['Our Qerror'] = qerror(output_plan_dict['Actual Plan Time'], output_plan_dict['Our Estimated Plan Time'])	
+
 	return output_plan_dict
 
 #INCOMPLETE
