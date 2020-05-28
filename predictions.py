@@ -5,12 +5,13 @@ from init import *
 from cost_parameters import *
 from metadata import *
 from index_scan_predictor.index_scan_predictor import *
+from nestloop_index_scan_predictor.nestloop_index_scan_predictor import *
 import numpy as np
 
 #-------------------Supporting Methods---------------------------
 #INCOMPLETE
 def extract_rel_col(col):
-	return 'a','b'
+	return col.split('.')[0], cold.split('.')[1]
 
 def find_corr(cols):
 	corr = []
@@ -34,22 +35,67 @@ def find_dup(cols):
 			dup.append(0.5)
 	return dup
 
-def find_att_values(path, node):
+def find_att_values_index(path, node):
 	inflection_points = np.loadtxt(path+'inflection_points')
 	low = inflection_points[0]
 	high = inflection_points[len(inflection_points)-1]
 	if 'Index Cond' in node:
 		if '>=' in node['Index Cond']:
-			low = ((node['Index Cond'].split('>='))[1].split(')'))[0]
+			try:
+				low = ((node['Index Cond'].split('>='))[1].split(')'))[0]
+			except:
+				low = ((node['Index Cond'].split('>='))[1].split(' '))[0]
 		elif '>' in node['Index Cond']:
-			low = ((node['Index Cond'].split('>'))[1].split(')'))[0]
+			try:
+				low = ((node['Index Cond'].split('>'))[1].split(')'))[0]
+			except:
+				low = ((node['Index Cond'].split('>'))[1].split(' '))[0]
 			low = int(low)+1
 		if '<=' in node['Index Cond']:
-			high = ((node['Index Cond'].split('<='))[1].split(')'))[0]
+			try:
+				high = ((node['Index Cond'].split('<='))[1].split(')'))[0]
+			except:
+				high = ((node['Index Cond'].split('<='))[1].split(' '))[0]
 		elif '<' in node['Index Cond']:
-			high = ((node['Index Cond'].split('<'))[1].split(')'))[0]
+			try:
+				high = ((node['Index Cond'].split('<'))[1].split(')'))[0]
+			except:
+				high = ((node['Index Cond'].split('<'))[1].split(' '))[0]
 			high = int(high)-1
-	return [int(low), int(high)]
+	return int(low), int(high)
+
+def find_att_values_seq(node, col):
+	relname = col.split('.')[0]
+	colname = col.split('.')[1]
+	low = MIN_MD[relname][colname]
+	high = MAX_MD[relname][colname]
+	if 'Filter' in node:
+		if '>=' in node['Filter']:
+			try:
+				low = ((node['Filter'].split('>='))[1].split(')'))[0]
+			except:
+				low = ((node['Filter'].split('>='))[1].split(' '))[0]
+		elif '>' in node['Filter']:
+			try:
+				low = ((node['Filter'].split('>'))[1].split(')'))[0]
+			except:
+				low = ((node['Filter'].split('>'))[1].split(' '))[0]
+			low = int(low)+1
+		if '<=' in node['Filter']:
+			try:
+				high = ((node['Filter'].split('<='))[1].split(')'))[0]
+			except:
+				high = ((node['Filter'].split('<='))[1].split(' '))[0]
+		elif '<' in node['Filter']:
+			try:
+				high = ((node['Filter'].split('<'))[1].split(')'))[0]
+			except:
+				high = ((node['Filter'].split('<'))[1].split(' '))[0]
+			high = int(high)-1
+	return low, high
+
+def find_left_col(node):
+	return node['Index Cond'].split('=')[1].split(')')[0]
 #----------------------------------------------------------------
 
 #---------------------Main Method---------------------------------
@@ -65,8 +111,7 @@ def predictions(node, parent_node):
 	
 	#Index Scan
 	elif node['Node Type'] == 'Index Scan':
-		path = 'index_scan_predictor/' + node['Relation Name'] + '/'
-		return index_scan(path,find_att_values(path, node))
+		return index_scan(node, parent_node)
 
 	#Materalize
 	elif node['Node Type'] == 'Materialize':
@@ -120,8 +165,37 @@ def seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num_fi
 
 
 #Index Scan
-def index_scan(relname, att_low_high):
-	return index_scan_predict(relname, att_low_high[0], att_low_high[1])
+def index_scan(node, parent_node):
+	if parent_node == {}:
+		path = 'index_scan_predictor/' + node['Relation Name'] + '/'
+		attStart, attEnd = find_att_values(path, node)
+		return index_scan_predict(path, attStart, attEnd)
+	elif node['Parent Relationship'] == 'Outer':
+		path = 'index_scan_predictor/' + node['Relation Name'] + '/'
+		attStart, attEnd = find_att_values(path, node)
+		return index_scan_predict(path, attStart, attEnd)
+	else:
+		path = 'index_scan_predictor/' + node['Relation Name'] + '/'
+		attStart = 0
+		attEnd = 0
+		col = find_left_col(node)
+		leftCorr = find_corr([col])[0]
+		leftDup = find_dup([col])[0]
+		if parent_node['Plans'][0]['Node Type'] == 'Index Scan':
+			attStart, attEnd = find_att_values_index(path, node)
+		elif parent_node['Plans'][0]['Node Type'] == 'Seq Scan':
+			attStart, attEnd = find_att_values_seq(node, col)
+
+		timeInIsolation, cardInIsolation = index_scan_predict(path, attStart, attEnd)
+		timeInIsolation = timeInIsolation * (1 - leftDup)
+		timeInIsolation += parent_node['Plans'][0]['Actual Rows'] * leftDup * TIME_PER_DUPLICATE_TUPLE
+
+		path = 'nestloop_index_scan_predictor/' + node['Relation Name'] + '/'
+		timeInJoin = nestloop_index_scan_predict(parent_node['Plans'][0]['Actual Rows']*(1 - leftDup), parent_node['Actual Rows'])
+		if parent_node['Actual Loops'] > 1:
+			print('Parent Node of Index Scan has multiple loops!')
+
+		return timeInIsolation * leftCorr + timeInJoin * (1 - leftCorr)
 
 #Materalisation with Rescan
 def mat_rescan(input_card, num_loops, parent_output_card, is_unique):

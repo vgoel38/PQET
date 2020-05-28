@@ -1,6 +1,13 @@
 #metadata for sorting
-CORR_MD = {}
-DUP_MD = {}
+CORR_MD = {
+	['cast_info', 'ci'] : {'id':1}
+	['movie_id', 'mi'] : {'movie_info':0.11}
+	['link_type', 'lt'] : {'id':1}
+}
+DUP_MD = {
+	['cast_info', 'ci'] : {'id':0}
+	['movie_id', 'mi'] : {'movie_info':0.11}
+}
 
 #metadata for join
 UNIQUE_ATTRIBUTES_MD = {

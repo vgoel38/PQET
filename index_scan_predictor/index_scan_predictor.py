@@ -92,8 +92,8 @@ def index_scan_predict(path, attStart, attEnd):
 if __name__ == "__main__":
 
 	path = "movie_info/"
-	attStart = 1966397 
-	attEnd = 2366397
+	attStart = 0 
+	attEnd = 10000
 
 	# attToCard, cardToTime, numCurves = train(relname, numLines)
 	# print(attToCard[0].predict(200000), cardToTime[0].predict(1000005))

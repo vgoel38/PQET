@@ -2,7 +2,9 @@ import numpy as np
 from pwlf import PiecewiseLinFit
 import pickle
 
-def train(distinctLeftRows, rightPagesScanned, executionTime, outputCard, num_lines, relname):
+TIME_PER_DUPLICATE_TUPLE = 0.001142857
+
+def nestloop_index_scan_train(distinctLeftRows, rightPagesScanned, executionTime, outputCard, num_lines, path):
 
 	rowsToPages = PiecewiseLinFit(distinctLeftRows, rightPagesScanned)
 	pagesToTime = PiecewiseLinFit(rightPagesScanned, executionTime)
@@ -14,25 +16,25 @@ def train(distinctLeftRows, rightPagesScanned, executionTime, outputCard, num_li
 	rowsToTime.fit(num_lines)
 	rowsToCard.fit(num_lines)
 
-	with open(relname+'rowsToPages.pkl', 'wb') as f:
+	with open(path+'rowsToPages.pkl', 'wb') as f:
 	    pickle.dump(rowsToPages, f, pickle.HIGHEST_PROTOCOL)
-	with open(relname+'pagesToTime.pkl', 'wb') as f:
+	with open(path+'pagesToTime.pkl', 'wb') as f:
 	    pickle.dump(pagesToTime, f, pickle.HIGHEST_PROTOCOL)
-	with open(relname+'rowsToTime.pkl', 'wb') as f:
+	with open(path+'rowsToTime.pkl', 'wb') as f:
 	    pickle.dump(rowsToTime, f, pickle.HIGHEST_PROTOCOL)
-	with open(relname+'rowsToCard.pkl', 'wb') as f:
+	with open(path+'rowsToCard.pkl', 'wb') as f:
 	    pickle.dump(rowsToCard, f, pickle.HIGHEST_PROTOCOL)
 
 
-def predict(distinctLeftRows, outputCard, relname):
+def nestloop_index_scan_predict(distinctLeftRows, outputCard, path):
 
-	with open(relname+'rowsToPages.pkl', 'rb') as f:
+	with open(path+'rowsToPages.pkl', 'rb') as f:
 		rowsToPages = pickle.load(f)
-	with open(relname+'pagesToTime.pkl', 'rb') as f:
+	with open(path+'pagesToTime.pkl', 'rb') as f:
 		pagesToTime = pickle.load(f)
-	with open(relname+'rowsToTime.pkl', 'rb') as f:
+	with open(path+'rowsToTime.pkl', 'rb') as f:
 		rowsToTime = pickle.load(f)
-	with open(relname+'rowsToCard.pkl', 'rb') as f:
+	with open(path+'rowsToCard.pkl', 'rb') as f:
 		rowsToCard = pickle.load(f)
 
 	predictedPages = rowsToPages.predict(distinctLeftRows)
@@ -40,15 +42,13 @@ def predict(distinctLeftRows, outputCard, relname):
 	predictedTimeDirect = rowsToTime.predict(distinctLeftRows)
 	predictedOutputCard = rowsToCard.predict(distinctLeftRows)
 
-	timePerTuple = 0.001142857
-
 	extraTuples = []
 	for i in range(len(outputCard)):
 		extraTuples.append(max(outputCard[i] - predictedOutputCard[i],0))
 
 	for i in range(len(predictedTimeIndirect)):
-		predictedTimeIndirect[i] += extraTuples[i] * timePerTuple
-		predictedTimeDirect[i] += extraTuples[i] * timePerTuple
+		predictedTimeIndirect[i] += extraTuples[i] * TIME_PER_DUPLICATE_TUPLE
+		predictedTimeDirect[i] += extraTuples[i] * TIME_PER_DUPLICATE_TUPLE
 
 	return predictedTimeIndirect, predictedTimeDirect
 
@@ -99,12 +99,12 @@ def parse_input_plans(filename):
 
 if __name__ == "__main__":
 
-	relname = 'movie_info/'
-	trainingDistinctLeftRows, trainingRightPagesScanned, trainingExecutionTime, trainingOutputCard = parse_input_plans(relname + "nest_index_plans.txt")
+	path = 'movie_info/'
+	trainingDistinctLeftRows, trainingRightPagesScanned, trainingExecutionTime, trainingOutputCard = parse_input_plans(path + "nest_index_plans.txt")
 
 	num_lines = 3
-	train(trainingDistinctLeftRows, trainingRightPagesScanned, trainingExecutionTime, trainingOutputCard, num_lines, relname)
+	nestloop_index_scan_train(trainingDistinctLeftRows, trainingRightPagesScanned, trainingExecutionTime, trainingOutputCard, num_lines, path)
 	
-	distinctLeftRows = [5764]
-	outputCard = [52738]
-	print(predict(distinctLeftRows, outputCard, relname))
+	distinctLeftRows = [9545]
+	outputCard = [93975]
+	print(nestloop_index_scan_predict(distinctLeftRows, outputCard, path))

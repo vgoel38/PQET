@@ -78,7 +78,7 @@ if __name__ == "__main__":
 	init()
 
 	#load input plan
-	file = open('input.json')
+	file = open('sample_plans/index_scan.json')
 	input_plan_dict = json.load(file)
 
 	output_plan_dict = find_output_plan(input_plan_dict)
