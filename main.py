@@ -72,17 +72,20 @@ def parse_plan_json(input_current_node, output_current_node, output_plan_root, p
 	revise_corr(input_current_node)
 	revise_dup(input_current_node)
 
+def main(filename):
+	file = open(filename)
+	input_plan_dict = json.load(file)
+	output_plan_dict = find_output_plan(input_plan_dict)
+	display_plan(output_plan_dict, 'output.json')
+
 if __name__ == "__main__":
 
-	#load metadata
-	init()
+	main('sample_plans/seq_scan.json')
+	# main('sample_plans/index_scan.json')
+	# main('sample_plans/nlj_seq_seq.json')
+	# main('sample_plans/nlj_seq_index.json')
+	# main('sample_plans/nlj_index_index.json')
 
-	#load input plan
-	file = open('sample_plans/index_scan.json')
-	input_plan_dict = json.load(file)
-
-	output_plan_dict = find_output_plan(input_plan_dict)
-
-	display_plan(output_plan_dict, 'output.json')
+	
 
 	
