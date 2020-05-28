@@ -5,13 +5,14 @@ from init import *
 from cost_parameters import *
 from metadata import *
 from index_scan_predictor.index_scan_predictor import *
-from nestloop_index_scan_predictor.nestloop_index_scan_predictor import *
+from nestloop_index_predictor.nestloop_index_predictor import *
 import numpy as np
 
 #-------------------Supporting Methods---------------------------
 #INCOMPLETE
 def extract_rel_col(col):
-	return col.split('.')[0], cold.split('.')[1]
+	print(col)
+	return col.split('.')[0].strip(), col.split('.')[1].strip()
 
 def find_corr(cols):
 	corr = []
@@ -31,71 +32,53 @@ def find_dup(cols):
 		if rel_name in DUP_MD and col_name in DUP_MD[rel_name]:
 			dup.append(DUP_MD[rel_name][col_name])
 		else:
-			print(col, 'not found in CORR_MD! Default value of 0.5 applied!')
+			print(col, 'not found in DUP_MD! Default value of 0.5 applied!')
 			dup.append(0.5)
 	return dup
 
-def find_att_values_index(path, node):
-	inflection_points = np.loadtxt(path+'inflection_points')
-	low = inflection_points[0]
-	high = inflection_points[len(inflection_points)-1]
-	if 'Index Cond' in node:
-		if '>=' in node['Index Cond']:
-			try:
-				low = ((node['Index Cond'].split('>='))[1].split(')'))[0]
-			except:
-				low = ((node['Index Cond'].split('>='))[1].split(' '))[0]
-		elif '>' in node['Index Cond']:
-			try:
-				low = ((node['Index Cond'].split('>'))[1].split(')'))[0]
-			except:
-				low = ((node['Index Cond'].split('>'))[1].split(' '))[0]
-			low = int(low)+1
-		if '<=' in node['Index Cond']:
-			try:
-				high = ((node['Index Cond'].split('<='))[1].split(')'))[0]
-			except:
-				high = ((node['Index Cond'].split('<='))[1].split(' '))[0]
-		elif '<' in node['Index Cond']:
-			try:
-				high = ((node['Index Cond'].split('<'))[1].split(')'))[0]
-			except:
-				high = ((node['Index Cond'].split('<'))[1].split(' '))[0]
-			high = int(high)-1
-	return int(low), int(high)
+def find_att_values(node, col):
+	relname, colname = extract_rel_col(col)
+	low = (MIN_MD[relname])[colname]
+	high = (MAX_MD[relname])[colname]
 
-def find_att_values_seq(node, col):
-	relname = col.split('.')[0]
-	colname = col.split('.')[1]
-	low = MIN_MD[relname][colname]
-	high = MAX_MD[relname][colname]
-	if 'Filter' in node:
-		if '>=' in node['Filter']:
+	key = ''
+	if node['Node Type'] == 'Seq Scan':
+		key = 'Filter'
+	elif node['Node Type'] == 'Index Scan':
+		key = 'Index Cond'
+	else:
+		print("unidentified node being looked for attributes")
+
+	if key in node:
+		if '>=' in node[key]:
 			try:
-				low = ((node['Filter'].split('>='))[1].split(')'))[0]
+				low = ((node[key].split('>='))[1].split(')'))[0]
 			except:
-				low = ((node['Filter'].split('>='))[1].split(' '))[0]
-		elif '>' in node['Filter']:
+				low = ((node[key].split('>='))[1].split(' '))[0]
+		elif '>' in node[key]:
 			try:
-				low = ((node['Filter'].split('>'))[1].split(')'))[0]
+				low = ((node[key].split('>'))[1].split(')'))[0]
 			except:
-				low = ((node['Filter'].split('>'))[1].split(' '))[0]
+				low = ((node[key].split('>'))[1].split(' '))[0]
 			low = int(low)+1
-		if '<=' in node['Filter']:
+		if '<=' in node[key]:
 			try:
-				high = ((node['Filter'].split('<='))[1].split(')'))[0]
+				high = ((node[key].split('<='))[1].split(')'))[0]
 			except:
-				high = ((node['Filter'].split('<='))[1].split(' '))[0]
-		elif '<' in node['Filter']:
+				high = ((node[key].split('<='))[1].split(' '))[0]
+		elif '<' in node[key]:
 			try:
-				high = ((node['Filter'].split('<'))[1].split(')'))[0]
+				high = ((node[key].split('<'))[1].split(')'))[0]
 			except:
-				high = ((node['Filter'].split('<'))[1].split(' '))[0]
+				high = ((node[key].split('<'))[1].split(' '))[0]
 			high = int(high)-1
 	return low, high
 
 def find_left_col(node):
-	return node['Index Cond'].split('=')[1].split(')')[0]
+	return node['Index Cond'].split('=')[1].split(')')[0].strip()
+
+def find_right_col(node):
+	return node['Index Cond'].split('=')[0].split('(')[1].strip()
 #----------------------------------------------------------------
 
 #---------------------Main Method---------------------------------
@@ -167,13 +150,17 @@ def seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num_fi
 #Index Scan
 def index_scan(node, parent_node):
 	if parent_node == {}:
+		col = find_right_col(node)
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/'
-		attStart, attEnd = find_att_values(path, node)
-		return index_scan_predict(path, attStart, attEnd)
+		attStart, attEnd = find_att_values(node, col)
+		predTime, predCard = index_scan_predict(path, attStart, attEnd)
+		return predTime
 	elif node['Parent Relationship'] == 'Outer':
+		col = find_left_col(parent_node['Plans'][1])
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/'
-		attStart, attEnd = find_att_values(path, node)
-		return index_scan_predict(path, attStart, attEnd)
+		attStart, attEnd = find_att_values(node, col)
+		predTime, predCard = index_scan_predict(path, attStart, attEnd)
+		return predTime
 	else:
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/'
 		attStart = 0
@@ -181,17 +168,14 @@ def index_scan(node, parent_node):
 		col = find_left_col(node)
 		leftCorr = find_corr([col])[0]
 		leftDup = find_dup([col])[0]
-		if parent_node['Plans'][0]['Node Type'] == 'Index Scan':
-			attStart, attEnd = find_att_values_index(path, node)
-		elif parent_node['Plans'][0]['Node Type'] == 'Seq Scan':
-			attStart, attEnd = find_att_values_seq(node, col)
+		attStart, attEnd = find_att_values(parent_node['Plans'][0], col)
 
 		timeInIsolation, cardInIsolation = index_scan_predict(path, attStart, attEnd)
 		timeInIsolation = timeInIsolation * (1 - leftDup)
 		timeInIsolation += parent_node['Plans'][0]['Actual Rows'] * leftDup * TIME_PER_DUPLICATE_TUPLE
 
-		path = 'nestloop_index_scan_predictor/' + node['Relation Name'] + '/'
-		timeInJoin = nestloop_index_scan_predict(parent_node['Plans'][0]['Actual Rows']*(1 - leftDup), parent_node['Actual Rows'])
+		path = 'nestloop_index_predictor/' + node['Relation Name'] + '/'
+		timeInJoin = nestloop_index_scan_predict([parent_node['Plans'][0]['Actual Rows']*(1 - leftDup)], [parent_node['Actual Rows']], path)
 		if parent_node['Actual Loops'] > 1:
 			print('Parent Node of Index Scan has multiple loops!')
 

@@ -1,12 +1,34 @@
 #metadata for sorting
 CORR_MD = {
-	['cast_info', 'ci'] : {'id':1}
-	['movie_id', 'mi'] : {'movie_info':0.11}
-	['link_type', 'lt'] : {'id':1}
+	'cast_info' : {'id':1},
+	'ci': {'id':1},
+	'movie_id': {'movie_info':0.11},
+	'mi': {'movie_info':0.11},
+	'link_type': {'id':1},
+	'lt': {'id':1}
 }
+
 DUP_MD = {
-	['cast_info', 'ci'] : {'id':0}
-	['movie_id', 'mi'] : {'movie_info':0.11}
+	'cast_info': {'id':0},
+	'ci': {'id':0},
+	'movie_id': {'movie_info':0.11},
+	'mi': {'movie_info':0.11},
+	'link_type': {'id':0},
+	'lt': {'id':0}
+}
+
+MIN_MD = {
+	'link_type': {'id':0},
+	'lt': {'id':0},
+	'cast_info': {'movie_id':1},
+	'ci':{'movie_id':1}
+}
+
+MAX_MD = {
+	'link_type': {'id':100},
+	'lt': {'id':100},
+	'cast_info': {'movie_id':2525975},
+	'ci':{'movie_id':2525975}
 }
 
 #metadata for join
@@ -33,3 +55,12 @@ UNIQUE_ATTRIBUTES_MD = {
 	'movie_info' : ['id'],
 	'cast_info' : ['id'],
 }
+
+if __name__ == "__main__":
+
+	relname = 'lt'
+	print(relname)
+	if relname in CORR_MD:
+		print(CORR_MD[relname]['id'])
+	else:
+		print('not found')

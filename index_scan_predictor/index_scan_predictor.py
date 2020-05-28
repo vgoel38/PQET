@@ -86,7 +86,8 @@ def index_scan_predict(path, attStart, attEnd):
 		if numContributingCurvesPerSegment[i] != 0:
 			finalTime += executionTimePerSegment[i]/numContributingCurvesPerSegment[i]
 
-	return finalTime[0]
+	finalCard = max(max(attToCard[i].predict(attEnd),0) - max(attToCard[i].predict(attStart),0),0)
+	return finalTime[0], finalCard
 
 
 if __name__ == "__main__":

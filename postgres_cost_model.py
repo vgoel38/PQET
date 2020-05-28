@@ -22,9 +22,9 @@ def find_num_preds(node):
 
 	if 'Filter' in node:
 		pred = node['Filter']
-	elif node['Node Type'] == 'Nested Loop':
+	elif node['Node Type'] == 'Nested Loop' and 'Join Filter' in node:
 		pred = node['Join Filter']
-	elif node['Node Type'] == 'Merge Join':
+	elif node['Node Type'] == 'Merge Join' and 'Merge Cond' in node:
 		pred = node['Merge Cond']
 	#ADD FOR HASH JOIN
 	else:
@@ -66,7 +66,10 @@ def find_join_children_cards(node):
 		if node['Plans'][1]['Node Type'].count('Join') or node['Plans'][1]['Node Type'] == 'Nested Loop':
 			print('ERROR! Dont know how to find output cardinality of right child')
 		else:
-			inner_rel_card = node['Plans'][1]['Plans'][0]['Actual Rows']
+			if node['Plans'][1]['Node Type'] == 'Materialize':
+				inner_rel_card = node['Plans'][1]['Plans'][0]['Actual Rows']
+			else:
+				inner_rel_card = node['Plans'][1]['Actual Rows'] * node['Plans'][1]['Actual Loops']
 	
 	return outer_rel_card, inner_rel_card
 
