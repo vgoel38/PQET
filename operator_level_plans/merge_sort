@@ -1,0 +1,303 @@
+explain (analyse, buffers) select * from cast_info ci, movie_info mi where ci.movie_id = mi.movie_id;
+                                                               QUERY PLAN                              
+                                  
+-------------------------------------------------------------------------------------------------------
+----------------------------------
+ Merge Join  (cost=212740.59..312396.63 rows=433793637 width=115) (actual time=31000.834..177108.572 ro
+ws=460456073 loops=1)
+   Merge Cond: (mi.movie_id = ci.movie_id)
+   Buffers: shared hit=8 read=414542
+   ->  Sort  (cost=60983.46..62135.30 rows=14835720 width=73) (actual time=11167.443..12766.267 rows=14
+835029 loops=1)
+         Sort Key: mi.movie_id
+         Sort Method: quicksort  Memory: 2188779kB
+         Buffers: shared hit=6 read=161890
+         ->  Seq Scan on movie_info mi  (cost=0.00..6103.84 rows=14835720 width=73) (actual time=22.426
+..5267.367 rows=14835720 loops=1)
+               Buffers: shared hit=2 read=161890
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=19833.378..44486.374 rows=
+460742913 loops=1)
+         Sort Key: ci.movie_id
+         Sort Method: quicksort  Memory: 4279121kB
+         Buffers: shared hit=2 read=252652
+         ->  Seq Scan on cast_info ci  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=31.280
+..6039.069 rows=36244344 loops=1)
+               Buffers: shared hit=2 read=252652
+ Planning Time: 664.482 ms
+ Execution Time: 196782.847 ms
+(17 rows)
+
+
+6.6s, 56s, 7.5s
+38s, 144s, 37s
+120s, 95s, 127.3s
+
+
+explain (analyse, buffers) select * from cast_info ci, movie_info mi where ci.movie_id = mi.movie_id and ci.person_id = info_type_id;
+                                                               QUERY PLAN                              
+                                 
+-------------------------------------------------------------------------------------------------------
+---------------------------------
+ Merge Join  (cost=212927.44..216196.26 rows=303 width=115) (actual time=42352.751..44788.861 rows=53 l
+oops=1)
+   Merge Cond: ((ci.person_id = mi.info_type_id) AND (ci.movie_id = mi.movie_id))
+   Buffers: shared hit=414546
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=25874.664..25874.718 rows=
+353 loops=1)
+         Sort Key: ci.person_id, ci.movie_id
+         Sort Method: quicksort  Memory: 4279121kB
+         Buffers: shared hit=252654
+         ->  Seq Scan on cast_info ci  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.013.
+.2462.410 rows=36244344 loops=1)
+               Buffers: shared hit=252654
+   ->  Sort  (cost=60983.46..62135.30 rows=14835720 width=73) (actual time=16183.389..17008.428 rows=14
+835722 loops=1)
+         Sort Key: mi.info_type_id, mi.movie_id
+         Sort Method: quicksort  Memory: 2188779kB
+         Buffers: shared hit=161892
+         ->  Seq Scan on movie_info mi  (cost=0.00..6103.84 rows=14835720 width=73) (actual time=0.016.
+.1036.438 rows=14835720 loops=1)
+               Buffers: shared hit=161892
+ Planning Time: 695.998 ms
+ Execution Time: 45013.312 ms
+(17 rows)
+
+23.4s, 144s, 28.6s
+16s, 56s, 13.5s
+2s, 0.1s, 3.5s
+
+explain (analyse, buffers) select * from cast_info ci, movie_keyword mk where ci.movie_id = mk.movie_id;
+                                                               QUERY PLAN                              
+                                 
+-------------------------------------------------------------------------------------------------------
+---------------------------------
+ Merge Join  (cost=168368.10..203082.69 rows=151555203 width=54) (actual time=17064.312..88232.960 rows
+=215765477 loops=1)
+   Merge Cond: (mk.movie_id = ci.movie_id)
+   Buffers: shared hit=252656 read=24452
+   ->  Sort  (cost=16610.92..16962.16 rows=4523930 width=12) (actual time=1743.486..2074.574 rows=45239
+30 loops=1)
+         Sort Key: mk.movie_id
+         Sort Method: quicksort  Memory: 408668kB
+         Buffers: shared hit=2 read=24452
+         ->  Seq Scan on movie_keyword mk  (cost=0.00..1079.84 rows=4523930 width=12) (actual time=0.01
+0..538.413 rows=4523930 loops=1)
+               Buffers: shared hit=2 read=24452
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=15320.811..29282.890 rows=
+241074053 loops=1)
+         Sort Key: ci.movie_id
+         Sort Method: quicksort  Memory: 4279121kB
+         Buffers: shared hit=252654
+         ->  Seq Scan on cast_info ci  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.013.
+.2456.485 rows=36244344 loops=1)
+               Buffers: shared hit=252654
+ Planning Time: 844.204 ms
+ Execution Time: 97537.247 ms
+(17 rows)
+
+1.5s, 16s, 1.4s
+26.8s, 144s, 19.7s
+57s, 46s, 68s
+
+explain (analyse, buffers) select * from cast_info ci, movie_keyword mk where ci.movie_id = mk.movie_id and ci.person_role_id = mk.keyword_id;
+                                                               QUERY PLAN                              
+                                 
+-------------------------------------------------------------------------------------------------------
+---------------------------------
+ Merge Join  (cost=168368.05..171130.59 rows=19530 width=54) (actual time=50229.464..53957.536 rows=295
+32 loops=1)
+   Merge Cond: ((ci.person_role_id = mk.keyword_id) AND (ci.movie_id = mk.movie_id))
+   Buffers: shared hit=277108
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=46299.065..47324.148 rows=
+7323047 loops=1)
+         Sort Key: ci.person_role_id, ci.movie_id
+         Sort Method: quicksort  Memory: 4279121kB
+         Buffers: shared hit=252654
+         ->  Seq Scan on cast_info ci  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.009.
+.2589.489 rows=36244344 loops=1)
+               Buffers: shared hit=252654
+   ->  Sort  (cost=16610.92..16962.16 rows=4523930 width=12) (actual time=3930.376..4613.873 rows=45487
+37 loops=1)
+         Sort Key: mk.keyword_id, mk.movie_id
+         Sort Method: quicksort  Memory: 408668kB
+         Buffers: shared hit=24454
+         ->  Seq Scan on movie_keyword mk  (cost=0.00..1079.84 rows=4523930 width=12) (actual time=0.01
+4..300.264 rows=4523930 loops=1)
+               Buffers: shared hit=24454
+ Planning Time: 1438.998 ms
+ Execution Time: 54126.394 ms
+(17 rows)
+
+44.8s, 144s, 30.2s
+4.3s, 16s, 3.5s
+2s, 0.1s, 2.8s
+
+explain (analyse, buffers) select * from movie_info mi, movie_keyword mk where mi.movie_id = mk.movie_id;
+                                                               QUERY PLAN                              
+                                 
+-------------------------------------------------------------------------------------------------------
+---------------------------------
+ Merge Join  (cost=77594.42..117785.74 rows=175959573 width=85) (actual time=7578.539..72140.356 rows=2
+35420417 loops=1)
+   Merge Cond: (mk.movie_id = mi.movie_id)
+   Buffers: shared hit=186346
+   ->  Sort  (cost=16610.92..16962.16 rows=4523930 width=12) (actual time=1452.714..1686.034 rows=45239
+30 loops=1)
+         Sort Key: mk.movie_id
+         Sort Method: quicksort  Memory: 408668kB
+         Buffers: shared hit=24454
+         ->  Seq Scan on movie_keyword mk  (cost=0.00..1079.84 rows=4523930 width=12) (actual time=0.00
+8..301.983 rows=4523930 loops=1)
+               Buffers: shared hit=24454
+   ->  Sort  (cost=60983.46..62135.30 rows=14835720 width=73) (actual time=6125.810..16980.076 rows=243
+422784 loops=1)
+         Sort Key: mi.movie_id
+         Sort Method: quicksort  Memory: 2188779kB
+         Buffers: shared hit=161892
+         ->  Seq Scan on movie_info mi  (cost=0.00..6103.84 rows=14835720 width=73) (actual time=0.013.
+.1084.273 rows=14835720 loops=1)
+               Buffers: shared hit=161892
+ Planning Time: 610.838 ms
+ Execution Time: 82212.722 ms
+(17 rows)
+
+1.3s, 16s, 1.4s
+16s, 56s, 17s
+49.3s, 50.8s, 72s
+
+explain (analyse, buffers) select * from movie_info mi, movie_keyword mk where mi.movie_id = mk.movie_id and mi.info_type_id = mk.keyword_id;
+                                                               QUERY PLAN                              
+                                 
+-------------------------------------------------------------------------------------------------------
+---------------------------------
+ Merge Join  (cost=77594.38..81081.79 rows=70867 width=85) (actual time=20277.874..23231.321 rows=56305
+ loops=1)
+   Merge Cond: ((mi.info_type_id = mk.keyword_id) AND (mi.movie_id = mk.movie_id))
+   Buffers: shared hit=186346
+   ->  Sort  (cost=60983.46..62135.30 rows=14835720 width=73) (actual time=16351.306..17228.383 rows=14
+835720 loops=1)
+         Sort Key: mi.info_type_id, mi.movie_id
+         Sort Method: quicksort  Memory: 2188779kB
+         Buffers: shared hit=161892
+         ->  Seq Scan on movie_info mi  (cost=0.00..6103.84 rows=14835720 width=73) (actual time=0.007.
+.1041.536 rows=14835720 loops=1)
+               Buffers: shared hit=161892
+   ->  Sort  (cost=16610.92..16962.16 rows=4523930 width=12) (actual time=3926.553..3945.610 rows=15069
+5 loops=1)
+         Sort Key: mk.keyword_id, mk.movie_id
+         Sort Method: quicksort  Memory: 408668kB
+         Buffers: shared hit=24454
+         ->  Seq Scan on movie_keyword mk  (cost=0.00..1079.84 rows=4523930 width=12) (actual time=0.01
+5..300.318 rows=4523930 loops=1)
+               Buffers: shared hit=24454
+ Planning Time: 617.185 ms
+ Execution Time: 23338.021 ms
+(17 rows)
+
+16.2s, 56s, 13.5s
+2.9s, 16s, 2.4s
+2.2s, 1.5s, 2.5s
+
+explain (analyse, buffers) select * from store_returns sr, catalog_returns cr where sr.sr_item_sk = cr.cr_item_sk and sr.sr_item_sk<10000 and cr.cr_item_sk<10000;
+                                                                QUERY PLAN                             
+                                    
+-------------------------------------------------------------------------------------------------------
+------------------------------------
+ Merge Join  (cost=37023.27..38259.82 rows=5021030 width=224) (actual time=6456.905..71046.520 rows=124
+713817 loops=1)
+   Merge Cond: (cr.cr_item_sk = sr.sr_item_sk)
+   Buffers: shared hit=196 read=767132
+   ->  Sort  (cost=13268.25..13323.11 rows=706628 width=126) (actual time=2269.841..2406.401 rows=70576
+4 loops=1)
+         Sort Key: cr.cr_item_sk
+         Sort Method: quicksort  Memory: 207734kB
+         Buffers: shared hit=98 read=287527
+         ->  Seq Scan on catalog_returns cr  (cost=0.00..11136.23 rows=706628 width=126) (actual time=0
+.049..2009.463 rows=705764 loops=1)
+               Filter: (cr_item_sk < 10000)
+               Rows Removed by Filter: 13698610
+               Buffers: shared hit=98 read=287527
+   ->  Sort  (cost=23755.02..23864.70 rows=1412698 width=98) (actual time=4187.050..10435.068 rows=1247
+13763 loops=1)
+         Sort Key: sr.sr_item_sk
+         Sort Method: quicksort  Memory: 247296kB
+         Buffers: shared hit=98 read=479605
+         ->  Seq Scan on store_returns sr  (cost=0.00..19273.43 rows=1412698 width=98) (actual time=0.0
+39..3726.876 rows=1412447 loops=1)
+               Filter: (sr_item_sk < 10000)
+               Rows Removed by Filter: 27382633
+               Buffers: shared hit=98 read=479605
+ Planning Time: 677.908 ms
+ Execution Time: 76524.452 ms
+(21 rows)
+
+0.4s, 2.2s, 0.3s
+6.7s, 4.6s, 6.4s
+58.2s, 31s, 69.7s
+
+explain (analyse, buffers) select * from store_returns sr, catalog_returns cr where sr.sr_returned_date_sk = cr.cr_returned_date_sk and sr.sr_ticket_number<1000000 and cr.cr_order_number<1000000;
+                                                                QUERY PLAN                            
+                                     
+------------------------------------------------------------------------------------------------------
+-------------------------------------
+ Merge Join  (cost=36925.51..166511.72 rows=576839684 width=224) (actual time=8454.659..223591.383 row
+s=420190464 loops=1)
+   Merge Cond: (cr.cr_returned_date_sk = sr.sr_returned_date_sk)
+   Buffers: shared hit=489 read=766843
+   ->  Sort  (cost=13906.30..13976.31 rows=901774 width=126) (actual time=3376.547..3563.230 rows=9005
+42 loops=1)
+         Sort Key: cr.cr_returned_date_sk
+         Sort Method: quicksort  Memory: 258255kB
+         Buffers: shared hit=327 read=287302
+         ->  Seq Scan on catalog_returns cr  (cost=0.00..11136.23 rows=901774 width=126) (actual time=
+0.015..3128.933 rows=900542 loops=1)
+               Filter: (cr_order_number < 1000000)
+               Rows Removed by Filter: 13503832
+               Buffers: shared hit=323 read=287302
+   ->  Sort  (cost=23018.00..23110.74 rows=1194522 width=98) (actual time=5078.096..24882.791 rows=420
+191971 loops=1)
+         Sort Key: sr.sr_returned_date_sk
+         Sort Method: quicksort  Memory: 217141kB
+         Buffers: shared hit=162 read=479541
+         ->  Seq Scan on store_returns sr  (cost=0.00..19273.43 rows=1194522 width=98) (actual time=0.
+042..4759.494 rows=1197534 loops=1)
+               Filter: (sr_ticket_number < 1000000)
+               Rows Removed by Filter: 27597546
+               Buffers: shared hit=162 read=479541
+ Planning Time: 25.730 ms
+ Execution Time: 241985.983 ms
+(21 rows)
+
+0.4s, 2.8s, 0.2s
+20.1s, 3.9s, 20.4s
+200.8s, 94.3s, 207s
+
+explain (analyse,buffers) select * from web_sales ws, catalog_returns cr where cr.cr_item_sk = ws.ws_item_sk and ws.ws_item_sk<10000 and cr.cr_item_sk<10000;
+                                                                      QUERY PLAN                                                                 
+--------------------------------------------------------------------------------------------------------------------------------------------
+ Merge Join  (cost=94741.00..97682.90 rows=12619895 width=292) (actual time=112831.208..319369.365 rows=311875477 loops=1)
+   Merge Cond: (cr.cr_item_sk = ws.ws_item_sk)
+   Buffers: shared hit=8 read=2165759
+   ->  Sort  (cost=13268.25..13323.11 rows=706628 width=126) (actual time=14684.009..14812.702 rows=705764 loops=1)
+         Sort Key: cr.cr_item_sk
+         Sort Method: quicksort  Memory: 207734kB
+         Buffers: shared hit=6 read=287623
+         ->  Seq Scan on catalog_returns cr  (cost=0.00..11136.23 rows=706628 width=126) (actual time=6.654..14144.814 rows=705764 loops=1)
+               Filter: (cr_item_sk < 10000)
+               Rows Removed by Filter: 13698610
+               Buffers: shared hit=2 read=287623
+   ->  Sort  (cost=81472.75..81748.33 rows=3549458 width=166) (actual time=98147.183..113464.181 rows=311875423 loops=1)
+         Sort Key: ws.ws_item_sk
+         Sort Method: quicksort  Memory: 1036222kB
+         Buffers: shared hit=2 read=1878136
+         ->  Seq Scan on web_sales ws  (cost=0.00..69480.02 rows=3549458 width=166) (actual time=14.605..95175.543 rows=3531450 loops=1)
+               Filter: (ws_item_sk < 10000)
+               Rows Removed by Filter: 68469787
+               Buffers: shared hit=2 read=1878136
+ Planning Time: 1192.362 ms
+ Execution Time: 333789.641 ms
+(21 rows)
+
+0.4s, 2.2s, 0.3s
+16.6s, 12.3s, 16s
+190s, 64.2s, 113s

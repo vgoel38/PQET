@@ -1,0 +1,449 @@
+explain (analyse, buffers) select sum(person_id) from cast_info group by movie_id;
+                                                             QUERY PLAN                                                              
+-------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=151757.13..160309.01 rows=1589193 width=12) (actual time=20816.020..31708.251 rows=2331601 loops=1)
+   Group Key: movie_id
+   Buffers: shared hit=3 read=252654
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=8) (actual time=20793.508..25161.332 rows=36244344 loops=1)
+         Sort Key: movie_id
+         Sort Method: quicksort  Memory: 3271818kB
+         Buffers: shared hit=3 read=252654
+         ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=8) (actual time=25.183..6654.143 rows=36244344 loops=1)
+               Buffers: shared read=252654
+ Planning Time: 198.514 ms
+ Execution Time: 32000.923 ms
+(11 rows)
+
+Actual:6.5s Estimated:5.7s
+
+explain (analyse, buffers) select avg(person_id) from cast_info group by movie_id;
+                                                             QUERY PLAN                                                              
+-------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=151757.13..160432.39 rows=1589193 width=36) (actual time=20985.230..33779.366 rows=2331601 loops=1)
+   Group Key: movie_id
+   Buffers: shared hit=3 read=252654
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=8) (actual time=20965.192..25414.545 rows=36244344 loops=1)
+         Sort Key: movie_id
+         Sort Method: quicksort  Memory: 3271818kB
+         Buffers: shared hit=3 read=252654
+         ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=8) (actual time=36.220..6763.849 rows=36244344 loops=1)
+               Buffers: shared read=252654
+ Planning Time: 186.300 ms
+ Execution Time: 34091.403 ms
+(11 rows)
+
+a:8.3s postgres:5.7s e:8.6s
+
+explain (analyse, buffers) select sum(person_id), max(movie_id), min(id) from cast_info group by person_role_id;
+                                                              QUERY PLAN                                                              
+--------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=151757.13..165868.52 rows=598648 width=20) (actual time=17656.394..28344.895 rows=3140340 loops=1)
+   Group Key: person_role_id
+   Buffers: shared hit=3 read=252654
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=16) (actual time=17290.161..19989.727 rows=36244344 loops=1)
+         Sort Key: person_role_id
+         Sort Method: quicksort  Memory: 3271818kB
+         Buffers: shared hit=3 read=252654
+         ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=16) (actual time=26.828..7024.364 rows=36244344 loops=1)
+               Buffers: shared read=252654
+ Planning Time: 191.671 ms
+ Execution Time: 28723.594 ms
+(11 rows)
+
+a:8.3s	p:11.3s
+
+explain (analyse, buffers) select avg(person_id), avg(movie_id), avg(id) from cast_info group by person_role_id;
+                                                              QUERY PLAN                                                              
+--------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=151757.13..166007.96 rows=598648 width=100) (actual time=18010.305..34123.339 rows=3140340 loops=1)
+   Group Key: person_role_id
+   Buffers: shared hit=3 read=252654
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=16) (actual time=17605.456..20308.595 rows=36244344 loops=1)
+         Sort Key: person_role_id
+         Sort Method: quicksort  Memory: 3271818kB
+         Buffers: shared hit=3 read=252654
+         ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=16) (actual time=24.417..7309.677 rows=36244344 loops=1)
+               Buffers: shared read=252654
+ Planning Time: 196.870 ms
+ Execution Time: 34521.368 ms
+(11 rows)
+
+
+a:14s p:11.4s e:19.9s
+
+explain (analyse, buffers) select sum(person_id) from cast_info group by movie_id, role_id, person_role_id;
+                                                              QUERY PLAN                                                              
+--------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=151757.13..166077.73 rows=3624434 width=20) (actual time=35343.623..51888.253 rows=23348702 loops=1)
+   Group Key: movie_id, role_id, person_role_id
+   Buffers: shared hit=3 read=252654
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=16) (actual time=35326.212..39658.581 rows=36244344 loops=1)
+         Sort Key: movie_id, role_id, person_role_id
+         Sort Method: quicksort  Memory: 3271818kB
+         Buffers: shared hit=3 read=252654
+         ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=16) (actual time=20.298..7439.326 rows=36244344 loops=1)
+               Buffers: shared read=252654
+ Planning Time: 240.062 ms
+ Execution Time: 53599.136 ms
+(11 rows)
+
+a:12.2s	e:11.5s
+
+explain (analyse, buffers) select avg(person_id) from cast_info group by movie_id, role_id, person_role_id;
+                                                              QUERY PLAN                                                              
+--------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=151757.13..166359.13 rows=3624434 width=44) (actual time=35712.867..65312.568 rows=23348702 loops=1)
+   Group Key: movie_id, role_id, person_role_id
+   Buffers: shared hit=3 read=252654
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=16) (actual time=35712.841..40215.796 rows=36244344 loops=1)
+         Sort Key: movie_id, role_id, person_role_id
+         Sort Method: quicksort  Memory: 3271818kB
+         Buffers: shared hit=3 read=252654
+         ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=16) (actual time=26.775..7794.986 rows=36244344 loops=1)
+               Buffers: shared read=252654
+ Planning Time: 240.578 ms
+ Execution Time: 67216.107 ms
+(11 rows)
+
+a:25s	p:11.5s e:16s
+
+explain (analyse, buffers) select max(person_id), min(id), count(*), sum(role_id) from cast_info group by movie_id, person_role_id, nr_order;
+                                                              QUERY PLAN                                                              
+--------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=151757.13..174519.73 rows=3624434 width=36) (actual time=34989.835..55746.706 rows=19176409 loops=1)
+   Group Key: movie_id, person_role_id, nr_order
+   Buffers: shared hit=3 read=252654
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=24) (actual time=34989.817..39652.120 rows=36244344 loops=1)
+         Sort Key: movie_id, person_role_id, nr_order
+         Sort Method: quicksort  Memory: 3865946kB
+         Buffers: shared hit=3 read=252654
+         ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=24) (actual time=19.361..7917.357 rows=36244344 loops=1)
+               Buffers: shared read=252654
+ Planning Time: 196.762 ms
+ Execution Time: 57466.166 ms
+(11 rows)
+
+a:16.1s e:19.9s	
+
+explain (analyse, buffers) select avg(person_id), avg(id), count(*), avg(role_id) from cast_info group by movie_id, person_role_id, nr_order;
+                                                              QUERY PLAN                                                              
+--------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=151757.13..175363.93 rows=3624434 width=116) (actual time=34941.642..85647.325 rows=19176409 loops=1)
+   Group Key: movie_id, person_role_id, nr_order
+   Buffers: shared hit=3 read=252654
+   ->  Sort  (cost=151757.13..154571.13 rows=36244344 width=24) (actual time=34941.620..39889.616 rows=36244344 loops=1)
+         Sort Key: movie_id, person_role_id, nr_order
+         Sort Method: quicksort  Memory: 3865946kB
+         Buffers: shared hit=3 read=252654
+         ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=24) (actual time=25.055..7980.506 rows=36244344 loops=1)
+               Buffers: shared read=252654
+ Planning Time: 203.694 ms
+ Execution Time: 87545.404 ms
+(11 rows)
+
+a:45.7s p:19.9s e:30s
+
+explain (analyse,buffers) select sum(ws_net_profit), min(ws_sales_price), max(ws_list_price), count(*) from web_sales group by ws_item_sk;
+                                                              QUERY PLAN                                                               
+---------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=355712.92..389283.78 rows=203946 width=108) (actual time=111436.035..159040.523 rows=204000 loops=1)
+   Group Key: ws_item_sk
+   Buffers: shared read=1878138
+   ->  Sort  (cost=355712.92..361303.07 rows=72001240 width=22) (actual time=111410.276..126125.940 rows=72001237 loops=1)
+         Sort Key: ws_item_sk
+         Sort Method: quicksort  Memory: 7560694kB
+         Buffers: shared read=1878138
+         ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=22) (actual time=38.841..71532.911 rows=72001237 loops=1)
+               Buffers: shared read=1878138
+ Planning Time: 129.486 ms
+ Execution Time: 159319.433 ms
+(11 rows)
+
+a:32.9s	e:28s
+
+explain (analyse,buffers) select avg(ws_net_profit), min(ws_sales_price), avg(ws_list_price), count(*) from web_sales group by ws_item_sk;
+                                                              QUERY PLAN                                                               
+---------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=355712.92..389299.62 rows=203946 width=108) (actual time=112880.391..161215.836 rows=204000 loops=1)
+   Group Key: ws_item_sk
+   Buffers: shared hit=3 read=1878138
+   ->  Sort  (cost=355712.92..361303.07 rows=72001240 width=22) (actual time=112856.872..127383.641 rows=72001237 loops=1)
+         Sort Key: ws_item_sk
+         Sort Method: quicksort  Memory: 7560694kB
+         Buffers: shared hit=3 read=1878138
+         ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=22) (actual time=16.570..72817.535 rows=72001237 loops=1)
+               Buffers: shared read=1878138
+ Planning Time: 183.121 ms
+ Execution Time: 161495.954 ms
+(11 rows)
+
+a:33.8s p:28s e:39s
+
+explain (analyse,buffers) select min(ws_order_number), max(ws_sales_price), sum(ws_quantity) from web_sales group by ws_sold_date_sk, ws_sold_time_sk;                                                              QUERY PLAN                                                               
+---------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=355712.92..389751.67 rows=7200124 width=52) (actual time=146877.597..181666.638 rows=5836729 loops=1)
+   Group Key: ws_sold_date_sk, ws_sold_time_sk
+   Buffers: shared hit=3 read=1878138
+   ->  Sort  (cost=355712.92..361303.07 rows=72001240 width=22) (actual time=146877.565..155547.911 rows=72001237 loops=1)
+         Sort Key: ws_sold_date_sk, ws_sold_time_sk
+         Sort Method: quicksort  Memory: 7560310kB
+         Buffers: shared hit=3 read=1878138
+         ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=22) (actual time=21.846..68691.910 rows=72001237 loops=1)
+               Buffers: shared read=1878138
+ Planning Time: 152.164 ms
+ Execution Time: 182470.615 ms
+(11 rows)
+
+a:26s	e:28.4s
+
+explain (analyse,buffers) select avg(ws_order_number), avg(ws_sales_price), avg(ws_quantity) from web_sales group by ws_sold_date_sk, ws_sold_time_sk;
+                                                              QUERY PLAN                                                               
+---------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=355712.92..391428.72 rows=7200124 width=104) (actual time=148226.788..195657.713 rows=5836729 loops=1)
+   Group Key: ws_sold_date_sk, ws_sold_time_sk
+   Buffers: shared hit=3 read=1878138
+   ->  Sort  (cost=355712.92..361303.07 rows=72001240 width=22) (actual time=148226.744..156878.124 rows=72001237 loops=1)
+         Sort Key: ws_sold_date_sk, ws_sold_time_sk
+         Sort Method: quicksort  Memory: 7560310kB
+         Buffers: shared hit=3 read=1878138
+         ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=22) (actual time=32.804..70346.922 rows=72001237 loops=1)
+               Buffers: shared read=1878138
+ Planning Time: 167.896 ms
+ Execution Time: 196568.552 ms
+(11 rows)
+
+a:39s	p:28.4s	e:45s
+
+explain (analyse,buffers) select count(*), sum(ws_order_number), max(ws_sales_price), min(ws_quantity) from web_sales group by ws_ship_customer_sk, ws_bill_customer_sk, ws_ship_mode_sk;
+                                                              QUERY PLAN                                                               
+---------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=355712.92..400931.98 rows=7200124 width=64) (actual time=139918.714..193545.242 rows=54367298 loops=1)
+   Group Key: ws_ship_customer_sk, ws_bill_customer_sk, ws_ship_mode_sk
+   Buffers: shared hit=3 read=1878138
+   ->  Sort  (cost=355712.92..361303.07 rows=72001240 width=26) (actual time=139918.685..148083.150 rows=72001237 loops=1)
+         Sort Key: ws_ship_customer_sk, ws_bill_customer_sk, ws_ship_mode_sk
+         Sort Method: quicksort  Memory: 7560413kB
+         Buffers: shared hit=3 read=1878138
+         ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=26) (actual time=30.847..68199.534 rows=72001237 loops=1)
+               Buffers: shared read=1878138
+ Planning Time: 198.561 ms
+ Execution Time: 198397.186 ms
+(11 rows)
+
+a:45.5s		e:39s
+
+explain (analyse,buffers) select avg(ws_order_number), avg(ws_sales_price), avg(ws_quantity) from web_sales group by ws_ship_customer_sk, ws_bill_customer_sk, ws_ship_mode_sk;
+                                                              QUERY PLAN                                                               
+---------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=355712.92..397018.88 rows=7200124 width=108) (actual time=140796.810..284439.572 rows=54367298 loops=1)
+   Group Key: ws_ship_customer_sk, ws_bill_customer_sk, ws_ship_mode_sk
+   Buffers: shared hit=3 read=1878138
+   ->  Sort  (cost=355712.92..361303.07 rows=72001240 width=26) (actual time=140796.774..149181.967 rows=72001237 loops=1)
+         Sort Key: ws_ship_customer_sk, ws_bill_customer_sk, ws_ship_mode_sk
+         Sort Method: quicksort  Memory: 7560413kB
+         Buffers: shared hit=3 read=1878138
+         ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=26) (actual time=32.076..68969.343 rows=72001237 loops=1)
+               Buffers: shared read=1878138
+ Planning Time: 168.278 ms
+ Execution Time: 290117.200 ms
+(11 rows)
+
+a:135s	p:35.7s		e:54s
+
+explain (analyse, buffers) select sum(person_id) from cast_info group by movie_id;
+                                                          QUERY PLAN                                                           
+-------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=16059.00..16168.88 rows=1589193 width=12) (actual time=21966.692..22602.899 rows=2331601 loops=1)
+   Group Key: movie_id
+   Buffers: shared read=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=8) (actual time=22.762..4109.181 rows=36244344 loops=1)
+         Buffers: shared read=252654
+ Planning Time: 229.789 ms
+ Execution Time: 22796.444 ms
+(7 rows)
+
+a:18.5s	p:5.7s	e:18.6s
+
+explain (analyse, buffers) select avg(person_id) from cast_info group by movie_id;
+                                                          QUERY PLAN                                                           
+-------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=16059.00..16292.26 rows=1589193 width=36) (actual time=23902.619..25645.321 rows=2331601 loops=1)
+   Group Key: movie_id
+   Buffers: shared read=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=8) (actual time=24.194..4262.900 rows=36244344 loops=1)
+         Buffers: shared read=252654
+ Planning Time: 231.721 ms
+ Execution Time: 25878.331 ms
+(7 rows)
+
+a:21.4s	p:5.8s	e:21.4s
+
+explain (analyse, buffers) select sum(person_id), max(movie_id), min(id) from cast_info group by person_role_id;
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=21687.00..21728.39 rows=598648 width=20) (actual time=17034.149..18146.619 rows=3140340 loops=1)
+   Group Key: person_role_id
+   Buffers: shared read=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=16) (actual time=20.549..4130.701 rows=36244344 loops=1)
+         Buffers: shared read=252654
+ Planning Time: 195.771 ms
+ Execution Time: 18454.774 ms
+(7 rows)
+
+a:14s	p:11.3s	e:24.2s
+
+explain (analyse, buffers) select avg(person_id), avg(movie_id), avg(id) from cast_info group by person_role_id;
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=21687.00..21867.83 rows=598648 width=100) (actual time=19376.234..24736.961 rows=3140340 loops=1)
+   Group Key: person_role_id
+   Buffers: shared read=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=16) (actual time=19.417..4229.092 rows=36244344 loops=1)
+         Buffers: shared read=252654
+ Planning Time: 303.752 ms
+ Execution Time: 25091.358 ms
+(7 rows)
+	
+a:20.5s	p:11.4s	e:32.7s
+
+explain (analyse, buffers) select sum(person_id) from cast_info group by movie_id, role_id, person_role_id;
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=21687.00..21937.60 rows=3624434 width=20) (actual time=27296.163..35009.869 rows=23348702 loops=1)
+   Group Key: movie_id, role_id, person_role_id
+   Buffers: shared read=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=16) (actual time=26.375..4292.401 rows=36244344 loops=1)
+         Buffers: shared read=252654
+ Planning Time: 216.672 ms
+ Execution Time: 36677.244 ms
+(7 rows)
+
+a:30.7s	p:12s	e:28.5s
+
+explain (analyse, buffers) select avg(person_id) from cast_info group by movie_id, role_id, person_role_id;
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=21687.00..22219.00 rows=3624434 width=44) (actual time=29620.677..48708.083 rows=23348702 loops=1)
+   Group Key: movie_id, role_id, person_role_id
+   Buffers: shared read=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=16) (actual time=26.797..4376.067 rows=36244344 loops=1)
+         Buffers: shared read=252654
+ Planning Time: 346.072 ms
+ Execution Time: 50593.535 ms
+(7 rows)
+
+a:44.4s p:11.8s	e:28.5s
+
+explain (analyse, buffers) select max(person_id), min(id), count(*), sum(role_id) from cast_info group by movie_id, person_role_id, nr_order;
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=30129.00..30379.60 rows=3624434 width=36) (actual time=30494.987..38884.896 rows=19176409 loops=1)
+   Group Key: movie_id, person_role_id, nr_order
+   Buffers: shared read=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=24) (actual time=20.000..4348.086 rows=36244344 loops=1)
+         Buffers: shared read=252654
+ Planning Time: 223.500 ms
+ Execution Time: 40506.225 ms
+(7 rows)
+
+a:34.5s p:20s	e:33.8s
+
+explain (analyse, buffers) select avg(person_id), avg(id), count(*), avg(role_id) from cast_info group by movie_id, person_role_id, nr_order;
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=30129.00..31223.80 rows=3624434 width=116) (actual time=37716.946..73063.448 rows=19176409 loops=1)
+   Group Key: movie_id, person_role_id, nr_order
+   Buffers: shared read=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=24) (actual time=23.645..4593.991 rows=36244344 loops=1)
+         Buffers: shared read=252654
+ Planning Time: 223.233 ms
+ Execution Time: 75011.497 ms
+(7 rows)
+
+a:68.4s	p:21s	e:42s
+
+explain (analyse,buffers) select sum(ws_net_profit), min(ws_sales_price), max(ws_list_price), count(*) from web_sales group by ws_item_sk;
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=91840.64..91870.58 rows=203946 width=108) (actual time=101593.651..101799.305 rows=204000 loops=1)
+   Group Key: ws_item_sk
+   Buffers: shared read=1878138
+   ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=22) (actual time=31.151..13790.968 rows=72001237 loops=1)
+         Buffers: shared read=1878138
+ Planning Time: 191.556 ms
+ Execution Time: 101828.462 ms
+(7 rows)
+
+a:88s	p:30s	e:53.4s
+
+explain (analyse,buffers) select avg(ws_net_profit), min(ws_sales_price), avg(ws_list_price), count(*) from web_sales group by ws_item_sk;
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=91840.64..91886.41 rows=203946 width=108) (actual time=99440.929..99855.490 rows=204000 loops=1)
+   Group Key: ws_item_sk
+   Buffers: shared read=1878138
+   ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=22) (actual time=25.348..14042.463 rows=72001237 loops=1)
+         Buffers: shared read=1878138
+ Planning Time: 153.553 ms
+ Execution Time: 99889.602 ms
+(7 rows)
+
+a:86s	p:28s e:64.6s
+
+explain (analyse,buffers) select min(ws_order_number), max(ws_sales_price), sum(ws_quantity) from web_sales group by ws_sold_date_sk, ws_sold_time_sk; 
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=91840.64..92338.47 rows=7200124 width=52) (actual time=97751.465..100655.774 rows=5836729 loops=1)
+   Group Key: ws_sold_date_sk, ws_sold_time_sk
+   Buffers: shared read=1878138
+   ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=22) (actual time=17.300..35569.187 rows=72001237 loops=1)
+         Buffers: shared read=1878138
+ Planning Time: 164.947 ms
+ Execution Time: 101213.350 ms
+(7 rows)
+
+a:64.5s	p:30s	e:53.8s
+
+explain (analyse,buffers) select avg(ws_order_number), avg(ws_sales_price), avg(ws_quantity) from web_sales group by ws_sold_date_sk, ws_sold_time_sk;
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=91840.64..94015.52 rows=7200124 width=104) (actual time=98319.619..110364.158 rows=5836729 loops=1)
+   Group Key: ws_sold_date_sk, ws_sold_time_sk
+   Buffers: shared read=1878138
+   ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=22) (actual time=35.506..33568.134 rows=72001237 loops=1)
+         Buffers: shared read=1878138
+ Planning Time: 178.835 ms
+ Execution Time: 111108.383 ms
+(7 rows)
+
+a:76.8s	p:30s	e:70.5s
+
+explain (analyse,buffers) select count(*), sum(ws_order_number), max(ws_sales_price), min(ws_quantity) from web_sales group by ws_ship_customer_sk, ws_bill_customer_sk, ws_ship_mode_sk;
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=103020.95..103518.78 rows=7200124 width=64) (actual time=101731.088..133725.001 rows=54367298 loops=1)
+   Group Key: ws_ship_customer_sk, ws_bill_customer_sk, ws_ship_mode_sk
+   Buffers: shared read=1878138
+   ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=26) (actual time=38.203..26568.204 rows=72001237 loops=1)
+         Buffers: shared read=1878138
+ Planning Time: 176.675 ms
+ Execution Time: 138237.590 ms
+(7 rows)
+
+a:107s	p:40s		e:68.3s
+
+explain (analyse,buffers) select avg(ws_order_number), avg(ws_sales_price), avg(ws_quantity) from web_sales group by ws_ship_customer_sk, ws_bill_customer_sk, ws_ship_mode_sk;
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=97430.79..99605.67 rows=7200124 width=108) (actual time=103093.451..217906.617 rows=54367298 loops=1)
+   Group Key: ws_ship_customer_sk, ws_bill_customer_sk, ws_ship_mode_sk
+   Buffers: shared read=1878138
+   ->  Seq Scan on web_sales  (cost=0.00..63889.87 rows=72001240 width=26) (actual time=35.608..18857.405 rows=72001237 loops=1)
+         Buffers: shared read=1878138
+ Planning Time: 152.029 ms
+ Execution Time: 223707.339 ms
+(7 rows)
+
+
+a:199s	p:35.6s		e:80s
+

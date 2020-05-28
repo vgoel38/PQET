@@ -1,0 +1,179 @@
+explain (analyse, buffers) select * from movie_link ml, complete_cast cc where ml.movie_id = cc.movie_id;
+                                                         QUERY PLAN                                     
+                     
+--------------------------------------------------------------------------------------------------------
+---------------------
+ Nested Loop  (cost=0.00..909435.80 rows=41927 width=32) (actual time=290.953..572785.445 rows=4849 loop
+s=1)
+   Join Filter: (ml.movie_id = cc.movie_id)
+   Rows Removed by Join Filter: 4052169893
+   Buffers: shared read=894
+   ->  Seq Scan on complete_cast cc  (cost=0.00..32.27 rows=135086 width=16) (actual time=0.013..38.834 
+rows=135086 loops=1)
+         Buffers: shared read=731
+   ->  Materialize  (cost=0.00..11.84 rows=29997 width=16) (actual time=0.000..1.279 rows=29997 loops=13
+5086)
+         Buffers: shared read=163
+         ->  Seq Scan on movie_link ml  (cost=0.00..7.19 rows=29997 width=16) (actual time=0.011..3.156 
+rows=29997 loops=1)
+               Buffers: shared read=163
+ Planning Time: 245.132 ms
+ Execution Time: 572786.229 ms
+(12 rows)
+
+(176674.81875120001, 409999.3756642574, 586674.1944154574)
+
+explain (analyse, buffers) select * from movie_link ml, complete_cast cc where ml.movie_id = cc.movie_id and ml.link_type_id = cc.status_id;
+                                                         QUERY PLAN                                     
+                     
+--------------------------------------------------------------------------------------------------------
+---------------------
+ Nested Loop  (cost=0.00..1224045.43 rows=287 width=32) (actual time=7519.924..615904.106 rows=13 loops=
+1)
+   Join Filter: ((ml.movie_id = cc.movie_id) AND (ml.link_type_id = cc.status_id))
+   Rows Removed by Join Filter: 4052174729
+   Buffers: shared hit=894
+   ->  Seq Scan on complete_cast cc  (cost=0.00..32.27 rows=135086 width=16) (actual time=0.008..26.485 
+rows=135086 loops=1)
+         Buffers: shared hit=731
+   ->  Materialize  (cost=0.00..11.84 rows=29997 width=16) (actual time=0.000..1.281 rows=29997 loops=13
+5086)
+         Buffers: shared hit=163
+         ->  Seq Scan on movie_link ml  (cost=0.00..7.19 rows=29997 width=16) (actual time=0.004..2.073 
+rows=29997 loops=1)
+               Buffers: shared hit=163
+ Planning Time: 243.211 ms
+ Execution Time: 615904.581 ms
+(12 rows)
+
+(176674.81875120001, 459998.8254359417, 636673.6441871417)
+
+
+explain (analyse, buffers) select * from movie_link ml, complete_cast cc where ml.movie_id = cc.movie_id and ml.link_type_id = cc.status_id and ml.linked_movie_id = cc.subject_id;
+                                                         QUERY PLAN                                     
+                     
+--------------------------------------------------------------------------------------------------------
+---------------------
+ Nested Loop  (cost=0.00..1538655.06 rows=1 width=32) (actual time=623342.901..623342.901 rows=0 loops=1
+)
+   Join Filter: ((ml.movie_id = cc.movie_id) AND (ml.link_type_id = cc.status_id) AND (ml.linked_movie_i
+d = cc.subject_id))
+   Rows Removed by Join Filter: 4052174742
+   Buffers: shared hit=894
+   ->  Seq Scan on complete_cast cc  (cost=0.00..32.27 rows=135086 width=16) (actual time=0.010..22.967 
+rows=135086 loops=1)
+         Buffers: shared hit=731
+   ->  Materialize  (cost=0.00..11.84 rows=29997 width=16) (actual time=0.000..1.334 rows=29997 loops=13
+5086)
+         Buffers: shared hit=163
+         ->  Seq Scan on movie_link ml  (cost=0.00..7.19 rows=29997 width=16) (actual time=0.004..2.118 
+rows=29997 loops=1)
+               Buffers: shared hit=163
+ Planning Time: 242.220 ms
+ Execution Time: 623343.354 ms
+(12 rows)
+
+(176674.81875120001, 509998.608678636, 686673.427429836)
+
+explain (analyse, buffers) select * from movie_link ml, aka_title at where ml.movie_id = at.movie_id;
+
+ Nested Loop  (cost=0.00..2433645.01 rows=59283 width=127) (actual time=172.252..1539247.651 rows=25096 
+loops=1)
+   Join Filter: (ml.movie_id = at.movie_id)
+   Rows Removed by Join Filter: 10843050488
+   Buffers: shared hit=163 read=6192
+   ->  Seq Scan on aka_title at  (cost=0.00..219.22 rows=361472 width=111) (actual time=13.416..159.194 
+rows=361472 loops=1)
+         Buffers: shared read=6192
+   ->  Materialize  (cost=0.00..11.84 rows=29997 width=16) (actual time=0.000..1.282 rows=29997 loops=36
+1472)
+         Buffers: shared hit=163
+         ->  Seq Scan on movie_link ml  (cost=0.00..7.19 rows=29997 width=16) (actual time=0.016..5.850 
+rows=29997 loops=1)
+               Buffers: shared hit=163
+ Planning Time: 258.308 ms
+ Execution Time: 1539249.276 ms
+(12 rows)
+
+(472758.09546240006, 1097104.1227722976, 1569862.2182346976)
+
+
+------------------------------------------------------
+NLJ-UNIQUE
+-----------------------------------------------------
+
+explain (analyse, buffers) select * from person_info pi, name n where pi.person_id = n.id and n.id<=10000 and pi.id<=50000;
+                                                          QUERY PLAN                                                           
+-------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.00..116843.40 rows=120 width=196) (actual time=2685.553..68472.319 rows=8782 loops=1)
+   Join Filter: (pi.person_id = n.id)
+   Rows Removed by Join Filter: 457898037
+   Buffers: shared read=106431
+   ->  Seq Scan on person_info pi  (cost=0.00..2029.02 rows=50000 width=122) (actual time=33.707..2339.097 rows=50000 loops=1)
+         Filter: (id <= 50000)
+         Rows Removed by Filter: 2913664
+         Buffers: shared read=50818
+   ->  Materialize  (cost=0.00..2357.68 rows=10022 width=74) (actual time=0.001..0.460 rows=9158 loops=50000)
+         Buffers: shared read=55613
+         ->  Seq Scan on name n  (cost=0.00..2356.12 rows=10022 width=74) (actual time=42.231..2630.794 rows=10000 loops=1)
+               Filter: (id <= 10000)
+               Rows Removed by Filter: 4157491
+               Buffers: shared read=55613
+ Planning Time: 366.311 ms
+ Execution Time: 68489.574 ms
+(16 rows)
+
+act: 23000, 40503
+est: 32429.110669183217, 64858.22133836645
+pred: 18211.1628792, 42262.200325445316
+
+explain (analyse, buffers) select * from person_info pi, name n where pi.person_id = n.id and n.id<=9000 and pi.id<=100000;
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.00..206140.52 rows=216 width=196) (actual time=2669.097..126103.065 rows=7642 loops=1)
+   Join Filter: (pi.person_id = n.id)
+   Rows Removed by Join Filter: 866375610
+   Buffers: shared read=106431
+   ->  Seq Scan on person_info pi  (cost=0.00..2029.02 rows=100000 width=122) (actual time=34.215..2349.027 rows=100000 loops=1)
+         Filter: (id <= 100000)
+         Rows Removed by Filter: 2863664
+         Buffers: shared read=50818
+   ->  Materialize  (cost=0.00..2357.52 rows=8990 width=74) (actual time=0.000..0.420 rows=8664 loops=100000)
+         Buffers: shared read=55613
+         ->  Seq Scan on name n  (cost=0.00..2356.12 rows=8990 width=74) (actual time=8.911..2623.282 rows=9000 loops=1)
+               Filter: (id <= 9000)
+               Rows Removed by Filter: 4158491
+               Buffers: shared read=55613
+ Planning Time: 344.846 ms
+ Execution Time: 126119.639 ms
+(16 rows)
+
+act: 42000, 79131
+est: 64696, 129393.5254992555
+pred: 36331.6557216, 84313.30191188767
+
+explain (analyse, buffers) select * from catalog_returns cr, customer_address ca where cr.cr_refunded_addr_sk = ca.ca_address_sk and ca.ca_address_sk<10000 and cr_order_number<100000;
+                                                              QUERY PLAN                                                               
+---------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.00..211934.01 rows=891 width=271) (actual time=1209.118..150420.032 rows=878 loops=1)
+   Join Filter: (cr.cr_refunded_addr_sk = ca.ca_address_sk)
+   Rows Removed by Join Filter: 896203242
+   Buffers: shared read=309359
+   ->  Seq Scan on catalog_returns cr  (cost=0.00..11136.23 rows=89113 width=126) (actual time=18.075..14426.855 rows=90080 loops=1)
+         Filter: (cr_order_number < 100000)
+         Rows Removed by Filter: 14314294
+         Buffers: shared read=287625
+   ->  Materialize  (cost=0.00..830.06 rows=9999 width=145) (actual time=0.001..0.541 rows=9949 loops=90080)
+         Buffers: shared read=21734
+         ->  Seq Scan on customer_address ca  (cost=0.00..828.51 rows=9999 width=145) (actual time=45.584..1155.155 rows=9999 loops=1)
+               Filter: (ca_address_sk < 10000)
+               Rows Removed by Filter: 990001
+               Buffers: shared read=21734
+ Planning Time: 296.265 ms
+ Execution Time: 150423.506 ms
+(16 rows)
+
+act:  48733, 86105
+est:  69242.05888581916, 138484.11777163832
+pred: 38884.1502724, 90236.26081114016
+

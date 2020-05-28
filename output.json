@@ -1,0 +1,13 @@
+{
+  "Postgres Estimated Plan Time": 522951.25,
+  "Actual Plan Time": 32727.1,
+  "Postgres Estimated Time": 522951.25,
+  "Postgres Weighted Qerror": 15.97915030662662,
+  "Actual Loops": 1,
+  "Our Weighted Qerror": 1.2790015950381035,
+  "Our Estimated Plan Time": 25588.00561857392,
+  "Our Estimated Time": 25588.00561857392,
+  "Actual Rows": 3883763,
+  "Node Type": "Index Scan",
+  "Actual Time": 32727.1
+}

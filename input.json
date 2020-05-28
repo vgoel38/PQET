@@ -1,0 +1,36 @@
+[                                                                       
+   {                                                                     
+     "Plan": {                                                           
+       "Node Type": "Index Scan",                                        
+       "Parallel Aware": false,                                          
+       "Scan Direction": "Forward",                                      
+       "Index Name": "movie_id_movie_info",                              
+       "Relation Name": "movie_info",                                    
+       "Alias": "movie_info",                                            
+       "Startup Cost": 0.01,                                             
+       "Total Cost": 522951.25,                                          
+       "Plan Rows": 3881849,                                             
+       "Plan Width": 73,                                                 
+       "Actual Startup Time": 67.363,                                    
+       "Actual Total Time": 32727.100,                                   
+       "Actual Rows": 3883763,                                           
+       "Actual Loops": 1,                                                
+       "Index Cond": "((movie_id >= 1980523) AND (movie_id <= 2337894))",
+       "Rows Removed by Index Recheck": 0,                               
+       "Shared Hit Blocks": 2427508,                                     
+       "Shared Read Blocks": 54527,                                      
+       "Shared Dirtied Blocks": 0,                                       
+       "Shared Written Blocks": 0,                                       
+       "Local Hit Blocks": 0,                                            
+       "Local Read Blocks": 0,                                           
+       "Local Dirtied Blocks": 0,                                        
+       "Local Written Blocks": 0,                                        
+       "Temp Read Blocks": 0,                                            
+       "Temp Written Blocks": 0                                          
+     },                                                                  
+     "Planning Time": 328.787,                                           
+     "Triggers": [                                                       
+     ],                                                                  
+     "Execution Time": 33287.198                                         
+   }                                                                     
+ ]

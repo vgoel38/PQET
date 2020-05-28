@@ -1,0 +1,347 @@
+explain (analyse, buffers) select * from cast_info order by person_id;
+                                                          QUERY PLAN                                    
+                       
+--------------------------------------------------------------------------------------------------------
+-----------------------
+ Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=14096.002..16177.181 rows=3624434
+4 loops=1)
+   Sort Key: person_id
+   Sort Method: quicksort  Memory: 4279121kB
+   Buffers: shared read=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.036..3491.207 
+rows=36244344 loops=1)
+         Buffers: shared read=252654
+ Planning Time: 2.758 ms
+ Execution Time: 17855.900 ms
+(8 rows)
+
+a:12.7s p:144s e:14.3s
+
+explain (analyse, buffers) select * from cast_info order by movie_id;
+                                                          QUERY PLAN                                    
+                       
+--------------------------------------------------------------------------------------------------------
+-----------------------
+ Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=15449.655..20857.400 rows=3624434
+4 loops=1)
+   Sort Key: movie_id
+   Sort Method: quicksort  Memory: 4279121kB
+   Buffers: shared hit=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.027..2451.590 
+rows=36244344 loops=1)
+         Buffers: shared hit=252654
+ Planning Time: 0.283 ms
+ Execution Time: 22541.098 ms
+(8 rows)
+
+a:18.4s p:144s e:18.7s
+
+explain (analyse, buffers) select * from cast_info order by person_role_id;
+                                                          QUERY PLAN                                    
+                       
+--------------------------------------------------------------------------------------------------------
+-----------------------
+ Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=10606.073..13559.227 rows=3624434
+4 loops=1)
+   Sort Key: person_role_id
+   Sort Method: quicksort  Memory: 4279121kB
+   Buffers: shared hit=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.024..2454.186 
+rows=36244344 loops=1)
+         Buffers: shared hit=252654
+ Planning Time: 0.204 ms
+ Execution Time: 15237.388 ms
+(8 rows)
+
+a:11s p:144s	e:15.6s
+
+explain (analyse, buffers) select * from cast_info order by role_id;
+                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=9586.664..11174.224 rows=3624434
+4 loops=1)
+   Sort Key: role_id
+   Sort Method: quicksort  Memory: 4279121kB
+   Buffers: shared hit=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.020..2457.731
+ rows=36244344 loops=1)
+         Buffers: shared hit=252654
+ Planning Time: 0.196 ms
+ Execution Time: 12854.563 ms
+(8 rows)
+
+a:8.7s	p:144s	e:11s
+
+explain (analyse, buffers) select * from cast_info order by person_id, movie_id;
+                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=25936.071..27727.555 rows=362443
+44 loops=1)
+   Sort Key: person_id, movie_id
+   Sort Method: quicksort  Memory: 4279121kB
+   Buffers: shared hit=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.023..2455.141
+ rows=36244344 loops=1)
+         Buffers: shared hit=252654
+ Planning Time: 0.199 ms
+ Execution Time: 29406.242 ms
+(8 rows)
+
+a:25.3s	p:144s e:28.6s
+
+explain (analyse, buffers) select * from cast_info order by movie_id, person_id;
+                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=29371.082..34721.536 rows=362443
+44 loops=1)
+   Sort Key: movie_id, person_id
+   Sort Method: quicksort  Memory: 4279121kB
+   Buffers: shared hit=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.023..2455.466
+ rows=36244344 loops=1)
+         Buffers: shared hit=252654
+ Planning Time: 0.193 ms
+ Execution Time: 36402.200 ms
+(8 rows)
+
+a:32.3s p:144s e:34.2s
+
+explain (analyse, buffers) select * from cast_info order by person_id, role_id;
+                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=20963.460..23071.595 rows=362443
+44 loops=1)
+   Sort Key: person_id, role_id
+   Sort Method: quicksort  Memory: 4279121kB
+   Buffers: shared hit=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.022..2455.773
+ rows=36244344 loops=1)
+         Buffers: shared hit=252654
+ Planning Time: 0.194 ms
+ Execution Time: 24752.553 ms
+(8 rows)
+
+a:20.6s p:144s e:23.7s
+
+explain (analyse, buffers) select * from cast_info order by person_id, role_id, movie_id;
+                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=45415.005..47209.423 rows=362443
+44 loops=1)
+   Sort Key: person_id, role_id, movie_id
+   Sort Method: quicksort  Memory: 4279121kB
+   Buffers: shared hit=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.021..2453.946
+ rows=36244344 loops=1)
+         Buffers: shared hit=252654
+ Planning Time: 0.198 ms
+ Execution Time: 48889.467 ms
+(8 rows)
+
+a:44.8s p:144s e:38s
+
+explain (analyse, buffers) select * from cast_info order by person_id, movie_id, role_id;                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=26510.842..28302.763 rows=362443
+44 loops=1)
+   Sort Key: person_id, movie_id, role_id
+   Sort Method: quicksort  Memory: 4279121kB
+   Buffers: shared hit=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.045..2451.584
+ rows=36244344 loops=1)
+         Buffers: shared hit=252654
+ Planning Time: 0.203 ms
+ Execution Time: 29980.359 ms
+(8 rows)
+
+a:26s p:144s e:41s
+
+explain (analyse, buffers) select * from cast_info order by movie_id, role_id, person_id;
+                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=151757.13..154571.13 rows=36244344 width=42) (actual time=41355.200..46644.616 rows=362443
+44 loops=1)
+   Sort Key: movie_id, role_id, person_id
+   Sort Method: quicksort  Memory: 4279121kB
+   Buffers: shared hit=252654
+   ->  Seq Scan on cast_info  (cost=0.00..10431.00 rows=36244344 width=42) (actual time=0.020..2447.018
+ rows=36244344 loops=1)
+         Buffers: shared hit=252654
+ Planning Time: 0.197 ms
+ Execution Time: 48320.486 ms
+(8 rows)
+
+a:44.2s p:144s e:48.6s
+
+explain (analyse, buffers) select * from movie_info order by movie_id;
+                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=60983.46..62135.30 rows=14835720 width=73) (actual time=6612.295..7653.338 rows=14835720 l
+oops=1)
+   Sort Key: movie_id
+   Sort Method: quicksort  Memory: 2188779kB
+   Buffers: shared read=161892
+   ->  Seq Scan on movie_info  (cost=0.00..6103.84 rows=14835720 width=73) (actual time=0.035..1736.043
+ rows=14835720 loops=1)
+         Buffers: shared read=161892
+ Planning Time: 6.872 ms
+ Execution Time: 8366.827 ms
+(8 rows)
+
+a:6s p:56s e:7.5s
+
+explain (analyse, buffers) select * from movie_info order by info_type_id;                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=60983.46..62135.30 rows=14835720 width=73) (actual time=3898.323..4727.169 rows=14835720 l
+oops=1)
+   Sort Key: info_type_id
+   Sort Method: quicksort  Memory: 2188779kB
+   Buffers: shared hit=161892
+   ->  Seq Scan on movie_info  (cost=0.00..6103.84 rows=14835720 width=73) (actual time=0.018..1048.514
+ rows=14835720 loops=1)
+         Buffers: shared hit=161892
+ Planning Time: 5.049 ms
+ Execution Time: 5439.416 ms
+(8 rows)
+
+a:3.7s p:56s e:6.7s
+
+explain (analyse, buffers) select * from movie_info order by info_type_id, movie_id;
+                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=60983.46..62135.30 rows=14835720 width=73) (actual time=16360.775..17248.009 rows=14835720
+ loops=1)
+   Sort Key: info_type_id, movie_id
+   Sort Method: quicksort  Memory: 2188779kB
+   Buffers: shared hit=161892
+   ->  Seq Scan on movie_info  (cost=0.00..6103.84 rows=14835720 width=73) (actual time=0.021..1055.005
+ rows=14835720 loops=1)
+         Buffers: shared hit=161892
+ Planning Time: 0.157 ms
+ Execution Time: 17965.019 ms
+(8 rows)
+
+a:16.2s p:56s e:13.5s
+
+explain (analyse, buffers) select * from movie_info order by movie_id, info_type_id;                                                          QUERY PLAN                                   
+                        
+-------------------------------------------------------------------------------------------------------
+------------------------
+ Sort  (cost=60983.46..62135.30 rows=14835720 width=73) (actual time=9538.075..10578.073 rows=14835720 
+loops=1)
+   Sort Key: movie_id, info_type_id
+   Sort Method: quicksort  Memory: 2188779kB
+   Buffers: shared hit=161892
+   ->  Seq Scan on movie_info  (cost=0.00..6103.84 rows=14835720 width=73) (actual time=0.021..1052.127
+ rows=14835720 loops=1)
+         Buffers: shared hit=161892
+ Planning Time: 0.160 ms
+ Execution Time: 11292.202 ms
+(8 rows)
+
+a:9.5s p:56s e:12.5s
+
+explain (analyse, buffers) select * from web_sales where ws_item_sk < 80000 order by ws_item_sk;
+                                                           QUERY PLAN                                  
+                          
+-------------------------------------------------------------------------------------------------------
+--------------------------
+ Sort  (cost=178087.51..180281.41 rows=28257476 width=166) (actual time=22676.018..28393.029 rows=28239
+641 loops=1)
+   Sort Key: ws_item_sk
+   Sort Method: quicksort  Memory: 8180446kB
+   Buffers: shared hit=96 read=1878042
+   ->  Seq Scan on web_sales  (cost=0.00..69480.02 rows=28257476 width=166) (actual time=0.098..12267.6
+96 rows=28239641 loops=1)
+         Filter: (ws_item_sk < 80000)
+         Rows Removed by Filter: 43761596
+         Buffers: shared hit=96 read=1878042
+ Planning Time: 1.307 ms
+ Execution Time: 29841.421 ms
+(10 rows)
+
+a:16s	p:110s	e:13.8s
+
+explain (analyse, buffers) select * from web_sales where ws_item_sk < 80000 order by ws_item_sk, ws_order_number;
+                                                           QUERY PLAN                                  
+                          
+-------------------------------------------------------------------------------------------------------
+--------------------------
+ Sort  (cost=178087.51..180281.41 rows=28257476 width=166) (actual time=39871.320..45471.796 rows=28239
+641 loops=1)
+   Sort Key: ws_item_sk, ws_order_number
+   Sort Method: quicksort  Memory: 8180446kB
+   Buffers: shared hit=128 read=1878010
+   ->  Seq Scan on web_sales  (cost=0.00..69480.02 rows=28257476 width=166) (actual time=0.113..12241.8
+45 rows=28239641 loops=1)
+         Filter: (ws_item_sk < 80000)
+         Rows Removed by Filter: 43761596
+         Buffers: shared hit=128 read=1878010
+ Planning Time: 1.199 ms
+ Execution Time: 46915.438 ms
+(10 rows)
+
+a:33.2s p:110s e:27.6s
+
+explain (analyse, buffers) select * from web_sales where ws_item_sk < 80000 order by ws_order_number, ws_item_sk;
+                                                           QUERY PLAN                                  
+                          
+-------------------------------------------------------------------------------------------------------
+--------------------------
+ Sort  (cost=178087.51..180281.41 rows=28257476 width=166) (actual time=27934.706..31122.850 rows=28239
+641 loops=1)
+   Sort Key: ws_order_number, ws_item_sk
+   Sort Method: quicksort  Memory: 8180446kB
+   Buffers: shared hit=160 read=1877978
+   ->  Seq Scan on web_sales  (cost=0.00..69480.02 rows=28257476 width=166) (actual time=0.099..12133.8
+67 rows=28239641 loops=1)
+         Filter: (ws_item_sk < 80000)
+         Rows Removed by Filter: 43761596
+         Buffers: shared hit=160 read=1877978
+ Planning Time: 1.212 ms
+ Execution Time: 32562.175 ms
+(10 rows)
+
+a:19s p:110s e:19.6s
+
+explain (analyse, buffers) select * from web_sales where ws_item_sk < 80000 order by ws_order_number, ws_item_sk, ws_net_profit;
+                                                           QUERY PLAN                                  
+                          
+-------------------------------------------------------------------------------------------------------
+--------------------------
+ Sort  (cost=178087.51..180281.41 rows=28257476 width=166) (actual time=27978.489..31143.328 rows=28239
+641 loops=1)
+   Sort Key: ws_order_number, ws_item_sk, ws_net_profit
+   Sort Method: quicksort  Memory: 8180446kB
+   Buffers: shared hit=195 read=1877946
+   ->  Seq Scan on web_sales  (cost=0.00..69480.02 rows=28257476 width=166) (actual time=0.050..12179.1
+28 rows=28239641 loops=1)
+         Filter: (ws_item_sk < 80000)
+         Rows Removed by Filter: 43761596
+         Buffers: shared hit=192 read=1877946
+ Planning Time: 24.289 ms
+ Execution Time: 32580.103 ms
+(10 rows)
+
+a:19s p:110s e:29.2s 
+
