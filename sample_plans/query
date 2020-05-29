@@ -1,0 +1,2 @@
+explain (analyse, buffers, format json) select count(id), sum(person_id), avg(person_role_id) from cast_info group by movie_id;
+

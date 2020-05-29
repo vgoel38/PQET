@@ -73,13 +73,17 @@ def find_join_children_cards(node):
 	
 	return outer_rel_card, inner_rel_card
 
-def find_num_group_keys(node):
-	return 1 + node['Group Key'].count(',')
+def find_num_agg_cols(query):
+	query = query.lower()
+	query = query.split('from')[0]
+	num_avg_cols = query.count('avg')
+	num_other_cols = query.count('count') + query.count('sum') + query.count('min') + query.count('max')
 
+	return num_avg_cols, num_other_cols
 #-----------------------------------------------------------------------------
 
 #---------------------Main Method--------------------------------------------
-def postgres_cost_model(node, parent_node):
+def postgres_cost_model(node, parent_node, query):
 	
 	#Seq Scan
 	if node['Node Type'] == 'Seq Scan':
@@ -96,11 +100,8 @@ def postgres_cost_model(node, parent_node):
 		return pg_seq_scan(node['Shared Read Blocks'], unfiltered_input_card, node['Actual Rows'], node['Actual Loops'], find_num_preds(node))
 	
 	#Index Scan
-	#INCOMPLETE
 	elif node['Node Type'] == 'Index Scan':
-		if node['Actual Loops'] > 1:
-			print('ERROR! Index scan has multiple loops!')
-		return pg_index_scan(node)
+		return pg_index_scan(node, parent_node)
 
 	#Materalize
 	elif node['Node Type'] == 'Materialize':
@@ -145,13 +146,13 @@ def postgres_cost_model(node, parent_node):
 			print('Hash Join')
 
 	#Group By
-	#INCOMPLETE
-	elif node['Node Type'] == 'HashAggregate' or node['Node Type'] == 'GroupAggregate':
+	elif node['Node Type'] == 'Aggregate':
 		if node['Plans'][0]['Actual Loops'] > 1:
 			print('ERROR! group by child operator has multiple loops!')
 		if node['Actual Loops'] > 1:
 			print('ERROR! group by operator has multiple loops!')
-		group_by_sort(node['Plans'][0]['Actual Rows'], node['Actual Rows'], find_num_group_keys(node), num_agg_cols)
+		num_avg_cols, num_other_cols = find_num_agg_cols(query)
+		return pg_groupby(node['Plans'][0]['Actual Rows'], node['Actual Rows'], len(node['Group Key']), num_avg_cols + num_other_cols, find_num_preds(node))
 	
 	#ERROR
 	else:
@@ -177,9 +178,11 @@ def pg_seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num
 
 #index scan
 #INCOMPLETE
-def pg_index_scan(node):
-	return float(node['Total Cost'])
-
+def pg_index_scan(node, parent_node):
+	if node['Actual Loops'] == 1:
+		return float(node['Total Cost']) * float(node['Actual Rows']) / float(node['Plan Rows'])
+	else:
+		return float(node['Total Cost']) * float(node['Actual Rows']) * float(parent_node['Plans'][0]['Actual Rows']) / (float(node['Plan Rows']) * float(node['Actual Loops']))
 
 #Materalize with rescan
 def pg_mat_rescan(input_card, num_loops, parent_output_card, is_unique):
@@ -340,13 +343,12 @@ def pg_hash_join(outer_card, inner_card, num_join_preds, output_card, is_unique)
 	return inner_scan_cost + hashing_cost + comparison_cost + processing_cost
 
 
-
 #GROUP BY WITH AGG
-def pg_group_by(input_card, unfiltered_output_card, filtered_output_card, num_groups_cols, num_agg_cols):
+def pg_groupby(input_card, output_card, num_groups_cols, num_agg_cols, num_filters):
 	comparison_cost = CPU_OPERATOR_COST * num_groups_cols * input_card
 	aggregation_cost = CPU_OPERATOR_COST * num_agg_cols * input_card
-	filter_cost = CPU_OPERATOR_COST * num_having_cols * unfiltered_output_card
-	output_cost = CPU_TUPLE_COST * filtered_output_card
+	filter_cost = CPU_OPERATOR_COST * num_filters * input_card
+	output_cost = CPU_TUPLE_COST * output_card
 
 	return comparison_cost + aggregation_cost + filter_cost + output_cost
 

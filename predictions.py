@@ -106,7 +106,7 @@ def revise_dup(node):
 #----------------------------------------------------------------
 
 #---------------------Main Method---------------------------------
-def predictions(node, parent_node):
+def predictions(node, parent_node, query):
 	#Seq Scan
 	if node['Node Type'] == 'Seq Scan':
 		if node['Actual Loops'] > 1:
@@ -147,7 +147,7 @@ def predictions(node, parent_node):
 			print('ERROR! Child of sort has multiple loops!')
 		
 		sort_cols = node['Sort Key']
-		if parent_node == {}:
+		if parent_node == {} or parent_node['Node Type'] == 'Aggregate':
 			for i in range(len(sort_cols)):
 				sort_cols[i] = node['Plans'][0]['Relation Name'] + '.' + sort_cols[i]
 			return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], len(sort_cols), 0)
@@ -160,13 +160,23 @@ def predictions(node, parent_node):
 				return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], len(sort_cols), parent_node['Actual Rows'])
 			else:
 				print('sort node parent relationship unidentified')
+
 	#Merge Join
 	elif node['Node Type'] == 'Merge Join':
 		outer_rel_card, inner_rel_card = find_join_children_cards(node)
 		if node['Actual Loops'] > 1:
 			print('ERROR! SMJ has multiple loops!')
 		return smj(outer_rel_card, inner_rel_card, find_num_preds(node), node['Actual Rows'] * node['Actual Loops'])
-	
+
+	#Group By
+	elif node['Node Type'] == 'Aggregate':
+		if node['Plans'][0]['Actual Loops'] > 1:
+			print('ERROR! group by child operator has multiple loops!')
+		if node['Actual Loops'] > 1:
+			print('ERROR! group by operator has multiple loops!')
+		num_avg_cols, num_other_cols = find_num_agg_cols(query)
+		return groupby(node['Strategy'], node['Plans'][0]['Actual Rows'], node['Actual Rows'], len(node['Group Key']), num_avg_cols, num_other_cols, find_num_preds(node))
+		
 	#ERROR
 	else:
 		print("ERROR! Node not identified: ", node['Node Type'])
@@ -291,38 +301,21 @@ def hash_join(outer_card, inner_card, num_join_preds, join_card):
 	return hash_cost + join_pred_eval + output
 
 
-#INCOMPLETE
-def group_by_sort(num_groups_cols, rel_card, num_groups):
-	group_comparison_cost = cpu_op_cost * num_groups_cols * rel_card
-	output_cost = cpu_tup_cost * num_groups
-	return group_comparison_cost + output_cost
-
-
-#INCOMPLETE
-def group_by_hash(num_groups_cols, rel_card, num_groups):
-	hashing_cost = hash_op_cost * rel_card
-	group_comparison_cost = cpu_op_cost * num_groups_cols * rel_card
-	output_cost = group_output_cost * num_groups
-	return hashing_cost + group_comparison_cost, output_cost
-
-
-#INCOMPLETE
-def group_by_sort_and_agg(avg_cols, other_agg_cols, rel_card, num_groups_cols, num_groups):
-	group_comparison_cost = cpu_op_cost * num_groups_cols * rel_card
-	avg_cost = 2 * cpu_op_cost * avg_cols * rel_card
-	other_agg_cost = cpu_op_cost * other_agg_cols * rel_card
-	output_cost = cpu_tup_cost * num_groups
-	return group_comparison_cost + avg_cost + other_agg_cost + output_cost
-
-
-#INCOMPLETE
-def group_by_hash_and_agg(avg_cols, other_agg_cols, rel_card, num_groups_cols, num_groups):
-	hashing = hashing_cost * rel_card
-	group_comparison_cost = cpu_op_cost * num_groups_cols * rel_card
-	avg_cost = 2 * cpu_op_cost * avg_cols * rel_card
-	other_agg_cost = cpu_op_cost * other_agg_cols * rel_card
-	output_cost = cpu_tup_cost * num_groups
-	return hashing + group_comparison_cost + avg_cost + other_agg_cost + output_cost
+#GROUP BY WITH AGG
+def groupby(strategy, input_card, output_card, num_groups_cols, num_avg_cols, num_other_cols, num_filters):
+	
+	comparison_cost = CPU_OPERATOR_COST * num_groups_cols * input_card
+	aggregation_cost = (2 * CPU_OPERATOR_COST * num_avg_cols +  CPU_OPERATOR_COST * num_other_cols) * input_card
+	filter_cost = CPU_OPERATOR_COST * num_filters * input_card
+	output_cost = CPU_TUPLE_COST * output_card
+	
+	if strategy == 'Sorted':
+		return comparison_cost + aggregation_cost + filter_cost + output_cost
+	elif strategy == 'Hashed':
+		hashing_cost = HASHING_COST * input_card
+		return comparison_cost + aggregation_cost + filter_cost + output_cost + hashing_cost
+	else:
+		print('Agg Strategy unknown!')
 
 if __name__ == "__main__":
 

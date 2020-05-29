@@ -4,7 +4,7 @@ from postgres_cost_model import *
 from predictions import *
 from qerror import qerror
 
-def find_output_plan(input_plan_dict):
+def find_output_plan(input_plan_dict, query_string):
 
 	output_plan_dict = {}
 
@@ -19,7 +19,7 @@ def find_output_plan(input_plan_dict):
 	output_plan_dict['Node Type'] = input_plan_dict[0]['Plan']['Node Type']
 
 	#DFS on the input plan
-	parse_plan_json(input_plan_dict[0]['Plan'], output_plan_dict, output_plan_dict, {})
+	parse_plan_json(input_plan_dict[0]['Plan'], output_plan_dict, output_plan_dict, {}, query_string)
 
 	#Setting more plan-level properties in the root of the output plan
 	output_plan_dict['Postgres Weighted Qerror'] /= output_plan_dict['Actual Plan Time']
@@ -31,7 +31,7 @@ def find_output_plan(input_plan_dict):
 	return output_plan_dict
 
 #INCOMPLETE
-def parse_plan_json(input_current_node, output_current_node, output_plan_root, parent_node):
+def parse_plan_json(input_current_node, output_current_node, output_plan_root, parent_node, query_string):
 
 	#setting current operator keys
 	output_current_node['Node Type'] = input_current_node['Node Type']
@@ -48,12 +48,12 @@ def parse_plan_json(input_current_node, output_current_node, output_plan_root, p
 		for i in range(len(input_current_node['Plans'])):
 			output_current_node['Nodes'].append({'Node Type':input_current_node['Plans'][i]['Node Type']})
 			subtree_time += input_current_node['Plans'][i]['Actual Total Time'] * input_current_node['Plans'][i]['Actual Loops']
-			parse_plan_json(input_current_node['Plans'][i], output_current_node['Nodes'][i], output_plan_root, input_current_node)
+			parse_plan_json(input_current_node['Plans'][i], output_current_node['Nodes'][i], output_plan_root, input_current_node, query_string)
 
 	#finding current operator's predictions
 	output_current_node['Actual Time'] = input_current_node['Actual Total Time'] * input_current_node['Actual Loops'] - subtree_time
-	output_current_node['Postgres Estimated Time'] = postgres_cost_model(input_current_node, parent_node)
-	output_current_node['Our Estimated Time'] = predictions(input_current_node, parent_node)
+	output_current_node['Postgres Estimated Time'] = postgres_cost_model(input_current_node, parent_node, query_string)
+	output_current_node['Our Estimated Time'] = predictions(input_current_node, parent_node, query_string)
 	
 	#calculating qerror on current operator's estimates
 	output_plan_root['Postgres Estimated Plan Time'] += output_current_node['Postgres Estimated Time']
@@ -65,28 +65,35 @@ def parse_plan_json(input_current_node, output_current_node, output_plan_root, p
 	revise_corr(input_current_node)
 	revise_dup(input_current_node)
 
-def main(filename):
-	file = open(filename)
-	input_plan_dict = json.load(file)
-	output_plan_dict = find_output_plan(input_plan_dict)
+def main(file_plan, file_query):
+	plan_json = open(file_plan)
+	input_plan_dict = json.load(plan_json)
+
+	query_string = ''
+	with open(file_query, 'r') as file:
+		query_string = file.read().replace('\n','')
+
+	output_plan_dict = find_output_plan(input_plan_dict, query_string)
 	display_plan(output_plan_dict, 'output.json')
 
 if __name__ == "__main__":
 
 	# main('input.json')
 
-	# main('sample_plans/seq_scan.json')
-	# main('sample_plans/index_scan.json')
-	# main('sample_plans/nlj_seq_seq.json')
-	# main('sample_plans/nlj_seq_index.json')
-	# main('sample_plans/nlj_index_index.json')
-	# main('sample_plans/sort.json')
-	# main('sample_plans/smj_sortseq_sortseq.json')
-	# main('sample_plans/smj_sortindex_sortseq.json')
-	# main('sample_plans/smj_sortindex_sortindex.json')
-	# main('sample_plans/smj_seq_sortindex.json')
-	# main('sample_plans/smj_index_sortseq.json')
-	main('sample_plans/smj_index_index.json')
+	# main('sample_plans/seq_scan.json', 'sample_plans/query')
+	# main('sample_plans/index_scan.json', 'sample_plans/query')
+	# main('sample_plans/nlj_seq_seq.json', 'sample_plans/query')
+	# main('sample_plans/nlj_seq_index.json', 'sample_plans/query')
+	# main('sample_plans/nlj_index_index.json', 'sample_plans/query')
+	# main('sample_plans/sort.json', 'sample_plans/query')
+	# main('sample_plans/smj_sortseq_sortseq.json', 'sample_plans/query')
+	# main('sample_plans/smj_sortindex_sortseq.json', 'sample_plans/query')
+	# main('sample_plans/smj_sortindex_sortindex.json', 'sample_plans/query')
+	# main('sample_plans/smj_seq_sortindex.json', 'sample_plans/query')
+	# main('sample_plans/smj_index_sortseq.json', 'sample_plans/query')
+	# main('sample_plans/smj_index_index.json', 'sample_plans/query')
+	main('sample_plans/agghash.json', 'sample_plans/query')
+	main('sample_plans/aggsort.json', 'sample_plans/query')
 
 	
 
