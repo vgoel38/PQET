@@ -77,11 +77,14 @@ def find_att_values(node, col):
 def find_left_col(node):
 	return node['Index Cond'].split('=')[1].split(')')[0].strip()
 
-def find_right_col(node):
-	return node['Index Cond'].split('=')[0].split('(')[1].strip()
-
-def find_col(node):
-	return node['Index Cond'].split('>=')[0].split('((')[1].strip()
+def find_index_col(node):
+	relname = node['Relation Name']
+	if 'pkey' in node['Index Name']:
+		return 'id'
+	elif relname in node['Index Name']:
+		return node['Index Name'].split('_'+relname)[0]
+	else:
+		print('Unable to find index col')
 #----------------------------------------------------------------
 
 #---------------------Main Method---------------------------------
@@ -124,10 +127,21 @@ def predictions(node, parent_node):
 	elif node['Node Type'] == 'Sort':
 		if node['Plans'][0]['Actual Loops'] > 1:
 			print('ERROR! Child of sort has multiple loops!')
-		if parent_node['Actual Loops'] > 1:
-			print('ERROR! Parent of Sort has multiple loops!')
-		return sort(find_corr(node['Sort Key']), find_dup(node['Sort Key']), node['Plans'][0]['Actual Rows'], len(node['Sort Key']), parent_node['Actual Rows'])
-
+		
+		sort_cols = node['Sort Key']
+		if parent_node == {}:
+			for i in range(len(sort_cols)):
+				sort_cols[i] = node['Plans'][0]['Relation Name'] + '.' + sort_cols[i]
+			return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], len(sort_cols), 0)
+		else:
+			if parent_node['Actual Loops'] > 1:
+				print('ERROR! Parent of Sort has multiple loops!')
+			if node['Parent Relationship'] == 'Outer':
+				return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], len(sort_cols), 0)
+			elif node['Parent Relationship'] == 'Inner':
+				return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], len(sort_cols), parent_node['Actual Rows'])
+			else:
+				print('sort node parent relationship unidentified')
 	#Merge Join
 	elif node['Node Type'] == 'Merge Join':
 		outer_rel_card, inner_rel_card = find_join_children_cards(node)
@@ -153,21 +167,24 @@ def seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num_fi
 #Index Scan
 def index_scan(node, parent_node):
 	if parent_node == {}:
-		col = find_col(node)
+		# col = find_col(node)
+		col = find_index_col(node)
 		print(col)
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + col + '/'
 		attStart, attEnd = find_att_values(node, node['Relation Name']+'.'+col)
 		predTime, predCard = index_scan_predict(path, attStart, attEnd)
 		return predTime
 	elif node['Parent Relationship'] == 'Outer':
-		col = find_left_col(parent_node['Plans'][1])
-		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + extract_rel_col(col)[1] + '/'
-		attStart, attEnd = find_att_values(node, col)
+		# col = find_left_col(parent_node['Plans'][1])
+		col = find_index_col(node)
+		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + col + '/'
+		attStart, attEnd = find_att_values(node, node['Relation Name']+'.'+col)
 		predTime, predCard = index_scan_predict(path, attStart, attEnd)
 		return predTime
 	else:
 		leftcol = find_left_col(node)
-		rightcol = find_right_col(node)
+		# rightcol = find_right_col(node)
+		rightcol = find_index_col(node)
 		leftCorr = find_corr([leftcol])[0]
 		leftDup = find_dup([leftcol])[0]
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + rightcol + '/'

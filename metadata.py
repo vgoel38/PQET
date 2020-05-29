@@ -1,20 +1,26 @@
 #metadata for sorting
 CORR_MD = {
-	'cast_info' : {'id':1, 'movie_id':0.00578},
-	'ci': {'id':1, 'movie_id':0.00578},
-	'movie_id': {'movie_info':0.11},
-	'mi': {'movie_info':0.11},
-	'link_type': {'id':1},
-	'lt': {'id':1}
+	'cast_info' 		: 		{'id':1, 'movie_id':0.00578, 'person_id':0.70344, 'person_role_id':0.489554, 'nr_order':0.004, 'role_id':1},
+	'ci'				: 		{'id':1, 'movie_id':0.00578, 'person_id':0.70344, 'person_role_id':0.489554, 'nr_order':0.004, 'role_id':1},
+	'movie_info'		: 		{'movie_id':0.11, 'info_type_id':0.12},
+	'mi'				: 		{'movie_id':0.11, 'info_type_id':0.12},
+	'link_type'			: 		{'id':1},
+	'lt'				: 		{'id':1},
+	'movie_keyword' 	:		{'movie_id':0.99, 'keyword_id':0.0167},
+	'mk'				:		{'movie_id':0.99, 'keyword_id':0.0167},
+	'movie_companies'	:		{'movie_id':0.454579}
 }
 
 DUP_MD = {
-	'cast_info': {'id':0, 'movie_id':0.93},
-	'ci': {'id':0, 'movie_id':0.93},
-	'movie_id': {'movie_info':0.11},
-	'mi': {'movie_info':0.11},
-	'link_type': {'id':0},
-	'lt': {'id':0}
+	'cast_info'			:		{'id':0, 'movie_id':0.93, 'person_id':0.88, 'person_role_id':0.91, 'nr_order':1, 'role_id':1},
+	'ci'				:		{'id':0, 'movie_id':0.93, 'person_id':0.88, 'person_role_id':0.91, 'nr_order':1, 'role_id':1},
+	'movie_info'		:		{'movie_id':0.83, 'info_type_id':1},
+	'mi'				:		{'movie_id':0.83, 'info_type_id':1},
+	'link_type'			:		{'id':0},
+	'lt'				:		{'id':0},
+	'movie_keyword' 	:		{'movie_id':0.89, 'keyword_id':0.97},
+	'mk'				:		{'movie_id':0.89, 'keyword_id':0.97},
+	'movie_companies'	:		{'movie_id':0.454579}
 }
 
 MIN_MD = {

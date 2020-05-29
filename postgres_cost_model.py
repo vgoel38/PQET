@@ -60,16 +60,16 @@ def find_join_children_cards(node):
 	outer_rel_card = node['Plans'][0]['Actual Rows']
 	inner_rel_card = 0
 
-	if node['Plans'][1]['Actual Loops'] == 1:
-		inner_rel_card = node['Plans'][1]['Actual Rows']
-	else:
-		if node['Plans'][1]['Node Type'].count('Join') or node['Plans'][1]['Node Type'] == 'Nested Loop':
-			print('ERROR! Dont know how to find output cardinality of right child')
+	if node['Node Type'] == 'Nested Loop':
+		if node['Plans'][1]['Node Type'] == 'Materialize':
+			inner_rel_card = node['Plans'][1]['Plans'][0]['Actual Rows']
 		else:
-			if node['Plans'][1]['Node Type'] == 'Materialize':
-				inner_rel_card = node['Plans'][1]['Plans'][0]['Actual Rows']
-			else:
-				inner_rel_card = node['Plans'][1]['Actual Rows'] * node['Plans'][1]['Actual Loops']
+			inner_rel_card = node['Plans'][1]['Actual Rows'] * node['Plans'][1]['Actual Loops']
+	elif node['Node Type'] == 'Merge Join':
+		if node['Plans'][1]['Node Type'] == 'Sort':
+			inner_rel_card = node['Plans'][1]['Plans'][0]['Actual Rows']
+		else:
+			inner_rel_card = node['Plans'][1]['Actual Rows'] * node['Plans'][1]['Actual Loops']
 	
 	return outer_rel_card, inner_rel_card
 
@@ -127,9 +127,12 @@ def postgres_cost_model(node, parent_node):
 	elif node['Node Type'] == 'Sort':
 		if node['Plans'][0]['Actual Loops'] > 1:
 			print('ERROR! Child of sort has multiple loops!')
-		if parent_node['Actual Loops'] > 1:
-			print('ERROR! Parent of Sort has multiple loops!')
-		return pg_sort(node['Plans'][0]['Actual Rows'], node['Actual Loops'], parent_node['Actual Rows'] * parent_node['Actual Loops'])
+		if parent_node == {}:
+			return pg_sort('Outer', node['Plans'][0]['Actual Rows'], 0)
+		else: 
+			if parent_node['Actual Loops'] > 1:
+				print('ERROR! Parent of Sort has multiple loops!')
+			return pg_sort(node['Parent Relationship'], node['Plans'][0]['Actual Rows'], parent_node['Actual Rows'] * parent_node['Actual Loops'])
 
 	#Merge Join
 	elif node['Node Type'] == 'Merge Join':
@@ -204,20 +207,23 @@ def pg_nlj(outer_rel_card, inner_rel_card, output_card, num_join_preds, is_uniqu
 
 
 #Sort
-def pg_sort(input_card, num_loops, parent_output_card):
-
-	if num_loops == 1:
+def pg_sort(node_type, input_card, parent_output_card):
+	if node_type == 'Outer':
 		comparison_cost = 2 * CPU_OPERATOR_COST * input_card * math.log(input_card,2)
 		output_cost = CPU_OPERATOR_COST * input_card
 		return comparison_cost + output_cost
-	else:
+	elif node_type == 'Inner':
 		comparison_cost = 2 * CPU_OPERATOR_COST * input_card * math.log(input_card,2)
 		rescan_cost = CPU_OPERATOR_COST * (input_card + max(0, parent_output_card - input_card))
 		return comparison_cost + rescan_cost
+	else:
+		print("Unidentified node type for sort")
 
 
 #Merge Join
 def pg_smj(outer_rel_card, inner_rel_card, num_join_preds, output_card):
+
+	print(outer_rel_card, inner_rel_card, num_join_preds, output_card)
 
 	processing_cost = CPU_OPERATOR_COST * (outer_rel_card + inner_rel_card)
 	predicate_evaluation_cost = CPU_OPERATOR_COST * num_join_preds * output_card
