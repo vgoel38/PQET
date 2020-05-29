@@ -85,6 +85,24 @@ def find_index_col(node):
 		return node['Index Name'].split('_'+relname)[0]
 	else:
 		print('Unable to find index col')
+
+def revise_corr(node):
+	if node['Node Type'] == 'Seq Scan':
+		return
+	elif node['Node Type'] == 'Index Scan':
+		index_col = find_index_col(node)
+		for col in REL_MD[node['Relation Name']]:
+			if col != index_col:
+				CORR_MD[node['Relation Name']][col] *= CORR_MD[node['Relation Name']][index_col]
+				CORR_MD[ALIAS_MD[node['Relation Name']]][col] *= CORR_MD[ALIAS_MD[node['Relation Name']]][index_col]
+		CORR_MD[node['Relation Name']][index_col] = 1
+		CORR_MD[ALIAS_MD[node['Relation Name']]][index_col] = 1
+
+def revise_dup(node):
+	if node['Node Type'] == 'Seq Scan':
+		return
+	elif node['Node Type'] == 'Index Scan':
+		return
 #----------------------------------------------------------------
 
 #---------------------Main Method---------------------------------
@@ -167,15 +185,13 @@ def seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num_fi
 #Index Scan
 def index_scan(node, parent_node):
 	if parent_node == {}:
-		# col = find_col(node)
 		col = find_index_col(node)
 		print(col)
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + col + '/'
 		attStart, attEnd = find_att_values(node, node['Relation Name']+'.'+col)
 		predTime, predCard = index_scan_predict(path, attStart, attEnd)
 		return predTime
-	elif node['Parent Relationship'] == 'Outer':
-		# col = find_left_col(parent_node['Plans'][1])
+	elif node['Parent Relationship'] == 'Outer' or parent_node['Node Type'] == 'Merge Join':
 		col = find_index_col(node)
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + col + '/'
 		attStart, attEnd = find_att_values(node, node['Relation Name']+'.'+col)
@@ -183,7 +199,6 @@ def index_scan(node, parent_node):
 		return predTime
 	else:
 		leftcol = find_left_col(node)
-		# rightcol = find_right_col(node)
 		rightcol = find_index_col(node)
 		leftCorr = find_corr([leftcol])[0]
 		leftDup = find_dup([leftcol])[0]

@@ -2,8 +2,8 @@
 CORR_MD = {
 	'cast_info' 		: 		{'id':1, 'movie_id':0.00578, 'person_id':0.70344, 'person_role_id':0.489554, 'nr_order':0.004, 'role_id':1},
 	'ci'				: 		{'id':1, 'movie_id':0.00578, 'person_id':0.70344, 'person_role_id':0.489554, 'nr_order':0.004, 'role_id':1},
-	'movie_info'		: 		{'movie_id':0.11, 'info_type_id':0.12},
-	'mi'				: 		{'movie_id':0.11, 'info_type_id':0.12},
+	'movie_info'		: 		{'id':1, 'movie_id':0.11, 'info_type_id':0.12},
+	'mi'				: 		{'id':1, 'movie_id':0.11, 'info_type_id':0.12},
 	'link_type'			: 		{'id':1},
 	'lt'				: 		{'id':1},
 	'movie_keyword' 	:		{'movie_id':0.99, 'keyword_id':0.0167},
@@ -14,8 +14,8 @@ CORR_MD = {
 DUP_MD = {
 	'cast_info'			:		{'id':0, 'movie_id':0.93, 'person_id':0.88, 'person_role_id':0.91, 'nr_order':1, 'role_id':1},
 	'ci'				:		{'id':0, 'movie_id':0.93, 'person_id':0.88, 'person_role_id':0.91, 'nr_order':1, 'role_id':1},
-	'movie_info'		:		{'movie_id':0.83, 'info_type_id':1},
-	'mi'				:		{'movie_id':0.83, 'info_type_id':1},
+	'movie_info'		:		{'id':0, 'movie_id':0.83, 'info_type_id':1},
+	'mi'				:		{'id':0, 'movie_id':0.83, 'info_type_id':1},
 	'link_type'			:		{'id':0},
 	'lt'				:		{'id':0},
 	'movie_keyword' 	:		{'movie_id':0.89, 'keyword_id':0.97},
@@ -24,21 +24,35 @@ DUP_MD = {
 }
 
 MIN_MD = {
-	'link_type': {'id':0},
-	'lt': {'id':0},
-	'cast_info': {'movie_id':1},
-	'ci':{'movie_id':1},
-	'movie_info': {'movie_id':1},
-	'mi': {'movie_id':1}
+	'link_type'			:		{'id':0},
+	'lt'				:		{'id':0},
+	'cast_info'			:		{'movie_id':1},
+	'ci'				:		{'movie_id':1},
+	'movie_info'		:		{'movie_id':1},
+	'mi'				:		{'movie_id':1}
 }
 
 MAX_MD = {
-	'link_type': {'id':100},
-	'lt': {'id':100},
-	'cast_info': {'movie_id':2525975},
-	'ci':{'movie_id':2525975},
-	'movie_info': {'movie_id':2526430},
-	'mi': {'movie_id':2526430}
+	'link_type'			:		{'id':100},
+	'lt'				:		{'id':100},
+	'cast_info'			:		{'movie_id':2525975},
+	'ci'				:		{'movie_id':2525975},
+	'movie_info'		:		{'movie_id':2526430},
+	'mi'				:		{'movie_id':2526430}
+}
+
+REL_MD = {
+	'cast_info'			:		['id', 'movie_id', 'person_id', 'person_role_id', 'nr_order', 'role_id'],
+	'ci'				:		['id', 'movie_id', 'person_id', 'person_role_id', 'nr_order', 'role_id'],
+	'movie_info'		:		['id', 'movie_id', 'info_type_id'],
+	'mi'				:		['id', 'movie_id', 'info_type_id']
+}
+
+ALIAS_MD = {
+	'cast_info'			:		'ci',
+	'ci'				:		'cast_info',
+	'movie_info'		:		'mi',
+	'mi'				:		'movie_info'
 }
 
 #metadata for join

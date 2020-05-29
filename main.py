@@ -3,13 +3,6 @@ from display_plan import display_plan
 from postgres_cost_model import *
 from predictions import *
 from qerror import qerror
-from init import init
-
-def revise_corr(node):
-	print('INCOMPLETE: revise_corr')
-
-def revise_dup(node):
-	print('INCOMPLETE: revise_dup')
 
 def find_output_plan(input_plan_dict):
 
@@ -80,7 +73,7 @@ def main(filename):
 
 if __name__ == "__main__":
 
-	main('input.json')
+	# main('input.json')
 
 	# main('sample_plans/seq_scan.json')
 	# main('sample_plans/index_scan.json')
@@ -89,6 +82,11 @@ if __name__ == "__main__":
 	# main('sample_plans/nlj_index_index.json')
 	# main('sample_plans/sort.json')
 	# main('sample_plans/smj_sortseq_sortseq.json')
+	# main('sample_plans/smj_sortindex_sortseq.json')
+	# main('sample_plans/smj_sortindex_sortindex.json')
+	# main('sample_plans/smj_seq_sortindex.json')
+	# main('sample_plans/smj_index_sortseq.json')
+	main('sample_plans/smj_index_index.json')
 
 	
 
