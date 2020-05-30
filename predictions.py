@@ -97,12 +97,16 @@ def revise_corr(node):
 				CORR_MD[ALIAS_MD[node['Relation Name']]][col] *= CORR_MD[ALIAS_MD[node['Relation Name']]][index_col]
 		CORR_MD[node['Relation Name']][index_col] = 1
 		CORR_MD[ALIAS_MD[node['Relation Name']]][index_col] = 1
+	else:
+		print('corr not revised!')
 
 def revise_dup(node):
 	if node['Node Type'] == 'Seq Scan':
 		return
 	elif node['Node Type'] == 'Index Scan':
 		return
+	else:
+		print('corr not revised!')
 #----------------------------------------------------------------
 
 #---------------------Main Method---------------------------------
@@ -128,7 +132,8 @@ def predictions(node, parent_node, query):
 			print('ERROR! Parent node of Materialze also has multiple loops: ', node['Node Type'])
 		is_unique = 0
 		if node['Parent Relationship'] == 'Inner':
-			is_unique = find_if_unique(node['Plans'][0], parent_node)
+			if 'Scan' in node['Plans'][0]['Node Type']:
+				is_unique = find_if_unique(node['Plans'][0], parent_node)
 		return mat_rescan(node['Plans'][0]['Actual Rows'],  node['Actual Loops'], parent_node['Actual Rows'] * parent_node['Actual Loops'], is_unique)
 
 	#Nested Loop Join
@@ -138,7 +143,8 @@ def predictions(node, parent_node, query):
 			print('ERROR! NLJ has multiple loops!')
 		is_unique = 0
 		if node['Plans'][1]['Node Type'] == 'Materialize':
-			is_unique = find_if_unique(node['Plans'][1]['Plans'][0], node)
+			if 'Scan' in node['Plans'][1]['Plans'][0]['Node Type']:
+				is_unique = find_if_unique(node['Plans'][1]['Plans'][0], node)
 		return nlj(outer_rel_card, inner_rel_card, node['Actual Rows'] * node['Actual Loops'], find_num_preds(node), is_unique)
 
 	#Sort
@@ -175,7 +181,10 @@ def predictions(node, parent_node, query):
 		if node['Actual Loops'] > 1:
 			print('ERROR! group by operator has multiple loops!')
 		num_avg_cols, num_other_cols = find_num_agg_cols(query)
-		return groupby(node['Strategy'], node['Plans'][0]['Actual Rows'], node['Actual Rows'], len(node['Group Key']), num_avg_cols, num_other_cols, find_num_preds(node))
+		num_groups_cols = 0
+		if 'Group Key' in node:
+			num_groups_cols = len(node['Group Key'])
+		return groupby(node['Strategy'], node['Plans'][0]['Actual Rows'], node['Actual Rows'], num_groups_cols, num_avg_cols, num_other_cols, find_num_preds(node))
 		
 	#ERROR
 	else:
@@ -253,6 +262,8 @@ def nlj(outer_rel_card, inner_rel_card, output_card, num_join_preds, is_unique):
 
 #Sort
 def sort_single_col(corr, dup, input_card):
+	if input_card == 0:
+		return 0
 	scan_cost = CPU_TUPLE_COST * input_card
 	comparison_cost = SORT_COMPARISON_COST * input_card * math.log(input_card, 2)
 	moving_cost = (1 - (2 * corr + 3 * dup) / 5) * SORT_MOVING_COST * input_card * math.log(input_card, 2)
@@ -284,7 +295,9 @@ def smj(outer_rel_card, inner_rel_card, num_join_preds, join_card):
 	join_pred_eval_cost = JOIN_PRED_EVAL_COST * num_join_preds * join_card
 	smj_processing_cost = SMJ_PROCESSING_COST * join_card
 	output_cost = CPU_TUPLE_COST * join_card
-	extra_processing_cost = join_card/(outer_rel_card + inner_rel_card) * SMJ_EXTRA_PROCESSING_COST
+	extra_processing_cost = 0
+	if outer_rel_card != 0 or inner_rel_card != 0:
+		extra_processing_cost = join_card/(outer_rel_card + inner_rel_card) * SMJ_EXTRA_PROCESSING_COST
 
 	return rescan_cost + join_pred_eval_cost + smj_processing_cost + output_cost + extra_processing_cost
 
@@ -309,7 +322,7 @@ def groupby(strategy, input_card, output_card, num_groups_cols, num_avg_cols, nu
 	filter_cost = CPU_OPERATOR_COST * num_filters * input_card
 	output_cost = CPU_TUPLE_COST * output_card
 	
-	if strategy == 'Sorted':
+	if strategy == 'Sorted' or strategy == 'Plain':
 		return comparison_cost + aggregation_cost + filter_cost + output_cost
 	elif strategy == 'Hashed':
 		hashing_cost = HASHING_COST * input_card

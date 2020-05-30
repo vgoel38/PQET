@@ -84,6 +84,10 @@ def find_num_agg_cols(query):
 
 #---------------------Main Method--------------------------------------------
 def postgres_cost_model(node, parent_node, query):
+
+	print(node['Node Type'])
+	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Index Scan':
+		print(node['Relation Name'])
 	
 	#Seq Scan
 	if node['Node Type'] == 'Seq Scan':
@@ -111,7 +115,8 @@ def postgres_cost_model(node, parent_node, query):
 			print('ERROR! Parent node of Materialze also has multiple loops: ', node['Node Type'])
 		is_unique = 0
 		if node['Parent Relationship'] == 'Inner':
-			is_unique = find_if_unique(node['Plans'][0], parent_node)
+			if 'Scan' in node['Plans'][0]['Node Type']:
+				is_unique = find_if_unique(node['Plans'][0], parent_node)
 		return pg_mat_rescan(node['Plans'][0]['Actual Rows'],  node['Actual Loops'], parent_node['Actual Rows'] * parent_node['Actual Loops'], is_unique)
 
 	#Nested Loop Join
@@ -121,7 +126,8 @@ def postgres_cost_model(node, parent_node, query):
 			print('ERROR! NLJ has multiple loops!')
 		is_unique = 0
 		if node['Plans'][1]['Node Type'] == 'Materialize':
-			is_unique = find_if_unique(node['Plans'][1]['Plans'][0], node)
+			if 'Scan' in node['Plans'][1]['Plans'][0]['Node Type']:
+				is_unique = find_if_unique(node['Plans'][1]['Plans'][0], node)
 		return pg_nlj(outer_rel_card, inner_rel_card, node['Actual Rows'] * node['Actual Loops'], find_num_preds(node), is_unique)
 
 	#Sort
@@ -152,7 +158,10 @@ def postgres_cost_model(node, parent_node, query):
 		if node['Actual Loops'] > 1:
 			print('ERROR! group by operator has multiple loops!')
 		num_avg_cols, num_other_cols = find_num_agg_cols(query)
-		return pg_groupby(node['Plans'][0]['Actual Rows'], node['Actual Rows'], len(node['Group Key']), num_avg_cols + num_other_cols, find_num_preds(node))
+		num_groups_cols = 0
+		if 'Group Key' in node:
+			num_groups_cols = len(node['Group Key'])
+		return pg_groupby(node['Plans'][0]['Actual Rows'], node['Actual Rows'], num_groups_cols, num_avg_cols + num_other_cols, find_num_preds(node))
 	
 	#ERROR
 	else:
@@ -211,6 +220,8 @@ def pg_nlj(outer_rel_card, inner_rel_card, output_card, num_join_preds, is_uniqu
 
 #Sort
 def pg_sort(node_type, input_card, parent_output_card):
+	if input_card == 0:
+		return 0
 	if node_type == 'Outer':
 		comparison_cost = 2 * CPU_OPERATOR_COST * input_card * math.log(input_card,2)
 		output_cost = CPU_OPERATOR_COST * input_card
