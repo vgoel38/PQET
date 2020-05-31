@@ -1,3 +1,16 @@
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..613.45 rows=100 width=98) (actual time=50.790..0 rows=0 loops=1)
+   Buffers: shared hit=175 read=227
+   ->  Seq Scan on del_nest_index del  (cost=0.00..0.04 rows=100 width=4) (actual time=0.047..0 rows=0 loops=1)
+         Buffers: shared read=1
+   ->  Index Scan using ovie_id_movie_info on movie_info mi  (cost=0.01..6.13 rows=1 width=94) (actual time=35.662..0 rows=0 loops=0)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=175 read=226
+ Planning Time: 307.147 ms
+ Execution Time: 3570.186 ms
+(9 rows)
+
                                                                  QUERY PLAN                                                                   
 -----------------------------------------------------------------------------------------------------------------------------------------------
  Nested Loop  (cost=0.01..3025.71 rows=929 width=77) (actual time=153.382..6611.541 rows=625 loops=1)

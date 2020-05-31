@@ -23,14 +23,14 @@ CORR_MD = {
   },
   "char_name": {
     "id": 0.999012,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "comp_cast_type": {
     "id": 1.0
   },
   "company_name": {
     "id": 0.891632,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "company_type": {
     "id": 1.0
@@ -82,7 +82,7 @@ CORR_MD = {
   },
   "name": {
     "id": 1.0,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "person_info": {
     "id": 1.0,
@@ -96,7 +96,7 @@ CORR_MD = {
     "id": 0.998105,
     "kind_id": 0.395775,
     "production_year": 0.151194,
-    "imdb_id": 'null',
+    "imdb_id": 0,
     "episode_of_id": 0.994194,
     "season_nr": 0.340666,
     "episode_nr": 0.0350549
@@ -124,14 +124,14 @@ CORR_MD = {
   },
   "chn": {
     "id": 0.999012,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "cct": {
     "id": 1.0
   },
   "cn": {
     "id": 0.891632,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "ct": {
     "id": 1.0
@@ -188,7 +188,7 @@ CORR_MD = {
   },
   "n": {
     "id": 1.0,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "pi": {
     "id": 1.0,
@@ -202,7 +202,7 @@ CORR_MD = {
     "id": 0.998105,
     "kind_id": 0.395775,
     "production_year": 0.151194,
-    "imdb_id": 'null',
+    "imdb_id": 0,
     "episode_of_id": 0.994194,
     "season_nr": 0.340666,
     "episode_nr": 0.0350549
@@ -445,14 +445,14 @@ MIN_MD = {
   },
   "char_name": {
     "id": 1,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "comp_cast_type": {
     "id": 1
   },
   "company_name": {
     "id": 1,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "company_type": {
     "id": 1
@@ -504,7 +504,7 @@ MIN_MD = {
   },
   "name": {
     "id": 1,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "person_info": {
     "id": 1,
@@ -518,7 +518,7 @@ MIN_MD = {
     "id": 1,
     "kind_id": 1,
     "production_year": 1880,
-    "imdb_id": 'null',
+    "imdb_id": 0,
     "episode_of_id": 2,
     "season_nr": 1,
     "episode_nr": 1
@@ -546,14 +546,14 @@ MIN_MD = {
   },
   "chn": {
     "id": 1,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "cct": {
     "id": 1
   },
   "cn": {
     "id": 1,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "ct": {
     "id": 1
@@ -610,7 +610,7 @@ MIN_MD = {
   },
   "n": {
     "id": 1,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "pi": {
     "id": 1,
@@ -624,7 +624,7 @@ MIN_MD = {
     "id": 1,
     "kind_id": 1,
     "production_year": 1880,
-    "imdb_id": 'null',
+    "imdb_id": 0,
     "episode_of_id": 2,
     "season_nr": 1,
     "episode_nr": 1
@@ -656,14 +656,14 @@ MAX_MD = {
   },
   "char_name": {
     "id": 3140339,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "comp_cast_type": {
     "id": 4
   },
   "company_name": {
     "id": 234997,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "company_type": {
     "id": 4
@@ -715,7 +715,7 @@ MAX_MD = {
   },
   "name": {
     "id": 4167491,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "person_info": {
     "id": 2963664,
@@ -729,7 +729,7 @@ MAX_MD = {
     "id": 2528312,
     "kind_id": 7,
     "production_year": 2019,
-    "imdb_id": 'null',
+    "imdb_id": 0,
     "episode_of_id": 2528186,
     "season_nr": 2013,
     "episode_nr": 91821
@@ -757,14 +757,14 @@ MAX_MD = {
   },
   "chn": {
     "id": 3140339,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "cct": {
     "id": 4
   },
   "cn": {
     "id": 234997,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "ct": {
     "id": 4
@@ -821,7 +821,7 @@ MAX_MD = {
   },
   "n": {
     "id": 4167491,
-    "imdb_id": 'null'
+    "imdb_id": 0
   },
   "pi": {
     "id": 2963664,
@@ -835,7 +835,7 @@ MAX_MD = {
     "id": 2528312,
     "kind_id": 7,
     "production_year": 2019,
-    "imdb_id": 'null',
+    "imdb_id": 0,
     "episode_of_id": 2528186,
     "season_nr": 2013,
     "episode_nr": 91821

@@ -28,6 +28,11 @@ def nestloop_index_scan_train(distinctLeftRows, rightPagesScanned, executionTime
 
 def nestloop_index_scan_predict(distinctLeftRows, outputCard, path):
 
+	trainingDistinctLeftRows, trainingRightPagesScanned, trainingExecutionTime, trainingOutputCard = parse_input_plans(path + "nest_index_plans.txt")
+	num_lines = 3
+	nestloop_index_scan_train(trainingDistinctLeftRows, trainingRightPagesScanned, trainingExecutionTime, trainingOutputCard, num_lines, path)
+	
+
 	with open(path+'rowsToPages.pkl', 'rb') as f:
 		rowsToPages = pickle.load(f)
 	with open(path+'pagesToTime.pkl', 'rb') as f:
@@ -42,6 +47,12 @@ def nestloop_index_scan_predict(distinctLeftRows, outputCard, path):
 	predictedTimeDirect = rowsToTime.predict(distinctLeftRows)
 	predictedOutputCard = rowsToCard.predict(distinctLeftRows)
 
+	if distinctLeftRows[0] > 0 and predictedTimeIndirect == 0:
+		predictedPages = rowsToPages.calc_slopes()[2] * distinctLeftRows + rowsToPages.intercepts[2]
+		predictedTimeIndirect = pagesToTime.calc_slopes()[2] * distinctLeftRows + pagesToTime.intercepts[2]
+		predictedTimeDirect = rowsToTime.calc_slopes()[2] * distinctLeftRows + rowsToTime.intercepts[2]
+		predictedOutputCard = rowsToCard.calc_slopes()[2] * distinctLeftRows + rowsToCard.intercepts[2]
+
 	extraTuples = []
 	for i in range(len(outputCard)):
 		extraTuples.append(max(outputCard[i] - predictedOutputCard[i],0))
@@ -50,7 +61,7 @@ def nestloop_index_scan_predict(distinctLeftRows, outputCard, path):
 		predictedTimeIndirect[i] += extraTuples[i] * TIME_PER_DUPLICATE_TUPLE
 		predictedTimeDirect[i] += extraTuples[i] * TIME_PER_DUPLICATE_TUPLE
 
-	return predictedTimeIndirect[0]
+	return max(predictedTimeIndirect[0],0)
 
 def parse_input_plans(filename):
 	rightPagesScanned = []
@@ -99,12 +110,7 @@ def parse_input_plans(filename):
 
 if __name__ == "__main__":
 
-	path = 'movie_info/movie_id'
-	trainingDistinctLeftRows, trainingRightPagesScanned, trainingExecutionTime, trainingOutputCard = parse_input_plans(path + "nest_index_plans.txt")
-
-	num_lines = 3
-	nestloop_index_scan_train(trainingDistinctLeftRows, trainingRightPagesScanned, trainingExecutionTime, trainingOutputCard, num_lines, path)
-	
-	distinctLeftRows = [9545]
-	outputCard = [93975]
+	path = 'movie_info/movie_id/'
+	distinctLeftRows = [10000]
+	outputCard = [5000]
 	print(nestloop_index_scan_predict(distinctLeftRows, outputCard, path))

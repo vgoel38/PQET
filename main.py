@@ -62,6 +62,10 @@ def parse_plan_json(input_current_node, output_current_node, output_plan_root, p
 	output_plan_root['Our Weighted Qerror'] += qerror(output_current_node['Actual Time'], output_current_node['Our Estimated Time']) * output_current_node['Actual Time']
 
 	#revising corr and dup values in the metadata
+
+	if parent_node != {} and parent_node['Node Type'] == 'Nested Loop' and input_current_node['Node Type'] == 'Index Scan' and input_current_node['Parent Relationship'] == 'Inner':
+		return
+
 	revise_corr(input_current_node)
 	revise_dup(input_current_node)
 

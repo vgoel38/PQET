@@ -128,6 +128,8 @@ def postgres_cost_model(node, parent_node, query):
 		if node['Plans'][1]['Node Type'] == 'Materialize':
 			if 'Scan' in node['Plans'][1]['Plans'][0]['Node Type']:
 				is_unique = find_if_unique(node['Plans'][1]['Plans'][0], node)
+		if node['Plans'][1]['Node Type'] == 'Index Scan':
+			return pg_nlj(node['Actual Rows'] * node['Actual Loops'], 1, node['Actual Rows'] * node['Actual Loops'], find_num_preds(node), is_unique)
 		return pg_nlj(outer_rel_card, inner_rel_card, node['Actual Rows'] * node['Actual Loops'], find_num_preds(node), is_unique)
 
 	#Sort
@@ -189,9 +191,17 @@ def pg_seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num
 #INCOMPLETE
 def pg_index_scan(node, parent_node):
 	if node['Actual Loops'] == 1:
-		return float(node['Total Cost']) * float(node['Actual Rows']) / float(node['Plan Rows'])
+		try:
+			return float(node['Total Cost']) * float(node['Actual Rows']) / float(node['Plan Rows'])
+		except:
+			print('unable to find postgres index scan cost')
+			return 0
 	else:
-		return float(node['Total Cost']) * float(node['Actual Rows']) * float(parent_node['Plans'][0]['Actual Rows']) / (float(node['Plan Rows']) * float(node['Actual Loops']))
+		try:
+			return float(node['Total Cost']) * float(parent_node['Actual Rows']) / (float(node['Plan Rows']) / float(parent_node['Plans'][0]['Plans Rows']))
+		except:
+			print('unable to find postgres index scan cost')
+			return 0
 
 #Materalize with rescan
 def pg_mat_rescan(input_card, num_loops, parent_output_card, is_unique):

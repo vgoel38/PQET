@@ -88,14 +88,14 @@ def index_scan_predict(path, attStart, attEnd):
 			finalTime += executionTimePerSegment[i]/numContributingCurvesPerSegment[i]
 
 	finalCard = max(max(attToCard[i].predict(attEnd),0) - max(attToCard[i].predict(attStart),0),0)
-	return finalTime[0], finalCard
+	return finalTime[0], finalCard[0]
 
 
 if __name__ == "__main__":
 
-	path = "cast_info/movie_id/"
+	path = "title/id/"
 	attStart = 0
-	attEnd = 10000
+	attEnd = 2528312
 
 	# attToCard, cardToTime = index_scan_train(path, numLines)
 	# print(attToCard[0].predict(200000), cardToTime[0].predict(1000005))

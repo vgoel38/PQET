@@ -7,11 +7,12 @@ from metadata import *
 from index_scan_predictor.index_scan_predictor import *
 from nestloop_index_predictor.nestloop_index_predictor import *
 import numpy as np
+from geometric_mean import gm
 
 #-------------------Supporting Methods---------------------------
 #INCOMPLETE
 def extract_rel_col(col):
-	print(col)
+	# print(col)
 	return col.split('.')[0].strip(), col.split('.')[1].strip()
 
 def find_corr(cols):
@@ -19,6 +20,8 @@ def find_corr(cols):
 	for col in cols:
 		rel_name, col_name = extract_rel_col(col)
 		if rel_name in CORR_MD and col_name in CORR_MD[rel_name]:
+			# print(CORR_MD[rel_name])
+			# print("CORR of " + col + "=", CORR_MD[rel_name][col_name])
 			corr.append(CORR_MD[rel_name][col_name])
 		else:
 			print(col, 'not found in CORR_MD! Default value of 0.5 applied!')
@@ -37,6 +40,7 @@ def find_dup(cols):
 	return dup
 
 def find_att_values(node, col):
+	# print(node, col)
 	relname, colname = extract_rel_col(col)
 	low = int((MIN_MD[relname])[colname])
 	high = int((MAX_MD[relname])[colname])
@@ -82,31 +86,92 @@ def find_index_col(node):
 	if 'pkey' in node['Index Name']:
 		return 'id'
 	elif relname in node['Index Name']:
-		return node['Index Name'].split('_'+relname)[0]
+		if (relname+'_idx' in node['Index Name']):
+			return node['Index Name'].split(relname+'_idx_')[1]
+		elif ('_'+relname) in node['Index Name']:
+			return node['Index Name'].split('_'+relname)[0]
 	else:
 		print('Unable to find index col')
 
 def revise_corr(node):
-	if node['Node Type'] == 'Seq Scan':
+	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Materialize':
 		return
 	elif node['Node Type'] == 'Index Scan':
 		index_col = find_index_col(node)
 		for col in REL_MD[node['Relation Name']]:
 			if col != index_col:
-				CORR_MD[node['Relation Name']][col] *= CORR_MD[node['Relation Name']][index_col]
-				CORR_MD[ALIAS_MD[node['Relation Name']]][col] *= CORR_MD[ALIAS_MD[node['Relation Name']]][index_col]
+				# print(node['Relation Name'], col, CORR_MD[node['Relation Name']][col], CORR_MD[node['Relation Name']][index_col])
+				CORR_MD[node['Relation Name']][col] = gm([CORR_MD[node['Relation Name']][col],CORR_MD[node['Relation Name']][index_col]])
+				CORR_MD[ALIAS_MD[node['Relation Name']]][col] = gm([CORR_MD[ALIAS_MD[node['Relation Name']]][col],CORR_MD[ALIAS_MD[node['Relation Name']]][index_col]])
 		CORR_MD[node['Relation Name']][index_col] = 1
 		CORR_MD[ALIAS_MD[node['Relation Name']]][index_col] = 1
+	elif node['Node Type'] == 'Nested Loop':
+		rel_name = ''
+		if node['Plans'][1]['Node Type'] == 'Seq Scan' or node['Plans'][1]['Node Type'] == 'Index Scan':
+			rel_name = node['Plans'][1]['Relation Name']
+		elif node['Plans'][1]['Node Type'] == 'Materialize':
+			rel_name = node['Plans'][1]['Plans'][0]['Relation Name']
+		else:
+			print('dont know how to revise corr')
+		
+		join_cond = ''
+		if 'Join Filter' in node:
+			join_cond = node['Join Filter']
+		else:
+			join_cond = node['Plans'][1]['Index Cond']
+			join_cond = '('+node['Plans'][1]['Relation Name']+'.'+join_cond.split('(')[1]
+		
+		if ALIAS_MD[rel_name] in join_cond:
+			rel_name = ALIAS_MD[rel_name]
+		col1 = join_cond.split(' = ')[0].split('(')[1]
+		col2 = join_cond.split(' = ')[1].split(')')[0]
+		join_col = ''
+		if rel_name in col1:
+			join_col = col1.split('.')[1]
+		elif rel_name in col2:
+			join_col = col2.split('.')[1]
+		for col in REL_MD[rel_name]:
+			CORR_MD[rel_name][col] = gm([CORR_MD[rel_name][col],CORR_MD[rel_name][join_col]])
+			CORR_MD[ALIAS_MD[rel_name]][col] = gm([CORR_MD[rel_name][col],CORR_MD[ALIAS_MD[rel_name]][join_col]])
 	else:
 		print('corr not revised!')
 
 def revise_dup(node):
-	if node['Node Type'] == 'Seq Scan':
+	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Materialize':
 		return
 	elif node['Node Type'] == 'Index Scan':
 		return
+	elif node['Node Type'] == 'Nested Loop':
+		join_cond = ''
+		if 'Join Filter' in node:
+			join_cond = node['Join Filter']
+		else:
+			join_cond = node['Plans'][1]['Index Cond']
+			join_cond = '('+node['Plans'][1]['Relation Name']+'.'+join_cond.split('(')[1]
+
+		col1, col2 = find_join_cols(join_cond)
+		rel_name1, col_name1 = extract_rel_col(col1)
+		rel_name2, col_name2 = extract_rel_col(col2)
+		temp = gm([DUP_MD[rel_name1][col_name1], DUP_MD[rel_name2][col_name2]])
+		DUP_MD[rel_name1][col_name1] = temp
+		DUP_MD[ALIAS_MD[rel_name1]][col_name1] = temp
+		DUP_MD[rel_name2][col_name2] = temp
+		DUP_MD[ALIAS_MD[rel_name2]][col_name2] = temp
+
+		for col in REL_MD[rel_name1]:
+			if col != col_name1:
+				DUP_MD[rel_name1][col] = gm([DUP_MD[rel_name1][col], temp])
+				DUP_MD[ALIAS_MD[rel_name1]][col] = gm([DUP_MD[ALIAS_MD[rel_name1]][col], temp])
+
+		for col in REL_MD[rel_name2]:
+			if col != col_name2:
+				DUP_MD[rel_name2][col] = gm([DUP_MD[rel_name2][col], temp])
+				DUP_MD[ALIAS_MD[rel_name2]][col] = gm([DUP_MD[ALIAS_MD[rel_name2]][col], temp])
 	else:
-		print('corr not revised!')
+		print('dup not revised!')
+
+def find_join_cols(join_cond):
+	return join_cond.split(' = ')[0].split('(')[1], join_cond.split(' = ')[1].split(')')[0]
 #----------------------------------------------------------------
 
 #---------------------Main Method---------------------------------
@@ -145,6 +210,8 @@ def predictions(node, parent_node, query):
 		if node['Plans'][1]['Node Type'] == 'Materialize':
 			if 'Scan' in node['Plans'][1]['Plans'][0]['Node Type']:
 				is_unique = find_if_unique(node['Plans'][1]['Plans'][0], node)
+		if node['Plans'][1]['Node Type'] == 'Index Scan':
+			return nlj(node['Actual Rows'] * node['Actual Loops'], 1, node['Actual Rows'] * node['Actual Loops'], find_num_preds(node), is_unique)
 		return nlj(outer_rel_card, inner_rel_card, node['Actual Rows'] * node['Actual Loops'], find_num_preds(node), is_unique)
 
 	#Sort
@@ -203,9 +270,13 @@ def seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num_fi
 
 #Index Scan
 def index_scan(node, parent_node):
+
+	if node['Relation Name'] == 'char_name' or node['Relation Name'] == 'keyword':
+		return 0
+
 	if parent_node == {}:
 		col = find_index_col(node)
-		print(col)
+		# print(col)
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + col + '/'
 		attStart, attEnd = find_att_values(node, node['Relation Name']+'.'+col)
 		predTime, predCard = index_scan_predict(path, attStart, attEnd)
@@ -221,17 +292,31 @@ def index_scan(node, parent_node):
 		rightcol = find_index_col(node)
 		leftCorr = find_corr([leftcol])[0]
 		leftDup = find_dup([leftcol])[0]
+		# leftDup = 0.5
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + rightcol + '/'
 		attStart, attEnd = find_att_values(parent_node['Plans'][0], leftcol)
 
 		timeInIsolation, cardInIsolation = index_scan_predict(path, attStart, attEnd)
+		if parent_node['Plans'][0]['Node Type'] != 'Seq Scan' and parent_node['Plans'][0]['Node Type'] != 'Index Scan':
+			timeInIsolation = timeInIsolation * parent_node['Plans'][0]['Actual Rows'] / max(cardInIsolation,1)
 		timeInIsolation = timeInIsolation * (1 - leftDup)
 		timeInIsolation += parent_node['Plans'][0]['Actual Rows'] * leftDup * TIME_PER_DUPLICATE_TUPLE
 
 		path = 'nestloop_index_predictor/' + node['Relation Name'] + '/' + rightcol + '/'
-		timeInJoin = nestloop_index_scan_predict([parent_node['Plans'][0]['Actual Rows']*(1 - leftDup)], [parent_node['Actual Rows']], path)
+		timeInJoin = nestloop_index_scan_predict([node['Actual Loops']*(1 - leftDup)], [parent_node['Actual Rows']], path)
+		# timeInJoin = nestloop_index_scan_predict([parent_node['Plans'][0]['Actual Rows']], [parent_node['Actual Rows']], path)
+
 		if parent_node['Actual Loops'] > 1:
 			print('Parent Node of Index Scan has multiple loops!')
+
+		print("timeInIsolation = ", timeInIsolation, "timeInJoin =", timeInJoin, "card =", [node['Actual Loops']*(1 - leftDup)], "leftCorr =", leftCorr, "leftDup =", leftDup, "leftCol=", leftcol, "rightCol=", rightcol)
+
+		# if leftCorr == 1:
+		# 	return timeInIsolation
+		# else:
+		# 	return timeInJoin
+
+		# print("index time = ", timeInIsolation * leftCorr + timeInJoin * (1 - leftCorr))
 
 		return timeInIsolation * leftCorr + timeInJoin * (1 - leftCorr)
 
