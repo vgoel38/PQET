@@ -40,7 +40,7 @@ def find_dup(cols):
 	return dup
 
 def find_att_values(node, col):
-	# print(node, col)
+	print(node, col)
 	relname, colname = extract_rel_col(col)
 	low = int((MIN_MD[relname])[colname])
 	high = int((MAX_MD[relname])[colname])
