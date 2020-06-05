@@ -44,7 +44,7 @@
                                                                            Sort Method: quicksort  Memory: 17978kB
                                                                            Buffers: shared hit=2501721 read=55083
                                                                            ->  Merge Join  (cost=37170.79..37254.70 rows=4764 width=35) (actual time=12749.423..12796.521 rows=140455 loops=1)
-                                                                                 Merge Cond: (mi_idx.info_type_id = it2.id)
+                                                                                 Merge Cond: (mi_idx.info_type_id = it.id)
                                                                                  Buffers: shared hit=2501721 read=55083
                                                                                  ->  Sort  (cost=37164.66..37206.46 rows=538268 width=39) (actual time=12691.303..12728.070 rows=417545 loops=1)
                                                                                        Sort Key: mi_idx.info_type_id
@@ -62,10 +62,10 @@
                                                                                                    Rows Removed by Filter: 1513136
                                                                                                    Buffers: shared hit=2488149 read=42862
                                                                                  ->  Sort  (cost=6.13..6.13 rows=1 width=4) (actual time=0.035..0.036 rows=1 loops=1)
-                                                                                       Sort Key: it2.id
+                                                                                       Sort Key: it.id
                                                                                        Sort Method: quicksort  Memory: 25kB
                                                                                        Buffers: shared hit=1 read=1
-                                                                                       ->  Index Scan using info_type_info_key on info_type it2  (cost=0.00..6.13 rows=1 width=4) (actual time=0.027..0.027 rows=1 loops=1)
+                                                                                       ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=0.027..0.027 rows=1 loops=1)
                                                                                              Index Cond: ((info)::text = 'rating'::text)
                                                                                              Buffers: shared hit=1 read=1
                                                                      ->  Index Scan using kind_type_pkey on kind_type kt  (cost=0.00..9.19 rows=2 width=4) (actual time=0.020..0.028 rows=2 loops=1)
@@ -85,9 +85,9 @@
                                                    Sort Method: quicksort  Memory: 53370kB
                                                    Buffers: shared hit=566 read=145457
                                                    ->  Merge Join  (cost=0.02..619959.93 rows=6329 width=4) (actual time=5963.178..14077.068 rows=614251 loops=1)
-                                                         Merge Cond: (it1.id = mi.info_type_id)
+                                                         Merge Cond: (it.id = mi.info_type_id)
                                                          Buffers: shared hit=566 read=145457
-                                                         ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..9.21 rows=1 width=4) (actual time=0.019..0.043 rows=1 loops=1)
+                                                         ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..9.21 rows=1 width=4) (actual time=0.019..0.043 rows=1 loops=1)
                                                                Filter: ((info)::text = 'countries'::text)
                                                                Rows Removed by Filter: 112
                                                                Buffers: shared hit=2

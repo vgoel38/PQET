@@ -9,7 +9,7 @@
                Hash Cond: (t.kind_id = kt.id)
                Buffers: shared hit=2577455 read=245341
                ->  Hash Join  (cost=23637.14..638982.31 rows=21 width=29) (actual time=20836.578..28044.081 rows=323 loops=1)
-                     Hash Cond: (mi.info_type_id = it2.id)
+                     Hash Cond: (mi.info_type_id = it.id)
                      Buffers: shared hit=2577452 read=245339
                      ->  Hash Join  (cost=23631.01..638975.99 rows=2347 width=33) (actual time=10066.813..28033.496 rows=1800 loops=1)
                            Hash Cond: (mi.movie_id = t.id)
@@ -26,7 +26,7 @@
                      ->  Hash  (cost=6.13..6.13 rows=1 width=4) (actual time=9.889..9.889 rows=1 loops=1)
                            Buckets: 1024  Batches: 1  Memory Usage: 9kB
                            Buffers: shared read=2
-                           ->  Index Scan using info_type_info_key on info_type it2  (cost=0.00..6.13 rows=1 width=4) (actual time=9.867..9.871 rows=1 loops=1)
+                           ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=9.867..9.871 rows=1 loops=1)
                                  Index Cond: ((info)::text = 'release dates'::text)
                                  Buffers: shared read=2
                ->  Hash  (cost=6.12..6.12 rows=1 width=4) (actual time=9.499..9.499 rows=1 loops=1)

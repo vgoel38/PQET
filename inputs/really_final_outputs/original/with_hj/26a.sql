@@ -3,13 +3,13 @@
  Aggregate  (cost=22122.95..22122.95 rows=1 width=128) (actual time=21103.159..21103.159 rows=1 loops=1)
    Buffers: shared hit=23 read=414377
    ->  Hash Join  (cost=8576.10..22122.95 rows=1 width=54) (actual time=8962.625..21090.992 rows=1728 loops=1)
-         Hash Cond: (cc.status_id = cct2.id)
+         Hash Cond: (cc.status_id = cct.id)
          Buffers: shared hit=23 read=414377
          ->  Hash Join  (cost=8576.07..22122.92 rows=1 width=58) (actual time=8962.503..21089.929 rows=1728 loops=1)
                Hash Cond: (ci.person_id = n.id)
                Buffers: shared hit=20 read=414376
                ->  Hash Join  (cost=5931.80..19478.65 rows=1 width=47) (actual time=6308.535..18434.400 rows=1728 loops=1)
-                     Hash Cond: (cc.subject_id = cct1.id)
+                     Hash Cond: (cc.subject_id = cct.id)
                      Buffers: shared hit=20 read=358763
                      ->  Hash Join  (cost=5931.77..19478.61 rows=1 width=51) (actual time=6308.503..18433.265 rows=2199 loops=1)
                            Hash Cond: (t.id = cc.movie_id)
@@ -21,7 +21,7 @@
                                        Hash Cond: (t.id = mk.movie_id)
                                        Buffers: shared read=358008
                                        ->  Hash Join  (cost=4074.47..17620.07 rows=55 width=55) (actual time=4299.303..16274.875 rows=8886 loops=1)
-                                             Hash Cond: (mi_idx.info_type_id = it2.id)
+                                             Hash Cond: (mi_idx.info_type_id = it.id)
                                              Buffers: shared read=333554
                                              ->  Hash Join  (cost=4074.42..17619.51 rows=6215 width=59) (actual time=4275.631..16246.806 rows=17509 loops=1)
                                                    Hash Cond: (t.id = mi_idx.movie_id)
@@ -68,7 +68,7 @@
                                              ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=23.649..23.649 rows=1 loops=1)
                                                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                    Buffers: shared read=1
-                                                   ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=23.618..23.624 rows=1 loops=1)
+                                                   ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=23.618..23.624 rows=1 loops=1)
                                                          Filter: ((info)::text = 'rating'::text)
                                                          Rows Removed by Filter: 112
                                                          Buffers: shared read=1
@@ -91,7 +91,7 @@
                      ->  Hash  (cost=0.03..0.03 rows=1 width=4) (actual time=0.012..0.012 rows=1 loops=1)
                            Buckets: 1024  Batches: 1  Memory Usage: 9kB
                            Buffers: shared hit=1
-                           ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.008..0.009 rows=1 loops=1)
+                           ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.008..0.009 rows=1 loops=1)
                                  Filter: ((kind)::text = 'cast'::text)
                                  Rows Removed by Filter: 3
                                  Buffers: shared hit=1
@@ -103,7 +103,7 @@
          ->  Hash  (cost=0.03..0.03 rows=1 width=4) (actual time=0.096..0.096 rows=2 loops=1)
                Buckets: 1024  Batches: 1  Memory Usage: 9kB
                Buffers: shared read=1
-               ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.089..0.090 rows=2 loops=1)
+               ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.089..0.090 rows=2 loops=1)
                      Filter: ((kind)::text ~~ '%complete%'::text)
                      Rows Removed by Filter: 2
                      Buffers: shared read=1

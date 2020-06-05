@@ -23,9 +23,9 @@
                                  Buffers: shared hit=2
                      ->  Index Scan using link_type_pkey on link_type lt  (cost=0.00..0.00 rows=1 width=16) (never executed)
                            Index Cond: (id = ml.link_type_id)
-               ->  Index Scan using title_idx_id on title t1  (cost=0.01..0.04 rows=1 width=21) (never executed)
+               ->  Index Scan using title_idx_id on title t  (cost=0.01..0.04 rows=1 width=21) (never executed)
                      Index Cond: (id = mk.movie_id)
-         ->  Index Scan using title_idx_id on title t2  (cost=0.01..2.88 rows=1 width=21) (never executed)
+         ->  Index Scan using title_idx_id on title t  (cost=0.01..2.88 rows=1 width=21) (never executed)
                Index Cond: (id = ml.linked_movie_id)
  Planning Time: 1422.827 ms
  Execution Time: 70.399 ms

@@ -53,14 +53,14 @@
                                                                Sort Method: quicksort  Memory: 193kB
                                                                Buffers: shared hit=316360 read=12183
                                                                ->  Merge Join  (cost=14644.07..14644.23 rows=222 width=32) (actual time=9249.734..9251.267 rows=1853 loops=1)
-                                                                     Merge Cond: (cc.status_id = cct2.id)
+                                                                     Merge Cond: (cc.status_id = cct.id)
                                                                      Buffers: shared hit=316360 read=12183
                                                                      ->  Sort  (cost=14637.95..14638.02 rows=888 width=36) (actual time=9249.682..9249.905 rows=1854 loops=1)
                                                                            Sort Key: cc.status_id
                                                                            Sort Method: quicksort  Memory: 281kB
                                                                            Buffers: shared hit=316359 read=12182
                                                                            ->  Merge Join  (cost=14627.08..14636.60 rows=888 width=36) (actual time=9244.696..9247.467 rows=2366 loops=1)
-                                                                                 Merge Cond: (cc.subject_id = cct1.id)
+                                                                                 Merge Cond: (cc.subject_id = cct.id)
                                                                                  Buffers: shared hit=316359 read=12182
                                                                                  ->  Sort  (cost=14627.08..14627.21 rows=1775 width=40) (actual time=9244.673..9245.075 rows=2366 loops=1)
                                                                                        Sort Key: cc.subject_id
@@ -100,14 +100,14 @@
                                                                                                    Filter: ((link)::text ~~ '%follow%'::text)
                                                                                                    Rows Removed by Filter: 16
                                                                                                    Buffers: shared hit=2
-                                                                                 ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct1  (cost=0.00..9.19 rows=2 width=4) (actual time=0.016..0.019 rows=2 loops=1)
+                                                                                 ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..9.19 rows=2 width=4) (actual time=0.016..0.019 rows=2 loops=1)
                                                                                        Filter: ((kind)::text = ANY ('{cast,crew}'::text[]))
                                                                                        Buffers: shared hit=2
                                                                      ->  Sort  (cost=6.13..6.13 rows=1 width=4) (actual time=0.046..0.046 rows=1 loops=1)
-                                                                           Sort Key: cct2.id
+                                                                           Sort Key: cct.id
                                                                            Sort Method: quicksort  Memory: 25kB
                                                                            Buffers: shared hit=1 read=1
-                                                                           ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct2  (cost=0.00..6.12 rows=1 width=4) (actual time=0.035..0.036 rows=1 loops=1)
+                                                                           ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct  (cost=0.00..6.12 rows=1 width=4) (actual time=0.035..0.036 rows=1 loops=1)
                                                                                  Index Cond: ((kind)::text = 'complete'::text)
                                                                                  Buffers: shared hit=1 read=1
                      ->  Index Scan using title_idx_id on title t  (cost=0.01..23238.35 rows=46583 width=21) (actual time=365.226..738.279 rows=3273 loops=1)

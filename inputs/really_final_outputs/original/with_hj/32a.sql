@@ -6,17 +6,17 @@
          Hash Cond: (ml.link_type_id = lt.id)
          Buffers: shared hit=4 read=24623
          ->  Hash Join  (cost=3065.53..4663.94 rows=2 width=38) (actual time=1297.518..1297.518 rows=0 loops=1)
-               Hash Cond: (t2.id = ml.linked_movie_id)
+               Hash Cond: (t.id = ml.linked_movie_id)
                Buffers: shared hit=1 read=24622
-               ->  Seq Scan on title t2  (cost=0.00..1303.96 rows=2528312 width=21) (actual time=21.364..21.364 rows=1 loops=1)
+               ->  Seq Scan on title t  (cost=0.00..1303.96 rows=2528312 width=21) (actual time=21.364..21.364 rows=1 loops=1)
                      Buffers: shared read=1
                ->  Hash  (cost=3065.53..3065.53 rows=2 width=25) (actual time=1276.117..1276.118 rows=0 loops=1)
                      Buckets: 1024  Batches: 1  Memory Usage: 8kB
                      Buffers: shared hit=1 read=24621
                      ->  Hash Join  (cost=1467.12..3065.53 rows=2 width=25) (actual time=1276.117..1276.117 rows=0 loops=1)
-                           Hash Cond: (t1.id = mk.movie_id)
+                           Hash Cond: (t.id = mk.movie_id)
                            Buffers: shared hit=1 read=24621
-                           ->  Seq Scan on title t1  (cost=0.00..1303.96 rows=2528312 width=21) (actual time=0.010..0.010 rows=1 loops=1)
+                           ->  Seq Scan on title t  (cost=0.00..1303.96 rows=2528312 width=21) (actual time=0.010..0.010 rows=1 loops=1)
                                  Buffers: shared hit=1
                            ->  Hash  (cost=1467.12..1467.12 rows=2 width=16) (actual time=1276.072..1276.072 rows=0 loops=1)
                                  Buckets: 1024  Batches: 1  Memory Usage: 8kB

@@ -65,7 +65,7 @@
                                  Filter: (info = ANY ('{Sweden,Norway,Germany,Denmark,Swedish,Denish,Norwegian,German,English}'::text[]))
                                  Rows Removed by Filter: 14
                                  Buffers: shared hit=3251 read=26
-                     ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.003..0.003 rows=1 loops=1028)
+                     ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.003..0.003 rows=1 loops=1028)
                            Index Cond: (id = cc.status_id)
                            Filter: ((kind)::text ~~ 'complete%'::text)
                            Buffers: shared hit=2056
@@ -73,7 +73,7 @@
                      Index Cond: (id = mk.movie_id)
                      Filter: ((production_year >= 1950) AND (production_year <= 2010))
                      Buffers: shared hit=4105 read=7
-         ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.003..0.003 rows=1 loops=1028)
+         ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.003..0.003 rows=1 loops=1028)
                Index Cond: (id = cc.subject_id)
                Filter: ((kind)::text = 'cast'::text)
                Rows Removed by Filter: 0

@@ -1,5 +1,3 @@
- [                                                                                                                                                                           
-   {                                                                                                                                                                         
      "Plan": {                                                                                                                                                               
        "Node Type": "Aggregate",                                                                                                                                             
        "Strategy": "Plain",                                                                                                                                                  
@@ -91,7 +89,7 @@
                    "Actual Rows": 186510,                                                                                                                                    
                    "Actual Loops": 1,                                                                                                                                        
                    "Inner Unique": true,                                                                                                                                     
-                   "Merge Cond": "(mi.info_type_id = it1.id)",                                                                                                               
+                   "Merge Cond": "(mi.info_type_id = it.id)",                                                                                                               
                    "Shared Hit Blocks": 20,                                                                                                                                  
                    "Shared Read Blocks": 558784,                                                                                                                             
                    "Shared Dirtied Blocks": 0,                                                                                                                               
@@ -144,7 +142,7 @@
                            "Actual Rows": 209397,                                                                                                                            
                            "Actual Loops": 1,                                                                                                                                
                            "Inner Unique": true,                                                                                                                             
-                           "Merge Cond": "(mi_idx.info_type_id = it2.id)",                                                                                                   
+                           "Merge Cond": "(mi_idx.info_type_id = it.id)",                                                                                                   
                            "Shared Hit Blocks": 19,                                                                                                                          
                            "Shared Read Blocks": 558784,                                                                                                                     
                            "Shared Dirtied Blocks": 0,                                                                                                                       
@@ -891,7 +889,7 @@
                                "Actual Total Time": 0.037,                                                                                                                   
                                "Actual Rows": 1,                                                                                                                             
                                "Actual Loops": 1,                                                                                                                            
-                               "Sort Key": ["it2.id"],                                                                                                                       
+                               "Sort Key": ["it.id"],                                                                                                                       
                                "Sort Method": "quicksort",                                                                                                                   
                                "Sort Space Used": 25,                                                                                                                        
                                "Sort Space Type": "Memory",                                                                                                                  
@@ -911,7 +909,7 @@
                                    "Parent Relationship": "Outer",                                                                                                           
                                    "Parallel Aware": false,                                                                                                                  
                                    "Relation Name": "info_type",                                                                                                             
-                                   "Alias": "it2",                                                                                                                           
+                                   "Alias": "it",                                                                                                                           
                                    "Startup Cost": 0.00,                                                                                                                     
                                    "Total Cost": 0.05,                                                                                                                       
                                    "Plan Rows": 1,                                                                                                                           
@@ -951,7 +949,7 @@
                        "Actual Total Time": 0.043,                                                                                                                           
                        "Actual Rows": 1,                                                                                                                                     
                        "Actual Loops": 1,                                                                                                                                    
-                       "Sort Key": ["it1.id"],                                                                                                                               
+                       "Sort Key": ["it.id"],                                                                                                                               
                        "Sort Method": "quicksort",                                                                                                                           
                        "Sort Space Used": 25,                                                                                                                                
                        "Sort Space Type": "Memory",                                                                                                                          
@@ -971,7 +969,7 @@
                            "Parent Relationship": "Outer",                                                                                                                   
                            "Parallel Aware": false,                                                                                                                          
                            "Relation Name": "info_type",                                                                                                                     
-                           "Alias": "it1",                                                                                                                                   
+                           "Alias": "it",                                                                                                                                   
                            "Startup Cost": 0.00,                                                                                                                             
                            "Total Cost": 0.05,                                                                                                                               
                            "Plan Rows": 1,                                                                                                                                   
@@ -1063,5 +1061,3 @@
      "Triggers": [                                                                                                                                                           
      ],                                                                                                                                                                      
      "Execution Time": 35507.073                                                                                                                                             
-   }                                                                                                                                                                         
- ]

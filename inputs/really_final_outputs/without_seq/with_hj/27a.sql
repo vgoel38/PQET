@@ -9,10 +9,10 @@
                Hash Cond: (t.id = ml.movie_id)
                Buffers: shared hit=11903163 read=313272
                ->  Hash Join  (cost=94158.88..711974.89 rows=1 width=56) (actual time=18871.137..106520.033 rows=415 loops=1)
-                     Hash Cond: (cc.subject_id = cct1.id)
+                     Hash Cond: (cc.subject_id = cct.id)
                      Buffers: shared hit=11903087 read=313026
                      ->  Hash Join  (cost=94149.69..711965.71 rows=1 width=60) (actual time=18870.935..106519.287 rows=415 loops=1)
-                           Hash Cond: (cc.status_id = cct2.id)
+                           Hash Cond: (cc.status_id = cct.id)
                            Buffers: shared hit=11903087 read=313024
                            ->  Hash Join  (cost=94143.57..711959.58 rows=1 width=64) (actual time=18870.879..106518.577 rows=525 loops=1)
                                  Hash Cond: (t.id = cc.movie_id)
@@ -85,13 +85,13 @@
                            ->  Hash  (cost=6.12..6.12 rows=1 width=4) (actual time=0.031..0.031 rows=1 loops=1)
                                  Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                  Buffers: shared hit=1 read=1
-                                 ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct2  (cost=0.00..6.12 rows=1 width=4) (actual time=0.027..0.027 rows=1 loops=1)
+                                 ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct  (cost=0.00..6.12 rows=1 width=4) (actual time=0.027..0.027 rows=1 loops=1)
                                        Index Cond: ((kind)::text = 'complete'::text)
                                        Buffers: shared hit=1 read=1
                      ->  Hash  (cost=9.19..9.19 rows=2 width=4) (actual time=0.171..0.171 rows=2 loops=1)
                            Buckets: 1024  Batches: 1  Memory Usage: 9kB
                            Buffers: shared read=2
-                           ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct1  (cost=0.00..9.19 rows=2 width=4) (actual time=0.162..0.166 rows=2 loops=1)
+                           ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..9.19 rows=2 width=4) (actual time=0.162..0.166 rows=2 loops=1)
                                  Filter: ((kind)::text = ANY ('{cast,crew}'::text[]))
                                  Rows Removed by Filter: 2
                                  Buffers: shared read=2

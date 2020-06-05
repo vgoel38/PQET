@@ -27,10 +27,10 @@
                                  ->  Index Scan using movie_link_idx_mid on movie_link ml  (cost=0.01..0.01 rows=5 width=12) (actual time=0.005..0.005 rows=0 loops=41840)
                                        Index Cond: (movie_id = mk.movie_id)
                                        Buffers: shared hit=84089 read=168
-               ->  Index Scan using title_idx_id on title t1  (cost=0.01..0.04 rows=1 width=21) (actual time=0.946..0.946 rows=1 loops=4388)
+               ->  Index Scan using title_idx_id on title t  (cost=0.01..0.04 rows=1 width=21) (actual time=0.946..0.946 rows=1 loops=4388)
                      Index Cond: (id = mk.movie_id)
                      Buffers: shared hit=16952 read=602
-         ->  Index Scan using title_idx_id on title t2  (cost=0.01..2.88 rows=1 width=21) (actual time=13.436..13.436 rows=1 loops=4388)
+         ->  Index Scan using title_idx_id on title t  (cost=0.01..2.88 rows=1 width=21) (actual time=13.436..13.436 rows=1 loops=4388)
                Index Cond: (id = ml.linked_movie_id)
                Buffers: shared hit=12484 read=5075
  Planning Time: 1117.913 ms

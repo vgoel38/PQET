@@ -41,9 +41,9 @@
                                                                      Sort Method: quicksort  Memory: 240651kB
                                                                      Buffers: shared hit=568 read=147225
                                                                      ->  Merge Join  (cost=0.10..615305.68 rows=131290 width=4) (actual time=12443.872..14206.266 rows=3036719 loops=1)
-                                                                           Merge Cond: (it2.id = mi.info_type_id)
+                                                                           Merge Cond: (it.id = mi.info_type_id)
                                                                            Buffers: shared hit=568 read=147225
-                                                                           ->  Index Scan using info_type_pkey on info_type it2  (cost=0.00..9.21 rows=1 width=4) (actual time=0.071..0.095 rows=1 loops=1)
+                                                                           ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..9.21 rows=1 width=4) (actual time=0.071..0.095 rows=1 loops=1)
                                                                                  Filter: ((info)::text = 'release dates'::text)
                                                                                  Rows Removed by Filter: 112
                                                                                  Buffers: shared hit=2

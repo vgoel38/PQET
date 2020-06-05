@@ -55,11 +55,11 @@
                                                                                        ->  Index Scan using movie_id_complete_cast on complete_cast cc  (cost=0.01..0.01 rows=1 width=12) (actual time=0.087..0.087 rows=1 loops=244)
                                                                                              Index Cond: (movie_id = mk.movie_id)
                                                                                              Buffers: shared hit=946 read=2
-                                                                                 ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=216)
+                                                                                 ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=216)
                                                                                        Index Cond: (id = cc.subject_id)
                                                                                        Filter: ((kind)::text = 'cast'::text)
                                                                                        Buffers: shared hit=432
-                                                                           ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.001..0.001 rows=1 loops=216)
+                                                                           ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.001..0.001 rows=1 loops=216)
                                                                                  Index Cond: (id = cc.status_id)
                                                                                  Filter: ((kind)::text = 'complete+verified'::text)
                                                                                  Buffers: shared hit=432

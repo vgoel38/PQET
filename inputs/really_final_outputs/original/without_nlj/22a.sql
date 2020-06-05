@@ -15,7 +15,7 @@
                            Hash Cond: (mi.movie_id = t.id)
                            Buffers: shared hit=21 read=249585
                            ->  Hash Join  (cost=0.05..8462.63 rows=5910 width=4) (actual time=7033.404..8295.622 rows=588764 loops=1)
-                                 Hash Cond: (mi.info_type_id = it1.id)
+                                 Hash Cond: (mi.info_type_id = it.id)
                                  Buffers: shared hit=3 read=161890
                                  ->  Seq Scan on movie_info mi  (cost=0.00..8407.52 rows=667885 width=8) (actual time=12.769..8149.092 rows=669336 loops=1)
                                        Filter: (info = ANY ('{Germany,German,USA,American}'::text[]))
@@ -24,7 +24,7 @@
                                  ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.023..0.024 rows=1 loops=1)
                                        Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                        Buffers: shared hit=1
-                                       ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.009..0.020 rows=1 loops=1)
+                                       ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.009..0.020 rows=1 loops=1)
                                              Filter: ((info)::text = 'countries'::text)
                                              Rows Removed by Filter: 112
                                              Buffers: shared hit=1
@@ -69,7 +69,7 @@
                                                                      Buckets: 524288 (originally 16384)  Batches: 1 (originally 1)  Memory Usage: 16757kB
                                                                      Buffers: shared hit=3 read=8451
                                                                      ->  Hash Join  (cost=0.05..564.45 rows=10379 width=10) (actual time=0.067..543.723 rows=324117 loops=1)
-                                                                           Hash Cond: (mi_idx.info_type_id = it2.id)
+                                                                           Hash Cond: (mi_idx.info_type_id = it.id)
                                                                            Buffers: shared hit=3 read=8451
                                                                            ->  Seq Scan on movie_info_idx mi_idx  (cost=0.00..467.71 rows=1172842 width=14) (actual time=0.011..359.278 rows=1172832 loops=1)
                                                                                  Filter: (info < '7.0'::text)
@@ -78,7 +78,7 @@
                                                                            ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.036..0.036 rows=1 loops=1)
                                                                                  Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                                  Buffers: shared hit=1
-                                                                                 ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.029..0.032 rows=1 loops=1)
+                                                                                 ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.029..0.032 rows=1 loops=1)
                                                                                        Filter: ((info)::text = 'rating'::text)
                                                                                        Rows Removed by Filter: 112
                                                                                        Buffers: shared hit=1

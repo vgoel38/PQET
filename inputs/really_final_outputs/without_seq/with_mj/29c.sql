@@ -10,14 +10,14 @@
                Sort Method: quicksort  Memory: 1663kB
                Buffers: shared hit=7844967 read=786710
                ->  Merge Join  (cost=1312072.61..1312072.61 rows=1 width=51) (actual time=122943.678..122948.610 rows=16368 loops=1)
-                     Merge Cond: (cc.status_id = cct2.id)
+                     Merge Cond: (cc.status_id = cct.id)
                      Buffers: shared hit=7844963 read=786710
                      ->  Sort  (cost=1312066.49..1312066.49 rows=1 width=55) (actual time=122941.486..122942.742 rows=28202 loops=1)
                            Sort Key: cc.status_id
                            Sort Method: quicksort  Memory: 3431kB
                            Buffers: shared hit=7844961 read=786710
                            ->  Merge Join  (cost=1312066.49..1312066.49 rows=1 width=55) (actual time=122923.143..122932.364 rows=28202 loops=1)
-                                 Merge Cond: (cc.subject_id = cct1.id)
+                                 Merge Cond: (cc.subject_id = cct.id)
                                  Buffers: shared hit=7844961 read=786710
                                  ->  Sort  (cost=1312060.36..1312060.36 rows=1 width=59) (actual time=122923.109..122924.485 rows=28203 loops=1)
                                        Sort Key: cc.subject_id
@@ -166,17 +166,17 @@
                                              ->  Index Scan using complete_cast_idx_mid on complete_cast cc  (cost=0.01..3283.51 rows=135086 width=12) (actual time=0.023..251.587 rows=155338 loops=1)
                                                    Buffers: shared hit=81634 read=1075
                                  ->  Sort  (cost=6.13..6.13 rows=1 width=4) (actual time=0.029..0.030 rows=1 loops=1)
-                                       Sort Key: cct1.id
+                                       Sort Key: cct.id
                                        Sort Method: quicksort  Memory: 25kB
                                        Buffers: shared hit=1 read=1
-                                       ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct1  (cost=0.00..6.12 rows=1 width=4) (actual time=0.021..0.021 rows=1 loops=1)
+                                       ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct  (cost=0.00..6.12 rows=1 width=4) (actual time=0.021..0.021 rows=1 loops=1)
                                              Index Cond: ((kind)::text = 'cast'::text)
                                              Buffers: shared hit=1 read=1
                      ->  Sort  (cost=6.13..6.13 rows=1 width=4) (actual time=0.016..0.016 rows=1 loops=1)
-                           Sort Key: cct2.id
+                           Sort Key: cct.id
                            Sort Method: quicksort  Memory: 25kB
                            Buffers: shared hit=2
-                           ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct2  (cost=0.00..6.12 rows=1 width=4) (actual time=0.010..0.010 rows=1 loops=1)
+                           ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct  (cost=0.00..6.12 rows=1 width=4) (actual time=0.010..0.010 rows=1 loops=1)
                                  Index Cond: ((kind)::text = 'complete+verified'::text)
                                  Buffers: shared hit=2
          ->  Index Scan using title_idx_id on title t  (cost=0.01..23434.65 rows=1042800 width=21) (actual time=22.496..9886.112 rows=1016154 loops=1)

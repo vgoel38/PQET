@@ -1,5 +1,3 @@
- [                                                                                                                                                                                                
-   {                                                                                                                                                                                              
      "Plan": {                                                                                                                                                                                    
        "Node Type": "Aggregate",                                                                                                                                                                  
        "Strategy": "Plain",                                                                                                                                                                       
@@ -675,5 +673,3 @@
      "Triggers": [                                                                                                                                                                                
      ],                                                                                                                                                                                           
      "Execution Time": 18452.747                                                                                                                                                                  
-   }                                                                                                                                                                                              
- ]

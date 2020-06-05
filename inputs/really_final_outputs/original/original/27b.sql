@@ -18,15 +18,15 @@
                            Join Filter: (ml.movie_id = mi.movie_id)
                            Buffers: shared hit=49346 read=5713
                            ->  Nested Loop  (cost=0.06..129.04 rows=1 width=45) (actual time=660.760..2164.678 rows=38 loops=1)
-                                 Join Filter: (cct2.id = cc.status_id)
+                                 Join Filter: (cct.id = cc.status_id)
                                  Rows Removed by Join Filter: 19
                                  Buffers: shared hit=48904 read=5699
-                                 ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.003..0.004 rows=1 loops=1)
+                                 ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.003..0.004 rows=1 loops=1)
                                        Filter: ((kind)::text = 'complete'::text)
                                        Rows Removed by Filter: 3
                                        Buffers: shared hit=1
                                  ->  Nested Loop  (cost=0.06..129.01 rows=1 width=49) (actual time=660.753..2164.621 rows=57 loops=1)
-                                       Join Filter: (cct1.id = cc.subject_id)
+                                       Join Filter: (cct.id = cc.subject_id)
                                        Rows Removed by Join Filter: 19
                                        Buffers: shared hit=48903 read=5699
                                        ->  Nested Loop  (cost=0.06..128.98 rows=1 width=53) (actual time=660.723..2164.241 rows=57 loops=1)
@@ -64,7 +64,7 @@
                                              ->  Index Scan using complete_cast_idx_mid on complete_cast cc  (cost=0.01..0.01 rows=1 width=12) (actual time=0.636..0.712 rows=1 loops=77)
                                                    Index Cond: (movie_id = mk.movie_id)
                                                    Buffers: shared hit=284 read=4
-                                       ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=2 width=4) (actual time=0.002..0.003 rows=1 loops=57)
+                                       ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=2 width=4) (actual time=0.002..0.003 rows=1 loops=57)
                                              Filter: ((kind)::text = ANY ('{cast,crew}'::text[]))
                                              Buffers: shared hit=57
                            ->  Index Scan using movie_info_idx_mid on movie_info mi  (cost=0.01..0.15 rows=1 width=4) (actual time=2.795..3.560 rows=2 loops=38)

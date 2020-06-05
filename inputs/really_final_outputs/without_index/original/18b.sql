@@ -19,10 +19,10 @@
                            Rows Removed by Join Filter: 1145216310
                            Buffers: shared hit=6 read=170341
                            ->  Nested Loop  (cost=0.00..7265.37 rows=581 width=46) (actual time=7498.521..7978.198 rows=72258 loops=1)
-                                 Join Filter: (it1.id = mi.info_type_id)
+                                 Join Filter: (it.id = mi.info_type_id)
                                  Rows Removed by Join Filter: 789
                                  Buffers: shared hit=3 read=161890
-                                 ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.008..0.021 rows=1 loops=1)
+                                 ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.008..0.021 rows=1 loops=1)
                                        Filter: ((info)::text = 'genres'::text)
                                        Rows Removed by Filter: 112
                                        Buffers: shared hit=1
@@ -33,10 +33,10 @@
                            ->  Materialize  (cost=0.00..475.59 rows=468 width=10) (actual time=0.000..0.682 rows=15849 loops=72258)
                                  Buffers: shared hit=3 read=8451
                                  ->  Nested Loop  (cost=0.00..475.52 rows=468 width=10) (actual time=0.047..600.113 rows=15849 loops=1)
-                                       Join Filter: (it2.id = mi_idx.info_type_id)
+                                       Join Filter: (it.id = mi_idx.info_type_id)
                                        Rows Removed by Join Filter: 37013
                                        Buffers: shared hit=3 read=8451
-                                       ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.020..0.023 rows=1 loops=1)
+                                       ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.020..0.023 rows=1 loops=1)
                                              Filter: ((info)::text = 'rating'::text)
                                              Rows Removed by Filter: 112
                                              Buffers: shared hit=1

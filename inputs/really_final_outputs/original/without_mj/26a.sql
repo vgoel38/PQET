@@ -25,25 +25,25 @@
                                              Join Filter: (cc.movie_id = t.id)
                                              Buffers: shared hit=851371 read=26997
                                              ->  Nested Loop  (cost=0.06..536.47 rows=32 width=14) (actual time=69.260..3114.712 rows=17898 loops=1)
-                                                   Join Filter: (cct2.id = cc.status_id)
+                                                   Join Filter: (cct.id = cc.status_id)
                                                    Rows Removed by Join Filter: 17898
                                                    Buffers: shared hit=797186 read=9511
-                                                   ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.119..0.124 rows=2 loops=1)
+                                                   ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.119..0.124 rows=2 loops=1)
                                                          Filter: ((kind)::text ~~ '%complete%'::text)
                                                          Rows Removed by Filter: 2
                                                          Buffers: shared read=1
                                                    ->  Nested Loop  (cost=0.06..536.42 rows=126 width=18) (actual time=34.621..1548.544 rows=17898 loops=2)
-                                                         Join Filter: (cct1.id = cc.subject_id)
+                                                         Join Filter: (cct.id = cc.subject_id)
                                                          Rows Removed by Join Filter: 12016
                                                          Buffers: shared hit=797186 read=9510
-                                                         ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.005..0.010 rows=1 loops=2)
+                                                         ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.005..0.010 rows=1 loops=2)
                                                                Filter: ((kind)::text = 'cast'::text)
                                                                Rows Removed by Filter: 3
                                                                Buffers: shared hit=2
                                                          ->  Nested Loop  (cost=0.06..536.31 rows=502 width=22) (actual time=34.612..1533.190 rows=29914 loops=2)
                                                                Buffers: shared hit=797184 read=9510
                                                                ->  Hash Join  (cost=0.05..483.66 rows=1708 width=10) (actual time=9.116..746.355 rows=121572 loops=2)
-                                                                     Hash Cond: (mi_idx.info_type_id = it2.id)
+                                                                     Hash Cond: (mi_idx.info_type_id = it.id)
                                                                      Buffers: shared hit=8456 read=8454
                                                                      ->  Seq Scan on movie_info_idx mi_idx  (cost=0.00..467.71 rows=192955 width=14) (actual time=5.369..639.465 rows=192967 loops=2)
                                                                            Filter: (info > '7.0'::text)
@@ -52,7 +52,7 @@
                                                                      ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=7.413..7.413 rows=1 loops=1)
                                                                            Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                            Buffers: shared read=1
-                                                                           ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=7.393..7.399 rows=1 loops=1)
+                                                                           ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=7.393..7.399 rows=1 loops=1)
                                                                                  Filter: ((info)::text = 'rating'::text)
                                                                                  Rows Removed by Filter: 112
                                                                                  Buffers: shared read=1

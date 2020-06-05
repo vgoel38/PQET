@@ -8,6 +8,7 @@ from index_scan_predictor.index_scan_predictor import *
 from nestloop_index_predictor.nestloop_index_predictor import *
 import numpy as np
 from geometric_mean import gm
+from product import prod
 
 #-------------------Supporting Methods---------------------------
 #INCOMPLETE
@@ -103,12 +104,25 @@ def revise_corr(node):
 				CORR_MD[ALIAS_MD[node['Relation Name']]][col] = gm([CORR_MD[ALIAS_MD[node['Relation Name']]][col],CORR_MD[ALIAS_MD[node['Relation Name']]][index_col]])
 		CORR_MD[node['Relation Name']][index_col] = 1
 		CORR_MD[ALIAS_MD[node['Relation Name']]][index_col] = 1
+	elif node['Node Type'] == 'Sort':
+		rel_name, sort_col = extract_rel_col(node['Sort Key'][0])
+		for col in REL_MD[rel_name]:
+			if col != sort_col:
+				# print(node['Relation Name'], col, CORR_MD[node['Relation Name']][col], CORR_MD[node['Relation Name']][index_col])
+				CORR_MD[rel_name][col] = gm([CORR_MD[rel_name][col],CORR_MD[rel_name][sort_col]])
+				CORR_MD[ALIAS_MD[rel_name]][col] = gm([CORR_MD[ALIAS_MD[rel_name]][col],CORR_MD[ALIAS_MD[rel_name]][sort_col]])
+		CORR_MD[rel_name][sort_col] = 1
+		CORR_MD[ALIAS_MD[rel_name]][sort_col] = 1
 	elif node['Node Type'] == 'Nested Loop':
 		rel_name = ''
 		if node['Plans'][1]['Node Type'] == 'Seq Scan' or node['Plans'][1]['Node Type'] == 'Index Scan':
 			rel_name = node['Plans'][1]['Relation Name']
-		elif node['Plans'][1]['Node Type'] == 'Materialize' and (node['Plans'][1]['Plans'][0] == 'Seq Scan' or node['Plans'][1]['Plans'][0] == 'Index Scan'):
-			rel_name = node['Plans'][1]['Plans'][0]['Relation Name']
+		elif node['Plans'][1]['Node Type'] == 'Materialize':
+			if node['Plans'][1]['Plans'][0] == 'Seq Scan' or node['Plans'][1]['Plans'][0] == 'Index Scan':
+				rel_name = node['Plans'][1]['Plans'][0]['Relation Name']
+			else:
+				print('dont know how to revise corr')
+				return
 		else:
 			print('dont know how to revise corr')
 			return
@@ -136,14 +150,16 @@ def revise_corr(node):
 		print('corr not revised!')
 
 def revise_dup(node):
-	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Materialize' or node['Node Type'] == 'Aggregate':
+	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Materialize' or node['Node Type'] == 'Aggregate' or node['Node Type'] == 'Sort':
 		return
 	elif node['Node Type'] == 'Index Scan':
 		return
-	elif node['Node Type'] == 'Nested Loop':
+	elif node['Node Type'] == 'Nested Loop' or node['Node Type'] == 'Merge Join':
 		join_cond = ''
 		if 'Join Filter' in node:
 			join_cond = node['Join Filter']
+		elif 'Merge Cond' in node:
+			join_cond = node['Merge Cond']
 		else:
 			join_cond = node['Plans'][1]['Index Cond']
 			join_cond = '('+node['Plans'][1]['Relation Name']+'.'+join_cond.split('(')[1]
@@ -270,7 +286,7 @@ def seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num_fi
 #Index Scan
 def index_scan(node, parent_node):
 
-	if node['Relation Name'] == 'char_name' or node['Relation Name'] == 'keyword':
+	if node['Relation Name'] == 'movie_link':
 		return 0
 
 	if parent_node == {}:
@@ -289,26 +305,33 @@ def index_scan(node, parent_node):
 	else:
 		leftcol = find_left_col(node)
 		rightcol = find_index_col(node)
-		leftCorr = find_corr([leftcol])[0]
+		leftCorr = min(0.7,find_corr([leftcol])[0])
 		leftDup = find_dup([leftcol])[0]
 		# leftDup = 0.5
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + rightcol + '/'
 		attStart, attEnd = find_att_values(parent_node['Plans'][0], leftcol)
 
-		timeInIsolation, cardInIsolation = index_scan_predict(path, attStart, attEnd)
+		timeInIsolation = 0
+		cardInIsolation = 0
+		# timeInIsolation, cardInIsolation = index_scan_predict(path, attStart, attEnd)
 		if parent_node['Plans'][0]['Node Type'] != 'Seq Scan' and parent_node['Plans'][0]['Node Type'] != 'Index Scan':
 			timeInIsolation = timeInIsolation * parent_node['Plans'][0]['Actual Rows'] / max(cardInIsolation,1)
 		timeInIsolation = timeInIsolation * (1 - leftDup)
 		timeInIsolation += parent_node['Plans'][0]['Actual Rows'] * leftDup * TIME_PER_DUPLICATE_TUPLE
 
 		path = 'nestloop_index_predictor/' + node['Relation Name'] + '/' + rightcol + '/'
-		timeInJoin = nestloop_index_scan_predict([node['Actual Loops']*(1 - leftDup)], [parent_node['Actual Rows']], path)
+		timeInJoin, cardInJoin = nestloop_index_scan_predict([node['Actual Loops']*(1 - leftDup)], [parent_node['Actual Rows']], path)
 		# timeInJoin = nestloop_index_scan_predict([parent_node['Plans'][0]['Actual Rows']], [parent_node['Actual Rows']], path)
 
 		if parent_node['Actual Loops'] > 1:
 			print('Parent Node of Index Scan has multiple loops!')
 
-		print("timeInIsolation = ", timeInIsolation, "timeInJoin =", timeInJoin, "card =", [node['Actual Loops']*(1 - leftDup)], "leftCorr =", leftCorr, "leftDup =", leftDup, "leftCol=", leftcol, "rightCol=", rightcol)
+		join_factor = 0
+		try:
+			join_factor = min(1,(node['Actual Loops'] * cardInJoin / (node['Actual Loops']*(1 - leftDup))) / (parent_node['Actual Rows'] * parent_node['Actual Loops']))
+		except:
+			join_factor = 0
+		print("timeInIsolation = ", timeInIsolation, "timeInJoin =", timeInJoin, "card =", [node['Actual Loops']*(1 - leftDup)], "leftCorr =", leftCorr, "leftDup =", leftDup, "leftCol=", leftcol, "rightCol=", rightcol, "join_factor=", join_factor)
 
 		# if leftCorr == 1:
 		# 	return timeInIsolation
@@ -317,7 +340,7 @@ def index_scan(node, parent_node):
 
 		# print("index time = ", timeInIsolation * leftCorr + timeInJoin * (1 - leftCorr))
 
-		return timeInIsolation * leftCorr + timeInJoin * (1 - leftCorr)
+		return (timeInIsolation * leftCorr + timeInJoin * (1 - leftCorr))*join_factor
 
 #Materalisation with Rescan
 def mat_rescan(input_card, num_loops, parent_output_card, is_unique):

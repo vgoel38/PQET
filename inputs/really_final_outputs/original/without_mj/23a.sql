@@ -8,7 +8,7 @@
                Join Filter: (t.id = mk.movie_id)
                Buffers: shared hit=239805 read=61800
                ->  Nested Loop  (cost=51.86..2586.49 rows=1 width=43) (actual time=106246.805..143076.738 rows=6 loops=1)
-                     Join Filter: (mi.info_type_id = it1.id)
+                     Join Filter: (mi.info_type_id = it.id)
                      Buffers: shared hit=239781 read=61792
                      ->  Nested Loop  (cost=51.86..2586.44 rows=1 width=47) (actual time=106221.813..143051.655 rows=6 loops=1)
                            Buffers: shared hit=239776 read=61791
@@ -40,14 +40,14 @@
                                                          Buckets: 65536  Batches: 1  Memory Usage: 1377kB
                                                          Buffers: shared read=732
                                                          ->  Hash Join  (cost=0.03..46.83 rows=33772 width=4) (actual time=19.322..72.538 rows=24592 loops=1)
-                                                               Hash Cond: (cc.status_id = cct1.id)
+                                                               Hash Cond: (cc.status_id = cct.id)
                                                                Buffers: shared read=732
                                                                ->  Seq Scan on complete_cast cc  (cost=0.00..32.27 rows=135086 width=8) (actual time=19.143..38.954 rows=135086 loops=1)
                                                                      Buffers: shared read=731
                                                                ->  Hash  (cost=0.03..0.03 rows=1 width=4) (actual time=0.137..0.137 rows=1 loops=1)
                                                                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                      Buffers: shared read=1
-                                                                     ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.121..0.123 rows=1 loops=1)
+                                                                     ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.121..0.123 rows=1 loops=1)
                                                                            Filter: ((kind)::text = 'complete+verified'::text)
                                                                            Rows Removed by Filter: 3
                                                                            Buffers: shared read=1
@@ -67,7 +67,7 @@
                            ->  Index Scan using company_type_pkey on company_type ct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.033..0.033 rows=1 loops=6)
                                  Index Cond: (id = mc.company_type_id)
                                  Buffers: shared hit=10 read=2
-                     ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=4.173..4.173 rows=1 loops=6)
+                     ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=4.173..4.173 rows=1 loops=6)
                            Filter: ((info)::text = 'release dates'::text)
                            Rows Removed by Filter: 15
                            Buffers: shared hit=5 read=1

@@ -14,7 +14,7 @@
                            ->  Nested Loop  (cost=2.09..123890.32 rows=84 width=62) (actual time=2644.393..107006.230 rows=2099 loops=1)
                                  Buffers: shared hit=4638403 read=203295
                                  ->  Nested Loop  (cost=2.08..123888.72 rows=27 width=50) (actual time=947.927..98211.503 rows=584 loops=1)
-                                       Join Filter: (mi.info_type_id = it1.id)
+                                       Join Filter: (mi.info_type_id = it.id)
                                        Rows Removed by Join Filter: 78
                                        Buffers: shared hit=4636696 read=202300
                                        ->  Nested Loop  (cost=2.07..123881.92 rows=3031 width=54) (actual time=947.840..98208.911 rows=662 loops=1)
@@ -35,7 +35,7 @@
                                                    Buffers: shared hit=1793775 read=152263
                                        ->  Materialize  (cost=0.00..6.13 rows=1 width=4) (actual time=0.001..0.001 rows=1 loops=662)
                                              Buffers: shared hit=1 read=1
-                                             ->  Index Scan using info_type_info_key on info_type it1  (cost=0.00..6.13 rows=1 width=4) (actual time=0.064..0.070 rows=1 loops=1)
+                                             ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=0.064..0.070 rows=1 loops=1)
                                                    Index Cond: ((info)::text = 'release dates'::text)
                                                    Buffers: shared hit=1 read=1
                                  ->  Index Scan using movie_id_movie_companies on movie_companies mc  (cost=0.01..0.06 rows=2 width=12) (actual time=13.035..15.051 rows=4 loops=584)

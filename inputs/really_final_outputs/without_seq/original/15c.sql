@@ -32,7 +32,7 @@
                                                    Filter: ((info IS NOT NULL) AND (note ~~ '%internet%'::text) AND ((info ~~ 'USA:% 199%'::text) OR (info ~~ 'USA:% 200%'::text)))
                                                    Rows Removed by Filter: 38
                                                    Buffers: shared hit=1793775 read=152263
-                                       ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.008..0.008 rows=1 loops=120)
+                                       ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.03 rows=1 width=4) (actual time=0.008..0.008 rows=1 loops=120)
                                              Index Cond: (id = mi.info_type_id)
                                              Filter: ((info)::text = 'release dates'::text)
                                              Buffers: shared hit=240

@@ -22,7 +22,7 @@
                                  Join Filter: (n.id = pi.person_id)
                                  Buffers: shared hit=802 read=460
                                  ->  Nested Loop  (cost=0.11..13.54 rows=1 width=76) (actual time=497.808..1795.957 rows=1 loops=1)
-                                       Join Filter: (cc.subject_id = cct1.id)
+                                       Join Filter: (cc.subject_id = cct.id)
                                        Buffers: shared hit=802 read=447
                                        ->  Nested Loop  (cost=0.11..13.50 rows=1 width=80) (actual time=497.786..1795.934 rows=1 loops=1)
                                              Buffers: shared hit=801 read=447
@@ -50,7 +50,7 @@
                                                                            Join Filter: (t.id = ci.movie_id)
                                                                            Buffers: shared hit=408 read=372
                                                                            ->  Nested Loop  (cost=0.05..12.37 rows=1 width=33) (actual time=217.895..376.853 rows=1 loops=1)
-                                                                                 Join Filter: (cc.status_id = cct2.id)
+                                                                                 Join Filter: (cc.status_id = cct.id)
                                                                                  Buffers: shared hit=408 read=155
                                                                                  ->  Nested Loop  (cost=0.05..12.34 rows=1 width=37) (actual time=217.553..376.509 rows=1 loops=1)
                                                                                        Join Filter: (t.id = cc.movie_id)
@@ -75,7 +75,7 @@
                                                                                        ->  Index Scan using movie_id_complete_cast on complete_cast cc  (cost=0.01..0.01 rows=1 width=12) (actual time=45.583..45.587 rows=1 loops=1)
                                                                                              Index Cond: (movie_id = mk.movie_id)
                                                                                              Buffers: shared read=4
-                                                                                 ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.336..0.337 rows=1 loops=1)
+                                                                                 ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.336..0.337 rows=1 loops=1)
                                                                                        Filter: ((kind)::text = 'complete+verified'::text)
                                                                                        Rows Removed by Filter: 3
                                                                                        Buffers: shared read=1
@@ -98,7 +98,7 @@
                                                    Index Cond: (id = ci.person_id)
                                                    Filter: ((name ~~ '%An%'::text) AND ((gender)::text = 'f'::text))
                                                    Buffers: shared read=4
-                                       ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.014..0.014 rows=1 loops=1)
+                                       ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.014..0.014 rows=1 loops=1)
                                              Filter: ((kind)::text = 'cast'::text)
                                              Buffers: shared hit=1
                                  ->  Index Scan using person_id_person_info on person_info pi  (cost=0.01..0.23 rows=5 width=8) (actual time=43.981..46.855 rows=163 loops=1)

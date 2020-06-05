@@ -12,7 +12,7 @@
                      Hash Cond: (mi.movie_id = t.id)
                      Buffers: shared read=244861
                      ->  Hash Join  (cost=0.05..9559.43 rows=3 width=4) (actual time=1544.420..8475.010 rows=1783 loops=1)
-                           Hash Cond: (mi.info_type_id = it1.id)
+                           Hash Cond: (mi.info_type_id = it.id)
                            Buffers: shared read=161893
                            ->  Seq Scan on movie_info mi  (cost=0.00..9559.36 rows=328 width=8) (actual time=1523.182..8452.503 rows=1783 loops=1)
                                  Filter: ((info IS NOT NULL) AND (note ~~ '%internet%'::text) AND ((info ~~ 'USA:% 199%'::text) OR (info ~~ 'USA:% 200%'::text)))
@@ -21,7 +21,7 @@
                            ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=21.192..21.192 rows=1 loops=1)
                                  Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                  Buffers: shared read=1
-                                 ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=21.145..21.180 rows=1 loops=1)
+                                 ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=21.145..21.180 rows=1 loops=1)
                                        Filter: ((info)::text = 'release dates'::text)
                                        Rows Removed by Filter: 112
                                        Buffers: shared read=1
@@ -68,14 +68,14 @@
                                                                      Buckets: 65536  Batches: 1  Memory Usage: 1377kB
                                                                      Buffers: shared read=732
                                                                      ->  Hash Join  (cost=0.03..46.83 rows=33772 width=4) (actual time=27.066..88.825 rows=24592 loops=1)
-                                                                           Hash Cond: (cc.status_id = cct1.id)
+                                                                           Hash Cond: (cc.status_id = cct.id)
                                                                            Buffers: shared read=732
                                                                            ->  Seq Scan on complete_cast cc  (cost=0.00..32.27 rows=135086 width=8) (actual time=19.794..46.866 rows=135086 loops=1)
                                                                                  Buffers: shared read=731
                                                                            ->  Hash  (cost=0.03..0.03 rows=1 width=4) (actual time=7.224..7.224 rows=1 loops=1)
                                                                                  Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                                  Buffers: shared read=1
-                                                                                 ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=7.209..7.211 rows=1 loops=1)
+                                                                                 ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=7.209..7.211 rows=1 loops=1)
                                                                                        Filter: ((kind)::text = 'complete+verified'::text)
                                                                                        Rows Removed by Filter: 3
                                                                                        Buffers: shared read=1

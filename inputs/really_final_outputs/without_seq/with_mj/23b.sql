@@ -17,7 +17,7 @@
                            Sort Method: quicksort  Memory: 26kB
                            Buffers: shared hit=2497362 read=306798
                            ->  Merge Join  (cost=714499.90..714499.90 rows=1 width=35) (actual time=38715.847..38715.852 rows=16 loops=1)
-                                 Merge Cond: (cc.status_id = cct1.id)
+                                 Merge Cond: (cc.status_id = cct.id)
                                  Buffers: shared hit=2497362 read=306798
                                  ->  Sort  (cost=714493.77..714493.77 rows=1 width=39) (actual time=38715.831..38715.832 rows=16 loops=1)
                                        Sort Key: cc.status_id
@@ -58,9 +58,9 @@
                                                                                                    Sort Method: quicksort  Memory: 132kB
                                                                                                    Buffers: shared hit=87586 read=202427
                                                                                                    ->  Merge Join  (cost=0.02..616448.47 rows=2 width=4) (actual time=13748.805..22751.903 rows=1771 loops=1)
-                                                                                                         Merge Cond: (it1.id = mi.info_type_id)
+                                                                                                         Merge Cond: (it.id = mi.info_type_id)
                                                                                                          Buffers: shared hit=87586 read=202427
-                                                                                                         ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..9.21 rows=1 width=4) (actual time=0.039..0.062 rows=1 loops=1)
+                                                                                                         ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..9.21 rows=1 width=4) (actual time=0.039..0.062 rows=1 loops=1)
                                                                                                                Filter: ((info)::text = 'release dates'::text)
                                                                                                                Rows Removed by Filter: 112
                                                                                                                Buffers: shared hit=2
@@ -97,10 +97,10 @@
                                                          Index Cond: ((kind)::text = 'movie'::text)
                                                          Buffers: shared hit=1 read=1
                                  ->  Sort  (cost=6.13..6.13 rows=1 width=4) (actual time=0.013..0.013 rows=1 loops=1)
-                                       Sort Key: cct1.id
+                                       Sort Key: cct.id
                                        Sort Method: quicksort  Memory: 25kB
                                        Buffers: shared hit=1 read=1
-                                       ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct1  (cost=0.00..6.12 rows=1 width=4) (actual time=0.011..0.011 rows=1 loops=1)
+                                       ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct  (cost=0.00..6.12 rows=1 width=4) (actual time=0.011..0.011 rows=1 loops=1)
                                              Index Cond: ((kind)::text = 'complete+verified'::text)
                                              Buffers: shared hit=1 read=1
                      ->  Index Scan using company_type_pkey on company_type ct  (cost=0.00..9.19 rows=4 width=4) (actual time=0.004..0.004 rows=2 loops=1)

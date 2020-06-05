@@ -3,9 +3,9 @@
  Aggregate  (cost=1201.38..1201.38 rows=1 width=96) (actual time=89666.655..89666.656 rows=1 loops=1)
    Buffers: shared hit=293356 read=41931
    ->  Nested Loop  (cost=0.05..1201.38 rows=1 width=42) (actual time=4475.562..89664.320 rows=397 loops=1)
-         Join Filter: (mi.info_type_id = it1.id)
+         Join Filter: (mi.info_type_id = it.id)
          Buffers: shared hit=293356 read=41931
-         ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=39.551..39.591 rows=1 loops=1)
+         ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=39.551..39.591 rows=1 loops=1)
                Filter: ((info)::text = 'genres'::text)
                Rows Removed by Filter: 112
                Buffers: shared read=1
@@ -28,10 +28,10 @@
                                  ->  Nested Loop  (cost=0.01..1185.00 rows=1129 width=22) (actual time=51.398..11026.743 rows=64707 loops=1)
                                        Buffers: shared hit=61513 read=17572
                                        ->  Nested Loop  (cost=0.00..475.52 rows=468 width=10) (actual time=11.961..840.501 rows=15849 loops=1)
-                                             Join Filter: (it2.id = mi_idx.info_type_id)
+                                             Join Filter: (it.id = mi_idx.info_type_id)
                                              Rows Removed by Join Filter: 37013
                                              Buffers: shared hit=1 read=8453
-                                             ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.053..0.061 rows=1 loops=1)
+                                             ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.053..0.061 rows=1 loops=1)
                                                    Filter: ((info)::text = 'rating'::text)
                                                    Rows Removed by Filter: 112
                                                    Buffers: shared hit=1

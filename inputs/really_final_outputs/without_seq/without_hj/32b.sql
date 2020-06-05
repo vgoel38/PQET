@@ -24,10 +24,10 @@
                      ->  Index Scan using link_type_pkey on link_type lt  (cost=0.00..0.00 rows=1 width=16) (actual time=0.009..0.009 rows=1 loops=4388)
                            Index Cond: (id = ml.link_type_id)
                            Buffers: shared hit=8776
-               ->  Index Scan using title_idx_id on title t1  (cost=0.01..0.04 rows=1 width=21) (actual time=0.841..0.841 rows=1 loops=4388)
+               ->  Index Scan using title_idx_id on title t  (cost=0.01..0.04 rows=1 width=21) (actual time=0.841..0.841 rows=1 loops=4388)
                      Index Cond: (id = mk.movie_id)
                      Buffers: shared hit=16977 read=577
-         ->  Index Scan using title_idx_id on title t2  (cost=0.01..2.88 rows=1 width=21) (actual time=13.709..13.709 rows=1 loops=4388)
+         ->  Index Scan using title_idx_id on title t  (cost=0.01..2.88 rows=1 width=21) (actual time=13.709..13.709 rows=1 loops=4388)
                Index Cond: (id = ml.linked_movie_id)
                Buffers: shared hit=12459 read=5100
  Planning Time: 1340.399 ms

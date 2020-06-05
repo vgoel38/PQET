@@ -61,14 +61,14 @@
                                  Rows Removed by Filter: 3
                                  Buffers: shared hit=1
                ->  Hash Join  (cost=0.05..7326.98 rows=131290 width=4) (actual time=857.538..3407.110 rows=3036719 loops=117)
-                     Hash Cond: (mi.info_type_id = it2.id)
+                     Hash Cond: (mi.info_type_id = it.id)
                      Buffers: shared hit=18779475 read=161890
                      ->  Seq Scan on movie_info mi  (cost=0.00..6103.84 rows=14835720 width=8) (actual time=0.048..1082.124 rows=14835720 loops=117)
                            Buffers: shared hit=18779474 read=161890
                      ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.078..0.078 rows=1 loops=1)
                            Buckets: 1024  Batches: 1  Memory Usage: 9kB
                            Buffers: shared hit=1
-                           ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.034..0.069 rows=1 loops=1)
+                           ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.034..0.069 rows=1 loops=1)
                                  Filter: ((info)::text = 'release dates'::text)
                                  Rows Removed by Filter: 112
                                  Buffers: shared hit=1

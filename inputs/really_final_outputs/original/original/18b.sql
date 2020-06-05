@@ -7,9 +7,9 @@
          ->  Nested Loop  (cost=0.04..1614.04 rows=1 width=69) (actual time=11683.852..166546.841 rows=268 loops=1)
                Buffers: shared hit=99979 read=55965
                ->  Nested Loop  (cost=0.03..1612.64 rows=1 width=77) (actual time=1785.928..106967.572 rows=358 loops=1)
-                     Join Filter: (mi.info_type_id = it1.id)
+                     Join Filter: (mi.info_type_id = it.id)
                      Buffers: shared hit=96916 read=46128
-                     ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.018..0.058 rows=1 loops=1)
+                     ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.018..0.058 rows=1 loops=1)
                            Filter: ((info)::text = 'genres'::text)
                            Rows Removed by Filter: 112
                            Buffers: shared hit=1
@@ -18,10 +18,10 @@
                            ->  Nested Loop  (cost=0.01..1495.69 rows=145 width=31) (actual time=358.985..38966.672 rows=6152 loops=1)
                                  Buffers: shared hit=48045 read=23878
                                  ->  Nested Loop  (cost=0.00..475.52 rows=468 width=10) (actual time=0.129..900.200 rows=15849 loops=1)
-                                       Join Filter: (it2.id = mi_idx.info_type_id)
+                                       Join Filter: (it.id = mi_idx.info_type_id)
                                        Rows Removed by Join Filter: 37013
                                        Buffers: shared hit=3 read=8451
-                                       ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.045..0.052 rows=1 loops=1)
+                                       ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.045..0.052 rows=1 loops=1)
                                              Filter: ((info)::text = 'rating'::text)
                                              Rows Removed by Filter: 112
                                              Buffers: shared hit=1

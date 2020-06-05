@@ -15,7 +15,7 @@
                      Rows Removed by Join Filter: 2593675151
                      Buffers: shared hit=36488242 read=189136
                      ->  Hash Join  (cost=475.63..7763.18 rows=1 width=14) (actual time=8340.699..8896.670 rows=1943 loops=1)
-                           Hash Cond: (mi.info_type_id = it1.id)
+                           Hash Cond: (mi.info_type_id = it.id)
                            Buffers: shared hit=4 read=170346
                            ->  Hash Join  (cost=475.58..7763.13 rows=82 width=18) (actual time=5583.759..8866.611 rows=2137 loops=1)
                                  Hash Cond: (mi.movie_id = mi_idx.movie_id)
@@ -28,10 +28,10 @@
                                        Buckets: 16384 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 748kB
                                        Buffers: shared hit=1 read=8453
                                        ->  Nested Loop  (cost=0.00..475.52 rows=468 width=10) (actual time=23.272..615.189 rows=15849 loops=1)
-                                             Join Filter: (it2.id = mi_idx.info_type_id)
+                                             Join Filter: (it.id = mi_idx.info_type_id)
                                              Rows Removed by Join Filter: 37013
                                              Buffers: shared hit=1 read=8453
-                                             ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.029..0.035 rows=1 loops=1)
+                                             ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.029..0.035 rows=1 loops=1)
                                                    Filter: ((info)::text = 'rating'::text)
                                                    Rows Removed by Filter: 112
                                                    Buffers: shared hit=1
@@ -42,7 +42,7 @@
                            ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=27.082..27.082 rows=1 loops=1)
                                  Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                  Buffers: shared read=1
-                                 ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=27.030..27.070 rows=1 loops=1)
+                                 ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=27.030..27.070 rows=1 loops=1)
                                        Filter: ((info)::text = 'genres'::text)
                                        Rows Removed by Filter: 112
                                        Buffers: shared read=1

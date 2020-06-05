@@ -93,12 +93,12 @@
                                  ->  Index Scan using movie_id_complete_cast on complete_cast cc  (cost=0.01..0.01 rows=1 width=12) (actual time=0.587..0.587 rows=1 loops=665)
                                        Index Cond: (movie_id = mk.movie_id)
                                        Buffers: shared hit=2466 read=23
-                           ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.004..0.004 rows=0 loops=494)
+                           ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.004..0.004 rows=0 loops=494)
                                  Index Cond: (id = cc.status_id)
                                  Filter: ((kind)::text = 'complete+verified'::text)
                                  Rows Removed by Filter: 1
                                  Buffers: shared hit=988
-                     ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=189)
+                     ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=189)
                            Index Cond: (id = cc.subject_id)
                            Filter: ((kind)::text = 'cast'::text)
                            Buffers: shared hit=378

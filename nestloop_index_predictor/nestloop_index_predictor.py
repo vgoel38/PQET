@@ -61,7 +61,7 @@ def nestloop_index_scan_predict(distinctLeftRows, outputCard, path):
 		predictedTimeIndirect[i] += extraTuples[i] * TIME_PER_DUPLICATE_TUPLE
 		predictedTimeDirect[i] += extraTuples[i] * TIME_PER_DUPLICATE_TUPLE
 
-	return max(predictedTimeIndirect[0],0)
+	return max(predictedTimeIndirect[0],0), max(predictedOutputCard[0],0)
 
 def parse_input_plans(filename):
 	rightPagesScanned = []

@@ -3,10 +3,10 @@
  Aggregate  (cost=711941.19..711941.19 rows=1 width=96) (actual time=108552.601..108552.601 rows=1 loops=1)
    Buffers: shared hit=11903166 read=313274
    ->  Hash Join  (cost=94125.16..711941.19 rows=1 width=48) (actual time=23150.769..108540.073 rows=247 loops=1)
-         Hash Cond: (cc.subject_id = cct1.id)
+         Hash Cond: (cc.subject_id = cct.id)
          Buffers: shared hit=11903166 read=313274
          ->  Hash Join  (cost=94115.97..711932.01 rows=1 width=52) (actual time=23150.652..108539.806 rows=247 loops=1)
-               Hash Cond: (cc.status_id = cct2.id)
+               Hash Cond: (cc.status_id = cct.id)
                Buffers: shared hit=11903163 read=313272
                ->  Hash Join  (cost=94109.85..711925.88 rows=1 width=56) (actual time=23150.620..108539.576 rows=418 loops=1)
                      Hash Cond: (ml.movie_id = cc.movie_id)
@@ -97,13 +97,13 @@
                ->  Hash  (cost=6.12..6.12 rows=1 width=4) (actual time=0.015..0.015 rows=1 loops=1)
                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
                      Buffers: shared hit=1 read=1
-                     ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct2  (cost=0.00..6.12 rows=1 width=4) (actual time=0.013..0.014 rows=1 loops=1)
+                     ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct  (cost=0.00..6.12 rows=1 width=4) (actual time=0.013..0.014 rows=1 loops=1)
                            Index Cond: ((kind)::text = 'complete'::text)
                            Buffers: shared hit=1 read=1
          ->  Hash  (cost=9.19..9.19 rows=2 width=4) (actual time=0.087..0.088 rows=2 loops=1)
                Buckets: 1024  Batches: 1  Memory Usage: 9kB
                Buffers: shared read=2
-               ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct1  (cost=0.00..9.19 rows=2 width=4) (actual time=0.080..0.082 rows=2 loops=1)
+               ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..9.19 rows=2 width=4) (actual time=0.080..0.082 rows=2 loops=1)
                      Filter: ((kind)::text = ANY ('{cast,crew}'::text[]))
                      Rows Removed by Filter: 2
                      Buffers: shared read=2

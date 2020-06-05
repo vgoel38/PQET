@@ -3,17 +3,17 @@
  Aggregate  (cost=135.50..135.50 rows=1 width=96) (actual time=151041.020..151041.020 rows=1 loops=1)
    Buffers: shared hit=10239340 read=16858
    ->  Nested Loop  (cost=0.16..135.50 rows=1 width=48) (actual time=70039.451..151033.597 rows=16308 loops=1)
-         Join Filter: (cct1.id = cc.subject_id)
+         Join Filter: (cct.id = cc.subject_id)
          Buffers: shared hit=10239340 read=16858
-         ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.092..0.097 rows=1 loops=1)
+         ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.092..0.097 rows=1 loops=1)
                Filter: ((kind)::text = 'cast'::text)
                Rows Removed by Filter: 3
                Buffers: shared read=1
          ->  Nested Loop  (cost=0.16..135.46 rows=1 width=52) (actual time=70039.351..151029.544 rows=16308 loops=1)
-               Join Filter: (cct2.id = cc.status_id)
+               Join Filter: (cct.id = cc.status_id)
                Rows Removed by Join Filter: 11714
                Buffers: shared hit=10239340 read=16857
-               ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.009..0.010 rows=1 loops=1)
+               ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.009..0.010 rows=1 loops=1)
                      Filter: ((kind)::text = 'complete+verified'::text)
                      Rows Removed by Filter: 3
                      Buffers: shared hit=1

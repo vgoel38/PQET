@@ -49,7 +49,7 @@
                                  Index Cond: (id = mc.company_type_id)
                                  Heap Fetches: 0
                                  Buffers: shared hit=57 read=1
-                     ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..0.04 rows=1 width=4) (actual time=0.009..0.009 rows=1 loops=57)
+                     ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.04 rows=1 width=4) (actual time=0.009..0.009 rows=1 loops=57)
                            Index Cond: (id = mi.info_type_id)
                            Filter: ((info)::text = 'release dates'::text)
                            Buffers: shared hit=114

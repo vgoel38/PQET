@@ -12,7 +12,7 @@
                      Hash Cond: (mi.movie_id = t.id)
                      Buffers: shared hit=2917722 read=313023
                      ->  Hash Join  (cost=6.14..617597.23 rows=3 width=4) (actual time=11776.766..19243.820 rows=1783 loops=1)
-                           Hash Cond: (mi.info_type_id = it1.id)
+                           Hash Cond: (mi.info_type_id = it.id)
                            Buffers: shared hit=87582 read=202431
                            ->  Index Scan using info_type_id_movie_info on movie_info mi  (cost=0.01..617591.08 rows=328 width=8) (actual time=11745.550..19211.062 rows=1783 loops=1)
                                  Filter: ((info IS NOT NULL) AND (note ~~ '%internet%'::text) AND ((info ~~ 'USA:% 199%'::text) OR (info ~~ 'USA:% 200%'::text)))
@@ -21,7 +21,7 @@
                            ->  Hash  (cost=6.13..6.13 rows=1 width=4) (actual time=31.184..31.184 rows=1 loops=1)
                                  Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                  Buffers: shared read=2
-                                 ->  Index Scan using info_type_info_key on info_type it1  (cost=0.00..6.13 rows=1 width=4) (actual time=31.163..31.164 rows=1 loops=1)
+                                 ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=31.163..31.164 rows=1 loops=1)
                                        Index Cond: ((info)::text = 'release dates'::text)
                                        Buffers: shared read=2
                      ->  Hash  (cost=94286.76..94286.76 rows=111092 width=51) (actual time=16176.952..16176.952 rows=1877764 loops=1)
@@ -60,14 +60,14 @@
                                                                            Buckets: 65536  Batches: 1  Memory Usage: 1377kB
                                                                            Buffers: shared hit=86920 read=1105
                                                                            ->  Hash Join  (cost=6.14..3304.16 rows=33772 width=4) (actual time=63.253..409.926 rows=24592 loops=1)
-                                                                                 Hash Cond: (cc.status_id = cct1.id)
+                                                                                 Hash Cond: (cc.status_id = cct.id)
                                                                                  Buffers: shared hit=86920 read=1105
                                                                                  ->  Index Scan using movie_id_complete_cast on complete_cast cc  (cost=0.01..3283.51 rows=135086 width=8) (actual time=43.565..359.838 rows=135086 loops=1)
                                                                                        Buffers: shared hit=86920 read=1103
                                                                                  ->  Hash  (cost=6.12..6.12 rows=1 width=4) (actual time=6.391..6.391 rows=1 loops=1)
                                                                                        Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                                        Buffers: shared read=2
-                                                                                       ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct1  (cost=0.00..6.12 rows=1 width=4) (actual time=6.373..6.377 rows=1 loops=1)
+                                                                                       ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct  (cost=0.00..6.12 rows=1 width=4) (actual time=6.373..6.377 rows=1 loops=1)
                                                                                              Index Cond: ((kind)::text = 'complete+verified'::text)
                                                                                              Buffers: shared read=2
                                                                ->  Hash  (cost=4597.20..4597.20 rows=84843 width=4) (actual time=807.484..807.484 rows=84843 loops=1)

@@ -17,14 +17,14 @@
                                  ->  Nested Loop  (cost=6.15..13481.85 rows=7 width=25) (actual time=892.379..2183.537 rows=2 loops=1)
                                        Buffers: shared hit=13588 read=12248
                                        ->  Hash Join  (cost=6.14..12150.89 rows=12213 width=4) (actual time=752.446..1861.596 rows=10 loops=1)
-                                             Hash Cond: (mi_idx.info_type_id = it2.id)
+                                             Hash Cond: (mi_idx.info_type_id = it.id)
                                              Buffers: shared hit=13575 read=12221
                                              ->  Index Scan using movie_id_movie_info_idx on movie_info_idx mi_idx  (cost=0.01..12031.00 rows=1380035 width=8) (actual time=0.026..1466.169 rows=1380035 loops=1)
                                                    Buffers: shared hit=13571 read=12220
                                              ->  Hash  (cost=6.13..6.13 rows=1 width=4) (actual time=0.064..0.064 rows=1 loops=1)
                                                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                    Buffers: shared hit=1 read=1
-                                                   ->  Index Scan using info_type_info_key on info_type it2  (cost=0.00..6.13 rows=1 width=4) (actual time=0.047..0.049 rows=1 loops=1)
+                                                   ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=0.047..0.049 rows=1 loops=1)
                                                          Index Cond: ((info)::text = 'bottom 10 rank'::text)
                                                          Buffers: shared hit=1 read=1
                                        ->  Index Scan using title_idx_id on title t  (cost=0.01..0.11 rows=1 width=21) (actual time=32.185..32.185 rows=0 loops=10)
@@ -47,7 +47,7 @@
                ->  Index Scan using movie_id_movie_info on movie_info mi  (cost=0.01..0.25 rows=9 width=50) (actual time=7.064..29.020 rows=121 loops=10)
                      Index Cond: (movie_id = mc.movie_id)
                      Buffers: shared hit=192 read=44
-         ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.005..0.005 rows=0 loops=1210)
+         ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.005..0.005 rows=0 loops=1210)
                Index Cond: (id = mi.info_type_id)
                Filter: ((info)::text = 'budget'::text)
                Rows Removed by Filter: 1

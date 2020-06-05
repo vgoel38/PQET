@@ -21,10 +21,10 @@
                                        ->  Nested Loop  (cost=0.01..7445.69 rows=39 width=29) (actual time=1616.959..13553.443 rows=591 loops=1)
                                              Buffers: shared hit=31167 read=163377
                                              ->  Nested Loop  (cost=0.00..7257.36 rows=98 width=4) (actual time=1582.190..10281.124 rows=10679 loops=1)
-                                                   Join Filter: (it1.id = mi.info_type_id)
+                                                   Join Filter: (it.id = mi.info_type_id)
                                                    Rows Removed by Join Filter: 131
                                                    Buffers: shared read=161893
-                                                   ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=2.848..2.866 rows=1 loops=1)
+                                                   ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=2.848..2.866 rows=1 loops=1)
                                                          Filter: ((info)::text = 'release dates'::text)
                                                          Rows Removed by Filter: 112
                                                          Buffers: shared read=1

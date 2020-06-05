@@ -20,28 +20,28 @@
                            ->  Nested Loop  (cost=0.07..516.47 rows=34 width=30) (actual time=288.015..69448.903 rows=10367 loops=1)
                                  Buffers: shared hit=86380 read=18066
                                  ->  Nested Loop  (cost=0.05..516.20 rows=1 width=18) (actual time=228.103..27479.847 rows=84 loops=1)
-                                       Join Filter: (it2.id = mi_idx.info_type_id)
+                                       Join Filter: (it.id = mi_idx.info_type_id)
                                        Rows Removed by Join Filter: 213
                                        Buffers: shared hit=83114 read=11039
-                                       ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=1.585..1.589 rows=1 loops=1)
+                                       ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=1.585..1.589 rows=1 loops=1)
                                              Filter: ((info)::text = 'rating'::text)
                                              Rows Removed by Filter: 112
                                              Buffers: shared read=1
                                        ->  Nested Loop  (cost=0.05..516.16 rows=1 width=22) (actual time=226.512..27477.889 rows=297 loops=1)
                                              Buffers: shared hit=83114 read=11038
                                              ->  Nested Loop  (cost=0.04..516.11 rows=2 width=8) (actual time=177.313..13541.100 rows=2667 loops=1)
-                                                   Join Filter: (cc.subject_id = cct1.id)
+                                                   Join Filter: (cc.subject_id = cct.id)
                                                    Rows Removed by Join Filter: 1307
                                                    Buffers: shared hit=75648 read=7757
-                                                   ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=7.378..7.381 rows=1 loops=1)
+                                                   ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=7.378..7.381 rows=1 loops=1)
                                                          Filter: ((kind)::text = 'cast'::text)
                                                          Rows Removed by Filter: 3
                                                          Buffers: shared read=1
                                                    ->  Nested Loop  (cost=0.04..516.08 rows=10 width=12) (actual time=169.929..13530.342 rows=3974 loops=1)
-                                                         Join Filter: (cct2.id = cc.status_id)
+                                                         Join Filter: (cct.id = cc.status_id)
                                                          Rows Removed by Join Filter: 3974
                                                          Buffers: shared hit=75648 read=7756
-                                                         ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.014..0.023 rows=2 loops=1)
+                                                         ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.014..0.023 rows=2 loops=1)
                                                                Filter: ((kind)::text ~~ '%complete%'::text)
                                                                Rows Removed by Filter: 2
                                                                Buffers: shared hit=1

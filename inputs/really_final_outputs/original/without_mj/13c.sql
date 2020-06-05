@@ -3,7 +3,7 @@
  Aggregate  (cost=1652.82..1652.82 rows=1 width=96) (actual time=32227.638..32227.638 rows=1 loops=1)
    Buffers: shared hit=5276500 read=77969
    ->  Nested Loop  (cost=0.10..1652.82 rows=1 width=42) (actual time=21729.783..32227.517 rows=53 loops=1)
-         Join Filter: (mi.info_type_id = it2.id)
+         Join Filter: (mi.info_type_id = it.id)
          Rows Removed by Join Filter: 165
          Buffers: shared hit=5276500 read=77969
          ->  Nested Loop  (cost=0.10..1652.77 rows=1 width=46) (actual time=21709.095..32220.557 rows=218 loops=1)
@@ -59,7 +59,7 @@
                ->  Index Scan using movie_id_movie_info on movie_info mi  (cost=0.01..0.25 rows=9 width=8) (actual time=6.234..24.437 rows=16 loops=14)
                      Index Cond: (movie_id = mc.movie_id)
                      Buffers: shared hit=118 read=49
-         ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.009..0.029 rows=1 loops=218)
+         ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.009..0.029 rows=1 loops=218)
                Filter: ((info)::text = 'release dates'::text)
                Rows Removed by Filter: 88
                Buffers: shared hit=218

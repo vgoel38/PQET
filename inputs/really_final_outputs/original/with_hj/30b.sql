@@ -19,7 +19,7 @@
                            Hash Cond: (mi.movie_id = t.id)
                            Buffers: shared hit=16 read=231547
                            ->  Hash Join  (cost=2065.17..9329.40 rows=1 width=64) (actual time=9688.604..10487.231 rows=8247 loops=1)
-                                 Hash Cond: (mi.info_type_id = it1.id)
+                                 Hash Cond: (mi.info_type_id = it.id)
                                  Buffers: shared hit=16 read=195549
                                  ->  Hash Join  (cost=2065.12..9329.35 rows=1 width=68) (actual time=6966.792..10460.163 rows=10295 loops=1)
                                        Hash Cond: (mi.movie_id = mi_idx.movie_id)
@@ -32,7 +32,7 @@
                                              Buckets: 16384 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 936kB
                                              Buffers: shared hit=16 read=33656
                                              ->  Hash Join  (cost=1543.84..2065.12 rows=1 width=18) (actual time=1424.435..2008.375 rows=16283 loops=1)
-                                                   Hash Cond: (mi_idx.info_type_id = it2.id)
+                                                   Hash Cond: (mi_idx.info_type_id = it.id)
                                                    Buffers: shared hit=16 read=33656
                                                    ->  Hash Join  (cost=1543.79..2065.07 rows=27 width=22) (actual time=1424.382..1996.640 rows=49655 loops=1)
                                                          Hash Cond: (mi_idx.movie_id = mk.movie_id)
@@ -43,10 +43,10 @@
                                                                Buckets: 16384 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 767kB
                                                                Buffers: shared hit=15 read=25203
                                                                ->  Hash Join  (cost=95.09..1543.79 rows=9 width=8) (actual time=241.965..1360.357 rows=16336 loops=1)
-                                                                     Hash Cond: (cc.status_id = cct2.id)
+                                                                     Hash Cond: (cc.status_id = cct.id)
                                                                      Buffers: shared hit=15 read=25203
                                                                      ->  Hash Join  (cost=95.06..1543.75 rows=36 width=12) (actual time=227.857..1346.382 rows=36010 loops=1)
-                                                                           Hash Cond: (cc.subject_id = cct1.id)
+                                                                           Hash Cond: (cc.subject_id = cct.id)
                                                                            Buffers: shared hit=15 read=25202
                                                                            ->  Hash Join  (cost=95.03..1543.71 rows=71 width=16) (actual time=227.792..1336.099 rows=36010 loops=1)
                                                                                  Hash Cond: (mk.movie_id = cc.movie_id)
@@ -70,28 +70,28 @@
                                                                            ->  Hash  (cost=0.03..0.03 rows=2 width=4) (actual time=0.025..0.025 rows=2 loops=1)
                                                                                  Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                                  Buffers: shared hit=1
-                                                                                 ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=2 width=4) (actual time=0.014..0.018 rows=2 loops=1)
+                                                                                 ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=2 width=4) (actual time=0.014..0.018 rows=2 loops=1)
                                                                                        Filter: ((kind)::text = ANY ('{cast,crew}'::text[]))
                                                                                        Rows Removed by Filter: 2
                                                                                        Buffers: shared hit=1
                                                                      ->  Hash  (cost=0.03..0.03 rows=1 width=4) (actual time=6.528..6.528 rows=1 loops=1)
                                                                            Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                            Buffers: shared read=1
-                                                                           ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=6.506..6.508 rows=1 loops=1)
+                                                                           ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=6.506..6.508 rows=1 loops=1)
                                                                                  Filter: ((kind)::text = 'complete+verified'::text)
                                                                                  Rows Removed by Filter: 3
                                                                                  Buffers: shared read=1
                                                    ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.028..0.028 rows=1 loops=1)
                                                          Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                          Buffers: shared hit=1
-                                                         ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.021..0.023 rows=1 loops=1)
+                                                         ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.021..0.023 rows=1 loops=1)
                                                                Filter: ((info)::text = 'votes'::text)
                                                                Rows Removed by Filter: 112
                                                                Buffers: shared hit=1
                                  ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=22.617..22.617 rows=1 loops=1)
                                        Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                        Buffers: shared read=1
-                                       ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=22.565..22.605 rows=1 loops=1)
+                                       ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=22.565..22.605 rows=1 loops=1)
                                              Filter: ((info)::text = 'genres'::text)
                                              Rows Removed by Filter: 112
                                              Buffers: shared read=1

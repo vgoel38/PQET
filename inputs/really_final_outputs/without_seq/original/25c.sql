@@ -30,7 +30,7 @@
                                              ->  Index Scan using movie_id_movie_info_idx on movie_info_idx mi_idx  (cost=0.01..0.02 rows=3 width=14) (actual time=0.208..0.213 rows=2 loops=76714)
                                                    Index Cond: (movie_id = mk.movie_id)
                                                    Buffers: shared hit=285899 read=10026
-                                       ->  Index Scan using info_type_pkey on info_type it2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.004..0.004 rows=0 loops=191689)
+                                       ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.004..0.004 rows=0 loops=191689)
                                              Index Cond: (id = mi_idx.info_type_id)
                                              Filter: ((info)::text = 'votes'::text)
                                              Rows Removed by Filter: 1
@@ -45,7 +45,7 @@
                                  Filter: (note = ANY ('{(writer),"(head writer)","(written by)",(story),"(story editor)"}'::text[]))
                                  Rows Removed by Filter: 65
                                  Buffers: shared hit=4392902 read=199898
-                     ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.006..0.006 rows=1 loops=46694)
+                     ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.006..0.006 rows=1 loops=46694)
                            Index Cond: (id = mi.info_type_id)
                            Filter: ((info)::text = 'genres'::text)
                            Rows Removed by Filter: 0

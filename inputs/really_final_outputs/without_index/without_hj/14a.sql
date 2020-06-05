@@ -19,10 +19,10 @@
                                  Sort Method: quicksort  Memory: 53370kB
                                  Buffers: shared hit=7 read=161890
                                  ->  Nested Loop  (cost=0.00..11967.13 rows=6273 width=4) (actual time=7153.362..8476.422 rows=614251 loops=1)
-                                       Join Filter: (it1.id = mi.info_type_id)
+                                       Join Filter: (it.id = mi.info_type_id)
                                        Rows Removed by Join Filter: 92423
                                        Buffers: shared hit=3 read=161890
-                                       ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.026..0.040 rows=1 loops=1)
+                                       ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.026..0.040 rows=1 loops=1)
                                              Filter: ((info)::text = 'countries'::text)
                                              Rows Removed by Filter: 112
                                              Buffers: shared hit=1
@@ -35,10 +35,10 @@
                                  Sort Method: quicksort  Memory: 33581kB
                                  Buffers: shared hit=3 read=8451
                                  ->  Nested Loop  (cost=0.00..664.97 rows=11890 width=10) (actual time=0.038..516.900 rows=454230 loops=1)
-                                       Join Filter: (it2.id = mi_idx.info_type_id)
+                                       Join Filter: (it.id = mi_idx.info_type_id)
                                        Rows Removed by Join Filter: 889325
                                        Buffers: shared hit=3 read=8451
-                                       ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.026..0.029 rows=1 loops=1)
+                                       ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.026..0.029 rows=1 loops=1)
                                              Filter: ((info)::text = 'rating'::text)
                                              Rows Removed by Filter: 112
                                              Buffers: shared hit=1

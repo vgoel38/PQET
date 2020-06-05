@@ -17,7 +17,7 @@
                      Join Filter: (ci.person_id = pi.person_id)
                      Buffers: shared hit=113926 read=474
                      ->  Nested Loop  (cost=0.14..13.41 rows=1 width=41) (actual time=1009.756..2412.211 rows=15 loops=1)
-                           Join Filter: (cc.subject_id = cct1.id)
+                           Join Filter: (cc.subject_id = cct.id)
                            Buffers: shared hit=113743 read=462
                            ->  Nested Loop  (cost=0.14..13.38 rows=1 width=45) (actual time=1009.734..2412.116 rows=15 loops=1)
                                  Buffers: shared hit=113728 read=462
@@ -37,7 +37,7 @@
                                                    ->  Nested Loop  (cost=0.09..12.65 rows=1 width=41) (actual time=826.490..1240.100 rows=5 loops=1)
                                                          Buffers: shared hit=112647 read=212
                                                          ->  Nested Loop  (cost=0.08..12.64 rows=1 width=45) (actual time=244.268..1081.599 rows=540 loops=1)
-                                                               Join Filter: (cc.status_id = cct2.id)
+                                                               Join Filter: (cc.status_id = cct.id)
                                                                Buffers: shared hit=110613 read=86
                                                                ->  Nested Loop  (cost=0.08..12.61 rows=1 width=49) (actual time=244.240..1080.203 rows=540 loops=1)
                                                                      Buffers: shared hit=110073 read=86
@@ -83,7 +83,7 @@
                                                                            Filter: ((country_code)::text = '[us]'::text)
                                                                            Rows Removed by Filter: 1
                                                                            Buffers: shared hit=9470 read=34
-                                                               ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.001..0.001 rows=1 loops=540)
+                                                               ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.001..0.001 rows=1 loops=540)
                                                                      Filter: ((kind)::text = 'complete+verified'::text)
                                                                      Rows Removed by Filter: 3
                                                                      Buffers: shared hit=540
@@ -105,7 +105,7 @@
                                  ->  Index Scan using aka_name_idx_person on aka_name an  (cost=0.01..0.06 rows=2 width=4) (actual time=10.923..13.692 rows=3 loops=5)
                                        Index Cond: (person_id = ci.person_id)
                                        Buffers: shared hit=21 read=4
-                           ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.003..0.003 rows=1 loops=15)
+                           ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.003..0.003 rows=1 loops=15)
                                  Filter: ((kind)::text = 'cast'::text)
                                  Buffers: shared hit=15
                      ->  Index Scan using person_info_idx_pid on person_info pi  (cost=0.01..0.21 rows=5 width=8) (actual time=3.437..3.718 rows=163 loops=15)

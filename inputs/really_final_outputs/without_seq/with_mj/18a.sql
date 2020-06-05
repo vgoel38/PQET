@@ -23,13 +23,13 @@
                                        Sort Method: quicksort  Memory: 33847kB
                                        Buffers: shared hit=13572 read=12221
                                        ->  Merge Join  (cost=16407.86..16622.99 rows=12213 width=10) (actual time=1492.692..1598.259 rows=459925 loops=1)
-                                             Merge Cond: (it2.id = mi_idx.info_type_id)
+                                             Merge Cond: (it.id = mi_idx.info_type_id)
                                              Buffers: shared hit=13572 read=12221
                                              ->  Sort  (cost=6.13..6.13 rows=1 width=4) (actual time=0.077..0.077 rows=1 loops=1)
-                                                   Sort Key: it2.id
+                                                   Sort Key: it.id
                                                    Sort Method: quicksort  Memory: 25kB
                                                    Buffers: shared hit=1 read=1
-                                                   ->  Index Scan using info_type_info_key on info_type it2  (cost=0.00..6.13 rows=1 width=4) (actual time=0.055..0.056 rows=1 loops=1)
+                                                   ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=0.055..0.056 rows=1 loops=1)
                                                          Index Cond: ((info)::text = 'votes'::text)
                                                          Buffers: shared hit=1 read=1
                                              ->  Sort  (cost=16401.73..16508.88 rows=1380035 width=14) (actual time=1419.517..1466.591 rows=919851 loops=1)
@@ -45,9 +45,9 @@
                                  Sort Method: quicksort  Memory: 9046kB
                                  Buffers: shared hit=70084 read=201494
                                  ->  Merge Join  (cost=0.10..615305.68 rows=131290 width=46) (actual time=20884.363..20954.853 rows=121863 loops=1)
-                                       Merge Cond: (it1.id = mi.info_type_id)
+                                       Merge Cond: (it.id = mi.info_type_id)
                                        Buffers: shared hit=70084 read=201494
-                                       ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..9.21 rows=1 width=4) (actual time=0.097..0.102 rows=1 loops=1)
+                                       ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..9.21 rows=1 width=4) (actual time=0.097..0.102 rows=1 loops=1)
                                              Filter: ((info)::text = 'budget'::text)
                                              Rows Removed by Filter: 112
                                              Buffers: shared hit=2

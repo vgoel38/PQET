@@ -3,10 +3,10 @@
  Aggregate  (cost=86777.20..86777.20 rows=1 width=96) (actual time=14006.377..14006.378 rows=1 loops=1)
    Buffers: shared hit=2511585 read=79977
    ->  Hash Join  (cost=47121.86..86777.20 rows=2 width=46) (actual time=14006.370..14006.370 rows=0 loops=1)
-         Hash Cond: (ml.linked_movie_id = t2.id)
+         Hash Cond: (ml.linked_movie_id = t.id)
          Buffers: shared hit=2511585 read=79977
          ->  Hash Join  (cost=23708.70..63364.04 rows=2 width=33) (actual time=3310.980..3310.980 rows=0 loops=1)
-               Hash Cond: (mk.movie_id = t1.id)
+               Hash Cond: (mk.movie_id = t.id)
                Buffers: shared hit=21712 read=37069
                ->  Hash Join  (cost=295.54..39950.88 rows=2 width=24) (actual time=3310.978..3310.978 rows=0 loops=1)
                      Hash Cond: (ml.link_type_id = lt.id)
@@ -36,11 +36,11 @@
                            ->  Index Scan using link_type_pkey on link_type lt  (cost=0.00..9.19 rows=18 width=16) (actual time=4.348..4.365 rows=18 loops=1)
                                  Buffers: shared read=2
                ->  Hash  (cost=23042.05..23042.05 rows=2528312 width=21) (never executed)
-                     ->  Index Scan using title_idx_id on title t1  (cost=0.01..23042.05 rows=2528312 width=21) (never executed)
+                     ->  Index Scan using title_idx_id on title t  (cost=0.01..23042.05 rows=2528312 width=21) (never executed)
          ->  Hash  (cost=23042.05..23042.05 rows=2528312 width=21) (actual time=10669.595..10669.595 rows=2528312 loops=1)
                Buckets: 4194304  Batches: 1  Memory Usage: 168636kB
                Buffers: shared hit=2489870 read=42908
-               ->  Index Scan using title_idx_id on title t2  (cost=0.01..23042.05 rows=2528312 width=21) (actual time=32.016..9692.496 rows=2528312 loops=1)
+               ->  Index Scan using title_idx_id on title t  (cost=0.01..23042.05 rows=2528312 width=21) (actual time=32.016..9692.496 rows=2528312 loops=1)
                      Buffers: shared hit=2489870 read=42908
  Planning Time: 1267.814 ms
  Execution Time: 14024.725 ms

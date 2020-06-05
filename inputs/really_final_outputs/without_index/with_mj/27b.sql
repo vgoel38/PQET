@@ -1,5 +1,3 @@
- [                                                                                                                                                          
-   {                                                                                                                                                        
      "Plan": {                                                                                                                                              
        "Node Type": "Aggregate",                                                                                                                            
        "Strategy": "Plain",                                                                                                                                 
@@ -468,7 +466,7 @@
                                                            "Actual Rows": 95,                                                                               
                                                            "Actual Loops": 1,                                                                               
                                                            "Inner Unique": false,                                                                           
-                                                           "Merge Cond": "(cct2.id = cc.status_id)",                                                        
+                                                           "Merge Cond": "(cct.id = cc.status_id)",                                                        
                                                            "Shared Hit Blocks": 10,                                                                         
                                                            "Shared Read Blocks": 198776,                                                                    
                                                            "Shared Dirtied Blocks": 0,                                                                      
@@ -492,7 +490,7 @@
                                                                "Actual Total Time": 0.011,                                                                  
                                                                "Actual Rows": 1,                                                                            
                                                                "Actual Loops": 1,                                                                           
-                                                               "Sort Key": ["cct2.id"],                                                                     
+                                                               "Sort Key": ["cct.id"],                                                                     
                                                                "Sort Method": "quicksort",                                                                  
                                                                "Sort Space Used": 25,                                                                       
                                                                "Sort Space Type": "Memory",                                                                 
@@ -512,7 +510,7 @@
                                                                    "Parent Relationship": "Outer",                                                          
                                                                    "Parallel Aware": false,                                                                 
                                                                    "Relation Name": "comp_cast_type",                                                       
-                                                                   "Alias": "cct2",                                                                         
+                                                                   "Alias": "cct",                                                                         
                                                                    "Startup Cost": 0.00,                                                                    
                                                                    "Total Cost": 0.03,                                                                      
                                                                    "Plan Rows": 1,                                                                          
@@ -577,7 +575,7 @@
                                                                    "Actual Rows": 152,                                                                      
                                                                    "Actual Loops": 1,                                                                       
                                                                    "Inner Unique": false,                                                                   
-                                                                   "Merge Cond": "(cct1.id = cc.subject_id)",                                               
+                                                                   "Merge Cond": "(cct.id = cc.subject_id)",                                               
                                                                    "Shared Hit Blocks": 9,                                                                  
                                                                    "Shared Read Blocks": 198776,                                                            
                                                                    "Shared Dirtied Blocks": 0,                                                              
@@ -601,7 +599,7 @@
                                                                        "Actual Total Time": 0.008,                                                          
                                                                        "Actual Rows": 2,                                                                    
                                                                        "Actual Loops": 1,                                                                   
-                                                                       "Sort Key": ["cct1.id"],                                                             
+                                                                       "Sort Key": ["cct.id"],                                                             
                                                                        "Sort Method": "quicksort",                                                          
                                                                        "Sort Space Used": 25,                                                               
                                                                        "Sort Space Type": "Memory",                                                         
@@ -621,7 +619,7 @@
                                                                            "Parent Relationship": "Outer",                                                  
                                                                            "Parallel Aware": false,                                                         
                                                                            "Relation Name": "comp_cast_type",                                               
-                                                                           "Alias": "cct1",                                                                 
+                                                                           "Alias": "cct",                                                                 
                                                                            "Startup Cost": 0.00,                                                            
                                                                            "Total Cost": 0.03,                                                              
                                                                            "Plan Rows": 2,                                                                  
@@ -1236,5 +1234,3 @@
      "Triggers": [                                                                                                                                          
      ],                                                                                                                                                     
      "Execution Time": 14222.680                                                                                                                            
-   }                                                                                                                                                        
- ]

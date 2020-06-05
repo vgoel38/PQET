@@ -1,5 +1,3 @@
- [                                                                                          
-   {                                                                                        
      "Plan": {                                                                              
        "Node Type": "Aggregate",                                                            
        "Strategy": "Plain",                                                                 
@@ -38,7 +36,7 @@
            "Actual Rows": 0,                                                                
            "Actual Loops": 1,                                                               
            "Inner Unique": true,                                                            
-           "Merge Cond": "(ml.linked_movie_id = t2.id)",                                    
+           "Merge Cond": "(ml.linked_movie_id = t.id)",                                    
            "Shared Hit Blocks": 14,                                                         
            "Shared Read Blocks": 61554,                                                     
            "Shared Dirtied Blocks": 0,                                                      
@@ -144,7 +142,7 @@
                            "Actual Rows": 0,                                                
                            "Actual Loops": 1,                                               
                            "Inner Unique": false,                                           
-                           "Merge Cond": "(t1.id = mk.movie_id)",                           
+                           "Merge Cond": "(t.id = mk.movie_id)",                           
                            "Shared Hit Blocks": 10,                                         
                            "Shared Read Blocks": 61554,                                     
                            "Shared Dirtied Blocks": 0,                                      
@@ -170,7 +168,7 @@
                                "Actual Rows": 29997,                                        
                                "Actual Loops": 1,                                           
                                "Inner Unique": true,                                        
-                               "Merge Cond": "(ml.movie_id = t1.id)",                       
+                               "Merge Cond": "(ml.movie_id = t.id)",                       
                                "Shared Hit Blocks": 5,                                      
                                "Shared Read Blocks": 36156,                                 
                                "Shared Dirtied Blocks": 0,                                  
@@ -248,7 +246,7 @@
                                    "Actual Total Time": 2351.197,                           
                                    "Actual Rows": 186175,                                   
                                    "Actual Loops": 1,                                       
-                                   "Sort Key": ["t1.id"],                                   
+                                   "Sort Key": ["t.id"],                                   
                                    "Sort Method": "quicksort",                              
                                    "Sort Space Used": 275055,                               
                                    "Sort Space Type": "Memory",                             
@@ -268,7 +266,7 @@
                                        "Parent Relationship": "Outer",                      
                                        "Parallel Aware": false,                             
                                        "Relation Name": "title",                            
-                                       "Alias": "t1",                                       
+                                       "Alias": "t",                                       
                                        "Startup Cost": 0.00,                                
                                        "Total Cost": 1303.96,                               
                                        "Plan Rows": 2528312,                                
@@ -530,7 +528,7 @@
                "Actual Total Time": 0.000,                                                  
                "Actual Rows": 0,                                                            
                "Actual Loops": 0,                                                           
-               "Sort Key": ["t2.id"],                                                       
+               "Sort Key": ["t.id"],                                                       
                "Shared Hit Blocks": 0,                                                      
                "Shared Read Blocks": 0,                                                     
                "Shared Dirtied Blocks": 0,                                                  
@@ -547,7 +545,7 @@
                    "Parent Relationship": "Outer",                                          
                    "Parallel Aware": false,                                                 
                    "Relation Name": "title",                                                
-                   "Alias": "t2",                                                           
+                   "Alias": "t",                                                           
                    "Startup Cost": 0.00,                                                    
                    "Total Cost": 1303.96,                                                   
                    "Plan Rows": 2528312,                                                    
@@ -577,5 +575,3 @@
      "Triggers": [                                                                          
      ],                                                                                     
      "Execution Time": 6167.090                                                             
-   }                                                                                        
- ]

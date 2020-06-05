@@ -8,7 +8,7 @@
          ->  Nested Loop  (cost=0.08..647.69 rows=1 width=79) (actual time=19977.670..1010973.223 rows=4407 loops=1)
                Buffers: shared hit=1497599 read=285324
                ->  Nested Loop  (cost=0.07..647.50 rows=1 width=68) (actual time=3516.986..978399.619 rows=7112 loops=1)
-                     Join Filter: (mi.info_type_id = it1.id)
+                     Join Filter: (mi.info_type_id = it.id)
                      Rows Removed by Join Filter: 628
                      Buffers: shared hit=1474109 read=280330
                      ->  Nested Loop  (cost=0.07..647.45 rows=1 width=72) (actual time=3516.956..978271.859 rows=7740 loops=1)
@@ -18,10 +18,10 @@
                                  Join Filter: (mi_idx.movie_id = mi.movie_id)
                                  Buffers: shared hit=968882 read=158796
                                  ->  Nested Loop  (cost=0.04..646.58 rows=4 width=14) (actual time=122.524..32482.682 rows=50760 loops=1)
-                                       Join Filter: (mi_idx.info_type_id = it2.id)
+                                       Join Filter: (mi_idx.info_type_id = it.id)
                                        Rows Removed by Join Filter: 101960
                                        Buffers: shared hit=250671 read=29549
-                                       ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=21.213..21.221 rows=1 loops=1)
+                                       ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=21.213..21.221 rows=1 loops=1)
                                              Filter: ((info)::text = 'votes'::text)
                                              Rows Removed by Filter: 112
                                              Buffers: shared read=1
@@ -48,7 +48,7 @@
                                  Filter: (note = ANY ('{(writer),"(head writer)","(written by)",(story),"(story editor)"}'::text[]))
                                  Rows Removed by Filter: 47
                                  Buffers: shared hit=497487 read=121534
-                     ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.008..0.010 rows=1 loops=7740)
+                     ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.008..0.010 rows=1 loops=7740)
                            Filter: ((info)::text = 'genres'::text)
                            Rows Removed by Filter: 11
                            Buffers: shared hit=7740

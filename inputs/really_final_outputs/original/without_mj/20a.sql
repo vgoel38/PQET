@@ -20,18 +20,18 @@
                            ->  Nested Loop  (cost=0.05..1029.31 rows=5 width=33) (actual time=215.104..80333.350 rows=7363 loops=1)
                                  Buffers: shared hit=297958 read=23658
                                  ->  Nested Loop  (cost=0.04..1029.10 rows=5 width=8) (actual time=178.920..21377.867 rows=8765 loops=1)
-                                       Join Filter: (cc.status_id = cct2.id)
+                                       Join Filter: (cc.status_id = cct.id)
                                        Rows Removed by Join Filter: 8765
                                        Buffers: shared hit=270574 read=15962
-                                       ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.133..0.137 rows=2 loops=1)
+                                       ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.133..0.137 rows=2 loops=1)
                                              Filter: ((kind)::text ~~ '%complete%'::text)
                                              Rows Removed by Filter: 2
                                              Buffers: shared read=1
                                        ->  Nested Loop  (cost=0.04..1029.06 rows=20 width=12) (actual time=89.528..10681.927 rows=8765 loops=2)
-                                             Join Filter: (cc.subject_id = cct1.id)
+                                             Join Filter: (cc.subject_id = cct.id)
                                              Rows Removed by Join Filter: 4045
                                              Buffers: shared hit=270574 read=15961
-                                             ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.005..0.011 rows=1 loops=2)
+                                             ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.005..0.011 rows=1 loops=2)
                                                    Filter: ((kind)::text = 'cast'::text)
                                                    Rows Removed by Filter: 3
                                                    Buffers: shared hit=2

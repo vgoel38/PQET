@@ -34,7 +34,7 @@
                                                          Sort Method: quicksort  Memory: 884kB
                                                          Buffers: shared hit=2502468 read=80997
                                                          ->  Merge Join  (cost=59227.92..59228.70 rows=103 width=43) (actual time=12991.217..12993.645 rows=7820 loops=1)
-                                                               Merge Cond: (mi_idx.info_type_id = it2.id)
+                                                               Merge Cond: (mi_idx.info_type_id = it.id)
                                                                Buffers: shared hit=2502468 read=80997
                                                                ->  Sort  (cost=59221.80..59222.18 rows=4972 width=47) (actual time=12986.797..12988.383 rows=30139 loops=1)
                                                                      Sort Key: mi_idx.info_type_id
@@ -78,10 +78,10 @@
                                                                                  Rows Removed by Filter: 210615
                                                                                  Buffers: shared hit=14315 read=12220
                                                                ->  Sort  (cost=6.13..6.13 rows=1 width=4) (actual time=0.031..0.031 rows=1 loops=1)
-                                                                     Sort Key: it2.id
+                                                                     Sort Key: it.id
                                                                      Sort Method: quicksort  Memory: 25kB
                                                                      Buffers: shared hit=1 read=1
-                                                                     ->  Index Scan using info_type_info_key on info_type it2  (cost=0.00..6.13 rows=1 width=4) (actual time=0.021..0.021 rows=1 loops=1)
+                                                                     ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=0.021..0.021 rows=1 loops=1)
                                                                            Index Cond: ((info)::text = 'rating'::text)
                                                                            Buffers: shared hit=1 read=1
                                                    ->  Index Scan using movie_keyword_idx_mid on movie_keyword mk  (cost=0.01..39285.80 rows=4523930 width=8) (actual time=0.014..2316.351 rows=4851377 loops=1)
@@ -91,9 +91,9 @@
                                                    Sort Method: quicksort  Memory: 52175kB
                                                    Buffers: shared hit=566 read=145457
                                                    ->  Merge Join  (cost=0.02..616500.71 rows=5910 width=4) (actual time=6535.025..13320.471 rows=588764 loops=1)
-                                                         Merge Cond: (it1.id = mi.info_type_id)
+                                                         Merge Cond: (it.id = mi.info_type_id)
                                                          Buffers: shared hit=566 read=145457
-                                                         ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..9.21 rows=1 width=4) (actual time=0.025..0.052 rows=1 loops=1)
+                                                         ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..9.21 rows=1 width=4) (actual time=0.025..0.052 rows=1 loops=1)
                                                                Filter: ((info)::text = 'countries'::text)
                                                                Rows Removed by Filter: 112
                                                                Buffers: shared hit=2

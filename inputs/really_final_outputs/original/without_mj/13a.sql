@@ -3,10 +3,10 @@
  Aggregate  (cost=1512.91..1512.91 rows=1 width=96) (actual time=109061.747..109061.747 rows=1 loops=1)
    Buffers: shared hit=4607085 read=105885
    ->  Nested Loop  (cost=0.10..1512.91 rows=5 width=65) (actual time=13757.058..108934.266 rows=111101 loops=1)
-         Join Filter: (mi.info_type_id = it2.id)
+         Join Filter: (mi.info_type_id = it.id)
          Rows Removed by Join Filter: 405226
          Buffers: shared hit=4607085 read=105885
-         ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=2.810..2.822 rows=1 loops=1)
+         ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=2.810..2.822 rows=1 loops=1)
                Filter: ((info)::text = 'release dates'::text)
                Rows Removed by Filter: 112
                Buffers: shared read=1

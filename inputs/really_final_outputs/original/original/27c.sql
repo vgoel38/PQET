@@ -3,14 +3,14 @@
  Aggregate  (cost=129.29..129.29 rows=1 width=96) (actual time=2495.079..2495.080 rows=1 loops=1)
    Buffers: shared hit=59751 read=5781
    ->  Nested Loop  (cost=0.10..129.29 rows=1 width=48) (actual time=734.227..2481.688 rows=743 loops=1)
-         Join Filter: (cc.subject_id = cct1.id)
+         Join Filter: (cc.subject_id = cct.id)
          Rows Removed by Join Filter: 285
          Buffers: shared hit=59751 read=5781
          ->  Nested Loop  (cost=0.10..129.25 rows=1 width=52) (actual time=734.206..2478.465 rows=1028 loops=1)
                Join Filter: (ml.movie_id = mi.movie_id)
                Buffers: shared hit=58723 read=5781
                ->  Nested Loop  (cost=0.09..129.10 rows=1 width=72) (actual time=605.589..2238.438 rows=229 loops=1)
-                     Join Filter: (cc.status_id = cct2.id)
+                     Join Filter: (cc.status_id = cct.id)
                      Rows Removed by Join Filter: 57
                      Buffers: shared hit=55472 read=5755
                      ->  Nested Loop  (cost=0.09..129.07 rows=1 width=76) (actual time=605.563..2237.357 rows=229 loops=1)
@@ -70,7 +70,7 @@
                                  Index Cond: (id = mk.movie_id)
                                  Filter: ((production_year >= 1950) AND (production_year <= 2010))
                                  Buffers: shared hit=909 read=7
-                     ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=229)
+                     ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=229)
                            Filter: ((kind)::text ~~ 'complete%'::text)
                            Rows Removed by Filter: 2
                            Buffers: shared hit=229
@@ -79,7 +79,7 @@
                      Filter: (info = ANY ('{Sweden,Norway,Germany,Denmark,Swedish,Denish,Norwegian,German,English}'::text[]))
                      Rows Removed by Filter: 14
                      Buffers: shared hit=3251 read=26
-         ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.001..0.001 rows=1 loops=1028)
+         ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.001..0.001 rows=1 loops=1028)
                Filter: ((kind)::text = 'cast'::text)
                Rows Removed by Filter: 1
                Buffers: shared hit=1028

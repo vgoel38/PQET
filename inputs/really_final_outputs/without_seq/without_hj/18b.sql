@@ -13,7 +13,7 @@
                            ->  Nested Loop  (cost=0.03..13176.30 rows=145 width=31) (actual time=388.922..41305.980 rows=6152 loops=1)
                                  Buffers: shared hit=61614 read=27648
                                  ->  Nested Loop  (cost=0.02..12156.13 rows=468 width=10) (actual time=0.177..3244.254 rows=15849 loops=1)
-                                       Join Filter: (it2.id = mi_idx.info_type_id)
+                                       Join Filter: (it.id = mi_idx.info_type_id)
                                        Rows Removed by Join Filter: 37013
                                        Buffers: shared hit=13572 read=12221
                                        ->  Index Scan using movie_id_movie_info_idx on movie_info_idx mi_idx  (cost=0.01..12138.14 rows=52860 width=14) (actual time=0.122..3166.197 rows=52862 loops=1)
@@ -22,7 +22,7 @@
                                              Buffers: shared hit=13571 read=12220
                                        ->  Materialize  (cost=0.00..6.13 rows=1 width=4) (actual time=0.000..0.000 rows=1 loops=52862)
                                              Buffers: shared hit=1 read=1
-                                             ->  Index Scan using info_type_info_key on info_type it2  (cost=0.00..6.13 rows=1 width=4) (actual time=0.041..0.042 rows=1 loops=1)
+                                             ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=0.041..0.042 rows=1 loops=1)
                                                    Index Cond: ((info)::text = 'rating'::text)
                                                    Buffers: shared hit=1 read=1
                                  ->  Index Scan using title_idx_id on title t  (cost=0.01..2.18 rows=1 width=21) (actual time=2.399..2.399 rows=0 loops=15849)
@@ -35,7 +35,7 @@
                                  Filter: ((note IS NULL) AND (info = ANY ('{Horror,Thriller}'::text[])))
                                  Rows Removed by Filter: 18
                                  Buffers: shared hit=48870 read=22250
-                     ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.012..0.012 rows=1 loops=358)
+                     ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.012..0.012 rows=1 loops=358)
                            Index Cond: (id = mi.info_type_id)
                            Filter: ((info)::text = 'genres'::text)
                            Buffers: shared hit=716

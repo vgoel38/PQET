@@ -3,7 +3,7 @@
  Aggregate  (cost=129.29..129.29 rows=1 width=96) (actual time=4165.303..4165.303 rows=1 loops=1)
    Buffers: shared hit=63208 read=6021
    ->  Nested Loop  (cost=0.10..129.29 rows=1 width=48) (actual time=1909.116..4151.743 rows=743 loops=1)
-         Join Filter: (cc.status_id = cct2.id)
+         Join Filter: (cc.status_id = cct.id)
          Rows Removed by Join Filter: 285
          Buffers: shared hit=63208 read=6021
          ->  Nested Loop  (cost=0.10..129.25 rows=1 width=52) (actual time=1909.087..4147.886 rows=743 loops=1)
@@ -20,10 +20,10 @@
                            Join Filter: (ml.movie_id = mc.movie_id)
                            Buffers: shared hit=54854 read=5979
                            ->  Nested Loop  (cost=0.08..129.17 rows=1 width=53) (actual time=527.999..3469.359 rows=251 loops=1)
-                                 Join Filter: (cct1.id = cc.subject_id)
+                                 Join Filter: (cct.id = cc.subject_id)
                                  Rows Removed by Join Filter: 95
                                  Buffers: shared hit=53638 read=5956
-                                 ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.012..0.013 rows=1 loops=1)
+                                 ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.012..0.013 rows=1 loops=1)
                                        Filter: ((kind)::text = 'cast'::text)
                                        Rows Removed by Filter: 3
                                        Buffers: shared hit=1
@@ -79,7 +79,7 @@
                            Filter: (((country_code)::text <> '[pl]'::text) AND ((name ~~ '%Film%'::text) OR (name ~~ '%Warner%'::text)))
                            Rows Removed by Filter: 1
                            Buffers: shared hit=7611 read=41
-         ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=743)
+         ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=743)
                Filter: ((kind)::text ~~ 'complete%'::text)
                Rows Removed by Filter: 2
                Buffers: shared hit=743

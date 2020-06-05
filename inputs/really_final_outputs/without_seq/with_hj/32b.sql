@@ -3,10 +3,10 @@
  Aggregate  (cost=86777.20..86777.20 rows=1 width=96) (actual time=16707.218..16707.218 rows=1 loops=1)
    Buffers: shared hit=5044363 read=79977
    ->  Hash Join  (cost=47121.86..86777.20 rows=2 width=46) (actual time=14029.993..16686.460 rows=4388 loops=1)
-         Hash Cond: (ml.linked_movie_id = t2.id)
+         Hash Cond: (ml.linked_movie_id = t.id)
          Buffers: shared hit=5044363 read=79977
          ->  Hash Join  (cost=23708.70..63364.04 rows=2 width=33) (actual time=2807.238..5460.001 rows=4388 loops=1)
-               Hash Cond: (mk.movie_id = t1.id)
+               Hash Cond: (mk.movie_id = t.id)
                Buffers: shared hit=2554490 read=37069
                ->  Hash Join  (cost=295.54..39950.88 rows=2 width=24) (actual time=210.983..2861.471 rows=4388 loops=1)
                      Hash Cond: (ml.link_type_id = lt.id)
@@ -38,12 +38,12 @@
                ->  Hash  (cost=23042.05..23042.05 rows=2528312 width=21) (actual time=2583.234..2583.234 rows=2528312 loops=1)
                      Buckets: 4194304  Batches: 1  Memory Usage: 168636kB
                      Buffers: shared hit=2532778
-                     ->  Index Scan using title_idx_id on title t1  (cost=0.01..23042.05 rows=2528312 width=21) (actual time=0.023..1711.298 rows=2528312 loops=1)
+                     ->  Index Scan using title_idx_id on title t  (cost=0.01..23042.05 rows=2528312 width=21) (actual time=0.023..1711.298 rows=2528312 loops=1)
                            Buffers: shared hit=2532778
          ->  Hash  (cost=23042.05..23042.05 rows=2528312 width=21) (actual time=11212.556..11212.556 rows=2528312 loops=1)
                Buckets: 4194304  Batches: 1  Memory Usage: 168636kB
                Buffers: shared hit=2489870 read=42908
-               ->  Index Scan using title_idx_id on title t2  (cost=0.01..23042.05 rows=2528312 width=21) (actual time=42.478..10182.966 rows=2528312 loops=1)
+               ->  Index Scan using title_idx_id on title t  (cost=0.01..23042.05 rows=2528312 width=21) (actual time=42.478..10182.966 rows=2528312 loops=1)
                      Buffers: shared hit=2489870 read=42908
  Planning Time: 1161.322 ms
  Execution Time: 16714.977 ms

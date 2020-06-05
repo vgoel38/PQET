@@ -3,10 +3,10 @@
  Aggregate  (cost=1806.84..1806.84 rows=1 width=64) (actual time=2088.492..2088.492 rows=1 loops=1)
    Buffers: shared hit=305 read=8572
    ->  Nested Loop  (cost=0.10..1806.84 rows=1 width=59) (actual time=1333.557..2088.414 rows=10 loops=1)
-         Join Filter: (mi.info_type_id = it1.id)
+         Join Filter: (mi.info_type_id = it.id)
          Rows Removed by Join Filter: 1200
          Buffers: shared hit=305 read=8572
-         ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.077..0.084 rows=1 loops=1)
+         ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.077..0.084 rows=1 loops=1)
                Filter: ((info)::text = 'budget'::text)
                Rows Removed by Filter: 112
                Buffers: shared hit=1
@@ -25,14 +25,14 @@
                                  ->  Nested Loop  (cost=0.06..1805.34 rows=7 width=25) (actual time=1119.674..1203.392 rows=2 loops=1)
                                        Buffers: shared hit=19 read=8478
                                        ->  Hash Join  (cost=0.05..474.39 rows=12213 width=4) (actual time=780.828..780.900 rows=10 loops=1)
-                                             Hash Cond: (mi_idx.info_type_id = it2.id)
+                                             Hash Cond: (mi_idx.info_type_id = it.id)
                                              Buffers: shared hit=6 read=8451
                                              ->  Seq Scan on movie_info_idx mi_idx  (cost=0.00..360.56 rows=1380035 width=8) (actual time=0.009..511.877 rows=1380035 loops=1)
                                                    Buffers: shared hit=2 read=8451
                                              ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.063..0.063 rows=1 loops=1)
                                                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                    Buffers: shared hit=1
-                                                   ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.047..0.048 rows=1 loops=1)
+                                                   ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.047..0.048 rows=1 loops=1)
                                                          Filter: ((info)::text = 'bottom 10 rank'::text)
                                                          Rows Removed by Filter: 112
                                                          Buffers: shared hit=1

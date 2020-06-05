@@ -37,7 +37,7 @@
                                  ->  Materialize  (cost=580.32..12527.84 rows=48 width=14) (actual time=0.214..9.421 rows=213239 loops=37091)
                                        Buffers: shared hit=6 read=170341
                                        ->  Hash Join  (cost=580.32..12527.83 rows=48 width=14) (actual time=7926.471..9548.277 rows=213239 loops=1)
-                                             Hash Cond: (mi.info_type_id = it1.id)
+                                             Hash Cond: (mi.info_type_id = it.id)
                                              Buffers: shared hit=6 read=170341
                                              ->  Hash Join  (cost=580.27..12527.33 rows=5468 width=18) (actual time=707.400..9489.201 rows=256352 loops=1)
                                                    Hash Cond: (mi.movie_id = mi_idx.movie_id)
@@ -50,7 +50,7 @@
                                                          Buckets: 524288 (originally 16384)  Batches: 1 (originally 1)  Memory Usage: 21840kB
                                                          Buffers: shared hit=3 read=8451
                                                          ->  Hash Join  (cost=0.05..578.52 rows=11890 width=10) (actual time=0.128..567.697 rows=454230 loops=1)
-                                                               Hash Cond: (mi_idx.info_type_id = it2.id)
+                                                               Hash Cond: (mi_idx.info_type_id = it.id)
                                                                Buffers: shared hit=3 read=8451
                                                                ->  Seq Scan on movie_info_idx mi_idx  (cost=0.00..467.71 rows=1343551 width=14) (actual time=0.019..349.644 rows=1343555 loops=1)
                                                                      Filter: (info < '8.5'::text)
@@ -59,14 +59,14 @@
                                                                ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.060..0.060 rows=1 loops=1)
                                                                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                      Buffers: shared hit=1
-                                                                     ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.047..0.052 rows=1 loops=1)
+                                                                     ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.047..0.052 rows=1 loops=1)
                                                                            Filter: ((info)::text = 'rating'::text)
                                                                            Rows Removed by Filter: 112
                                                                            Buffers: shared hit=1
                                              ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.055..0.055 rows=1 loops=1)
                                                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                    Buffers: shared hit=1
-                                                   ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.014..0.041 rows=1 loops=1)
+                                                   ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.014..0.041 rows=1 loops=1)
                                                          Filter: ((info)::text = 'countries'::text)
                                                          Rows Removed by Filter: 112
                                                          Buffers: shared hit=1

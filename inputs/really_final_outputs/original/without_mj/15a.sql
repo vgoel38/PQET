@@ -7,7 +7,7 @@
          ->  Nested Loop  (cost=413.18..3343.73 rows=8 width=63) (actual time=2409.382..80605.442 rows=328 loops=1)
                Buffers: shared hit=107398 read=62797
                ->  Nested Loop  (cost=413.17..3343.63 rows=1 width=75) (actual time=1769.410..79848.229 rows=57 loops=1)
-                     Join Filter: (mi.info_type_id = it1.id)
+                     Join Filter: (mi.info_type_id = it.id)
                      Buffers: shared hit=107258 read=62729
                      ->  Nested Loop  (cost=413.17..3343.58 rows=1 width=79) (actual time=1766.608..79844.286 rows=57 loops=1)
                            Buffers: shared hit=107202 read=62728
@@ -50,7 +50,7 @@
                            ->  Index Scan using company_type_pkey on company_type ct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.389..0.389 rows=1 loops=57)
                                  Index Cond: (id = mc.company_type_id)
                                  Buffers: shared hit=112 read=2
-                     ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.062..0.062 rows=1 loops=57)
+                     ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.062..0.062 rows=1 loops=57)
                            Filter: ((info)::text = 'release dates'::text)
                            Rows Removed by Filter: 15
                            Buffers: shared hit=56 read=1

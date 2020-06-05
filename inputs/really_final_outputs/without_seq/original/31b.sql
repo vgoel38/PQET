@@ -39,7 +39,7 @@
                                                    ->  Index Scan using movie_id_movie_info_idx on movie_info_idx mi_idx  (cost=0.01..0.02 rows=3 width=14) (actual time=2.080..2.097 rows=3 loops=12705)
                                                          Index Cond: (movie_id = mk.movie_id)
                                                          Buffers: shared hit=49352 read=2966
-                                             ->  Index Scan using info_type_pkey on info_type it2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.005..0.005 rows=0 loops=39324)
+                                             ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.005..0.005 rows=0 loops=39324)
                                                    Index Cond: (id = mi_idx.info_type_id)
                                                    Filter: ((info)::text = 'votes'::text)
                                                    Rows Removed by Filter: 1
@@ -59,7 +59,7 @@
                                  Filter: (info = ANY ('{Horror,Thriller}'::text[]))
                                  Rows Removed by Filter: 284
                                  Buffers: shared hit=7178 read=1128
-                     ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.005..0.005 rows=1 loops=281)
+                     ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.005..0.005 rows=1 loops=281)
                            Index Cond: (id = mi.info_type_id)
                            Filter: ((info)::text = 'genres'::text)
                            Rows Removed by Filter: 0

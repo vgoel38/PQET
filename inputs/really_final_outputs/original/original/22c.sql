@@ -7,7 +7,7 @@
          Rows Removed by Join Filter: 3725
          Buffers: shared hit=1630570 read=81105
          ->  Nested Loop  (cost=0.09..517.76 rows=1 width=46) (actual time=337.286..184363.233 rows=23197 loops=1)
-               Join Filter: (mi.info_type_id = it1.id)
+               Join Filter: (mi.info_type_id = it.id)
                Rows Removed by Join Filter: 3340
                Buffers: shared hit=1607373 read=81105
                ->  Nested Loop  (cost=0.09..517.71 rows=1 width=50) (actual time=337.257..184080.698 rows=26537 loops=1)
@@ -24,10 +24,10 @@
                                        ->  Nested Loop  (cost=0.05..517.38 rows=1 width=26) (actual time=73.939..32983.019 rows=83144 loops=1)
                                              Buffers: shared hit=284528 read=43744
                                              ->  Nested Loop  (cost=0.04..517.29 rows=3 width=14) (actual time=51.705..19439.307 rows=31800 loops=1)
-                                                   Join Filter: (mi_idx.info_type_id = it2.id)
+                                                   Join Filter: (mi_idx.info_type_id = it.id)
                                                    Rows Removed by Join Filter: 62852
                                                    Buffers: shared hit=145689 read=25403
-                                                   ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.018..0.021 rows=1 loops=1)
+                                                   ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.018..0.021 rows=1 loops=1)
                                                          Filter: ((info)::text = 'rating'::text)
                                                          Rows Removed by Filter: 112
                                                          Buffers: shared hit=1
@@ -68,7 +68,7 @@
                            Filter: (info = ANY ('{Sweden,Norway,Germany,Denmark,Swedish,Danish,Norwegian,German,USA,American}'::text[]))
                            Rows Removed by Filter: 169
                            Buffers: shared hit=586473 read=26842
-               ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.005..0.008 rows=1 loops=26537)
+               ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.005..0.008 rows=1 loops=26537)
                      Filter: ((info)::text = 'countries'::text)
                      Rows Removed by Filter: 20
                      Buffers: shared hit=26537

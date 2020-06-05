@@ -60,23 +60,23 @@
                                              Buckets: 131072 (originally 16384)  Batches: 1 (originally 1)  Memory Usage: 4046kB
                                              Buffers: shared hit=86921 read=1106
                                              ->  Hash Join  (cost=15.32..3316.98 rows=8443 width=4) (actual time=57.741..387.067 rows=85941 loops=1)
-                                                   Hash Cond: (cc.status_id = cct2.id)
+                                                   Hash Cond: (cc.status_id = cct.id)
                                                    Buffers: shared hit=86921 read=1106
                                                    ->  Hash Join  (cost=6.14..3304.16 rows=33772 width=8) (actual time=57.639..351.222 rows=85941 loops=1)
-                                                         Hash Cond: (cc.subject_id = cct1.id)
+                                                         Hash Cond: (cc.subject_id = cct.id)
                                                          Buffers: shared hit=86920 read=1105
                                                          ->  Index Scan using movie_id_complete_cast on complete_cast cc  (cost=0.01..3283.51 rows=135086 width=12) (actual time=51.220..291.961 rows=135086 loops=1)
                                                                Buffers: shared hit=86920 read=1103
                                                          ->  Hash  (cost=6.12..6.12 rows=1 width=4) (actual time=6.369..6.369 rows=1 loops=1)
                                                                Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                Buffers: shared read=2
-                                                               ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct1  (cost=0.00..6.12 rows=1 width=4) (actual time=6.354..6.357 rows=1 loops=1)
+                                                               ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct  (cost=0.00..6.12 rows=1 width=4) (actual time=6.354..6.357 rows=1 loops=1)
                                                                      Index Cond: ((kind)::text = 'cast'::text)
                                                                      Buffers: shared read=2
                                                    ->  Hash  (cost=9.19..9.19 rows=1 width=4) (actual time=0.062..0.063 rows=2 loops=1)
                                                          Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                          Buffers: shared hit=1 read=1
-                                                         ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct2  (cost=0.00..9.19 rows=1 width=4) (actual time=0.047..0.049 rows=2 loops=1)
+                                                         ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..9.19 rows=1 width=4) (actual time=0.047..0.049 rows=2 loops=1)
                                                                Filter: ((kind)::text ~~ '%complete%'::text)
                                                                Rows Removed by Filter: 2
                                                                Buffers: shared hit=1 read=1

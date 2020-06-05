@@ -34,7 +34,7 @@
                                                                Filter: (info < '7.0'::text)
                                                                Rows Removed by Filter: 0
                                                                Buffers: shared hit=135543 read=9106
-                                                   ->  Index Scan using info_type_pkey on info_type it2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.003..0.003 rows=0 loops=85058)
+                                                   ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.003..0.003 rows=0 loops=85058)
                                                          Index Cond: (id = mi_idx.info_type_id)
                                                          Filter: ((info)::text = 'rating'::text)
                                                          Rows Removed by Filter: 1
@@ -63,7 +63,7 @@
                            Filter: (info = ANY ('{Germany,German,USA,American}'::text[]))
                            Rows Removed by Filter: 49
                            Buffers: shared hit=412 read=473
-               ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.010..0.010 rows=1 loops=35)
+               ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.010..0.010 rows=1 loops=35)
                      Index Cond: (id = mi.info_type_id)
                      Filter: ((info)::text = 'countries'::text)
                      Rows Removed by Filter: 0

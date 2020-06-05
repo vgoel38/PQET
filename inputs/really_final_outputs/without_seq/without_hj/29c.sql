@@ -53,7 +53,7 @@
                                                                                              Filter: ((production_year >= 2000) AND (production_year <= 2010))
                                                                                              Rows Removed by Filter: 0
                                                                                              Buffers: shared hit=205 read=155
-                                                                                 ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.016..0.016 rows=0 loops=61)
+                                                                                 ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.016..0.016 rows=0 loops=61)
                                                                                        Index Cond: (id = cc.status_id)
                                                                                        Filter: ((kind)::text = 'complete+verified'::text)
                                                                                        Rows Removed by Filter: 1
@@ -100,7 +100,7 @@
                      ->  Index Scan using char_name_pkey on char_name chn  (cost=0.01..0.18 rows=1 width=20) (actual time=0.014..0.014 rows=1 loops=79235)
                            Index Cond: (id = ci.person_role_id)
                            Buffers: shared hit=307857 read=123
-               ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=76995)
+               ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=76995)
                      Index Cond: (id = cc.subject_id)
                      Filter: ((kind)::text = 'cast'::text)
                      Rows Removed by Filter: 0

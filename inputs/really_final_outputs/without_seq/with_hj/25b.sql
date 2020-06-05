@@ -29,7 +29,7 @@
                            Hash Cond: (mi.movie_id = mi_idx.movie_id)
                            Buffers: shared hit=122795 read=251487
                            ->  Hash Join  (cost=6.14..615296.10 rows=277 width=46) (actual time=2312.299..21123.880 rows=30413 loops=1)
-                                 Hash Cond: (mi.info_type_id = it1.id)
+                                 Hash Cond: (mi.info_type_id = it.id)
                                  Buffers: shared hit=87582 read=202431
                                  ->  Index Scan using info_type_id_movie_info on movie_info mi  (cost=0.01..615287.40 rows=31269 width=50) (actual time=2300.684..21093.609 rows=30801 loops=1)
                                        Filter: (info = 'Horror'::text)
@@ -38,7 +38,7 @@
                                  ->  Hash  (cost=6.13..6.13 rows=1 width=4) (actual time=11.560..11.560 rows=1 loops=1)
                                        Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                        Buffers: shared read=2
-                                       ->  Index Scan using info_type_info_key on info_type it1  (cost=0.00..6.13 rows=1 width=4) (actual time=11.539..11.543 rows=1 loops=1)
+                                       ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=11.539..11.543 rows=1 loops=1)
                                              Index Cond: ((info)::text = 'genres'::text)
                                              Buffers: shared read=2
                            ->  Hash  (cost=51837.97..51837.97 rows=4 width=14) (actual time=4265.296..4265.296 rows=50760 loops=1)
@@ -62,14 +62,14 @@
                                              Buckets: 524288 (originally 16384)  Batches: 1 (originally 1)  Memory Usage: 22143kB
                                              Buffers: shared hit=13567 read=12226
                                              ->  Hash Join  (cost=6.14..12150.89 rows=12213 width=10) (actual time=48.375..1245.891 rows=459925 loops=1)
-                                                   Hash Cond: (mi_idx.info_type_id = it2.id)
+                                                   Hash Cond: (mi_idx.info_type_id = it.id)
                                                    Buffers: shared hit=13567 read=12226
                                                    ->  Index Scan using movie_id_movie_info_idx on movie_info_idx mi_idx  (cost=0.01..12031.00 rows=1380035 width=14) (actual time=48.274..850.791 rows=1380035 loops=1)
                                                          Buffers: shared hit=13565 read=12226
                                                    ->  Hash  (cost=6.13..6.13 rows=1 width=4) (actual time=0.051..0.051 rows=1 loops=1)
                                                          Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                          Buffers: shared hit=2
-                                                         ->  Index Scan using info_type_info_key on info_type it2  (cost=0.00..6.13 rows=1 width=4) (actual time=0.038..0.040 rows=1 loops=1)
+                                                         ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=0.038..0.040 rows=1 loops=1)
                                                                Index Cond: ((info)::text = 'votes'::text)
                                                                Buffers: shared hit=2
          ->  Hash  (cost=48812.37..48812.37 rows=1739438 width=19) (actual time=4836.542..4836.542 rows=1739579 loops=1)

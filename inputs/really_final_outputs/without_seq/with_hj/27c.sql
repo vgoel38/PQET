@@ -3,10 +3,10 @@
  Aggregate  (cost=715382.67..715382.67 rows=1 width=96) (actual time=108173.661..108173.662 rows=1 loops=1)
    Buffers: shared hit=11903168 read=313272
    ->  Hash Join  (cost=94593.56..715382.67 rows=1 width=48) (actual time=19456.129..108160.904 rows=743 loops=1)
-         Hash Cond: (cc.status_id = cct2.id)
+         Hash Cond: (cc.status_id = cct.id)
          Buffers: shared hit=11903168 read=313272
          ->  Hash Join  (cost=94584.38..715373.48 rows=1 width=52) (actual time=19456.075..108160.371 rows=743 loops=1)
-               Hash Cond: (cc.subject_id = cct1.id)
+               Hash Cond: (cc.subject_id = cct.id)
                Buffers: shared hit=11903164 read=313271
                ->  Hash Join  (cost=94578.25..715367.36 rows=1 width=56) (actual time=19456.034..108159.756 rows=1028 loops=1)
                      Hash Cond: (ml.link_type_id = lt.id)
@@ -97,13 +97,13 @@
                ->  Hash  (cost=6.12..6.12 rows=1 width=4) (actual time=0.010..0.010 rows=1 loops=1)
                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
                      Buffers: shared hit=2
-                     ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct1  (cost=0.00..6.12 rows=1 width=4) (actual time=0.008..0.008 rows=1 loops=1)
+                     ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct  (cost=0.00..6.12 rows=1 width=4) (actual time=0.008..0.008 rows=1 loops=1)
                            Index Cond: ((kind)::text = 'cast'::text)
                            Buffers: shared hit=2
          ->  Hash  (cost=9.19..9.19 rows=1 width=4) (actual time=0.023..0.023 rows=2 loops=1)
                Buckets: 1024  Batches: 1  Memory Usage: 9kB
                Buffers: shared hit=1 read=1
-               ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct2  (cost=0.00..9.19 rows=1 width=4) (actual time=0.018..0.019 rows=2 loops=1)
+               ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..9.19 rows=1 width=4) (actual time=0.018..0.019 rows=2 loops=1)
                      Filter: ((kind)::text ~~ 'complete%'::text)
                      Rows Removed by Filter: 2
                      Buffers: shared hit=1 read=1

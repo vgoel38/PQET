@@ -22,9 +22,9 @@
                                  Hash Cond: (mi.movie_id = at.movie_id)
                                  Buffers: shared hit=8 read=168080
                                  ->  Nested Loop  (cost=0.00..8407.60 rows=2 width=46) (actual time=1509.734..7871.298 rows=1771 loops=1)
-                                       Join Filter: (it1.id = mi.info_type_id)
+                                       Join Filter: (it.id = mi.info_type_id)
                                        Buffers: shared hit=3 read=161890
-                                       ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.014..0.028 rows=1 loops=1)
+                                       ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.014..0.028 rows=1 loops=1)
                                              Filter: ((info)::text = 'release dates'::text)
                                              Rows Removed by Filter: 112
                                              Buffers: shared hit=1

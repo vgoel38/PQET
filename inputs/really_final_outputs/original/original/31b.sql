@@ -7,11 +7,11 @@
          ->  Nested Loop  (cost=0.10..909.32 rows=1 width=69) (actual time=2075.454..12058.232 rows=84 loops=1)
                Buffers: shared hit=412252 read=5054
                ->  Nested Loop  (cost=0.08..909.31 rows=1 width=73) (actual time=1980.353..11673.516 rows=2686 loops=1)
-                     Join Filter: (mi_idx.info_type_id = it2.id)
+                     Join Filter: (mi_idx.info_type_id = it.id)
                      Rows Removed by Join Filter: 5372
                      Buffers: shared hit=401780 read=4761
                      ->  Nested Loop  (cost=0.08..909.26 rows=1 width=77) (actual time=1754.958..11549.421 rows=8058 loops=1)
-                           Join Filter: (mi.info_type_id = it1.id)
+                           Join Filter: (mi.info_type_id = it.id)
                            Buffers: shared hit=393722 read=4761
                            ->  Nested Loop  (cost=0.08..909.21 rows=1 width=81) (actual time=1754.926..11523.360 rows=8058 loops=1)
                                  Join Filter: (t.id = mi.movie_id)
@@ -58,11 +58,11 @@
                                        Filter: (info = ANY ('{Horror,Thriller}'::text[]))
                                        Rows Removed by Filter: 275
                                        Buffers: shared hit=142810 read=65
-                           ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=8058)
+                           ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=8058)
                                  Filter: ((info)::text = 'genres'::text)
                                  Rows Removed by Filter: 2
                                  Buffers: shared hit=8058
-                     ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.013..0.014 rows=1 loops=8058)
+                     ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.013..0.014 rows=1 loops=8058)
                            Filter: ((info)::text = 'votes'::text)
                            Rows Removed by Filter: 108
                            Buffers: shared hit=8058

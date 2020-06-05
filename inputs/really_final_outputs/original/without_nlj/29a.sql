@@ -3,10 +3,10 @@
  Aggregate  (cost=31223.50..31223.50 rows=1 width=96) (actual time=29178.330..29178.330 rows=1 loops=1)
    Buffers: shared hit=6701 read=579752
    ->  Hash Join  (cost=16474.34..31223.50 rows=1 width=48) (actual time=21341.195..29177.791 rows=1620 loops=1)
-         Hash Cond: (cc.status_id = cct2.id)
+         Hash Cond: (cc.status_id = cct.id)
          Buffers: shared hit=6701 read=579752
          ->  Hash Join  (cost=16474.31..31223.47 rows=1 width=52) (actual time=21341.089..29177.302 rows=1620 loops=1)
-               Hash Cond: (cc.subject_id = cct1.id)
+               Hash Cond: (cc.subject_id = cct.id)
                Buffers: shared hit=6697 read=579752
                ->  Hash Join  (cost=16474.28..31223.43 rows=1 width=56) (actual time=21341.044..29176.872 rows=1620 loops=1)
                      Hash Cond: (t.id = cc.movie_id)
@@ -143,14 +143,14 @@
                ->  Hash  (cost=0.03..0.03 rows=1 width=4) (actual time=0.014..0.014 rows=1 loops=1)
                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
                      Buffers: shared hit=1
-                     ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.006..0.009 rows=1 loops=1)
+                     ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.006..0.009 rows=1 loops=1)
                            Filter: ((kind)::text = 'cast'::text)
                            Rows Removed by Filter: 3
                            Buffers: shared hit=1
          ->  Hash  (cost=0.03..0.03 rows=1 width=4) (actual time=0.032..0.032 rows=1 loops=1)
                Buckets: 1024  Batches: 1  Memory Usage: 9kB
                Buffers: shared hit=1
-               ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=1 width=4) (actual time=0.017..0.018 rows=1 loops=1)
+               ->  Seq Scan on comp_cast_type cct  (cost=0.00..0.03 rows=1 width=4) (actual time=0.017..0.018 rows=1 loops=1)
                      Filter: ((kind)::text = 'complete+verified'::text)
                      Rows Removed by Filter: 3
                      Buffers: shared hit=1

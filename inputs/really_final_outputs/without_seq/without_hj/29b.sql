@@ -83,7 +83,7 @@
                                                    ->  Index Scan using movie_id_complete_cast on complete_cast cc  (cost=0.01..0.01 rows=1 width=12) (actual time=2.714..2.714 rows=1 loops=15)
                                                          Index Cond: (movie_id = mk.movie_id)
                                                          Buffers: shared hit=58 read=2
-                                             ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.005..0.005 rows=1 loops=15)
+                                             ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.005..0.005 rows=1 loops=15)
                                                    Index Cond: (id = cc.status_id)
                                                    Filter: ((kind)::text = 'complete+verified'::text)
                                                    Buffers: shared hit=30
@@ -99,7 +99,7 @@
                                  Index Cond: (id = ci.person_role_id)
                                  Filter: (name = 'Queen'::text)
                                  Buffers: shared hit=57 read=3
-                     ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.006..0.006 rows=1 loops=15)
+                     ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.006..0.006 rows=1 loops=15)
                            Index Cond: (id = cc.subject_id)
                            Filter: ((kind)::text = 'cast'::text)
                            Buffers: shared hit=30

@@ -13,9 +13,9 @@
                      Sort Method: quicksort  Memory: 27535kB
                      Buffers: shared hit=14778 read=170742
                      ->  Merge Join  (cost=0.02..616474.02 rows=2892 width=4) (actual time=1885.004..17839.813 rows=325255 loops=1)
-                           Merge Cond: (it1.id = mi.info_type_id)
+                           Merge Cond: (it.id = mi.info_type_id)
                            Buffers: shared hit=14774 read=170742
-                           ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..9.21 rows=1 width=4) (actual time=0.012..0.041 rows=1 loops=1)
+                           ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..9.21 rows=1 width=4) (actual time=0.012..0.041 rows=1 loops=1)
                                  Filter: ((info)::text = 'genres'::text)
                                  Rows Removed by Filter: 112
                                  Buffers: shared hit=2
@@ -59,13 +59,13 @@
                                        Sort Method: quicksort  Memory: 8771kB
                                        Buffers: shared hit=13572 read=12221
                                        ->  Merge Join  (cost=12670.34..12700.42 rows=1708 width=10) (actual time=1583.532..1610.446 rows=121572 loops=1)
-                                             Merge Cond: (it2.id = mi_idx.info_type_id)
+                                             Merge Cond: (it.id = mi_idx.info_type_id)
                                              Buffers: shared hit=13572 read=12221
                                              ->  Sort  (cost=6.13..6.13 rows=1 width=4) (actual time=0.049..0.049 rows=1 loops=1)
-                                                   Sort Key: it2.id
+                                                   Sort Key: it.id
                                                    Sort Method: quicksort  Memory: 25kB
                                                    Buffers: shared hit=1 read=1
-                                                   ->  Index Scan using info_type_info_key on info_type it2  (cost=0.00..6.13 rows=1 width=4) (actual time=0.044..0.045 rows=1 loops=1)
+                                                   ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=0.044..0.045 rows=1 loops=1)
                                                          Index Cond: ((info)::text = 'rating'::text)
                                                          Buffers: shared hit=1 read=1
                                              ->  Sort  (cost=12664.21..12679.19 rows=192955 width=14) (actual time=1571.963..1581.185 rows=192935 loops=1)

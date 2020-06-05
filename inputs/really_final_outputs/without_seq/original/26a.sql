@@ -34,11 +34,11 @@
                                                                ->  Index Scan using movie_id_complete_cast on complete_cast cc  (cost=0.01..0.01 rows=1 width=12) (actual time=0.068..0.096 rows=0 loops=24091)
                                                                      Index Cond: (movie_id = mk.movie_id)
                                                                      Buffers: shared hit=80755 read=1038
-                                                         ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.005..0.005 rows=1 loops=9392)
+                                                         ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.005..0.005 rows=1 loops=9392)
                                                                Index Cond: (id = cc.status_id)
                                                                Filter: ((kind)::text ~~ '%complete%'::text)
                                                                Buffers: shared hit=18784
-                                                   ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct1  (cost=0.00..0.00 rows=1 width=4) (actual time=0.004..0.004 rows=1 loops=9392)
+                                                   ->  Index Scan using comp_cast_type_pkey on comp_cast_type cct  (cost=0.00..0.00 rows=1 width=4) (actual time=0.004..0.004 rows=1 loops=9392)
                                                          Index Cond: (id = cc.subject_id)
                                                          Filter: ((kind)::text = 'cast'::text)
                                                          Rows Removed by Filter: 0
@@ -48,7 +48,7 @@
                                                    Filter: (info > '7.0'::text)
                                                    Rows Removed by Filter: 3
                                                    Buffers: shared hit=20651 read=5082
-                                       ->  Index Scan using info_type_pkey on info_type it2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.007..0.007 rows=1 loops=2286)
+                                       ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.007..0.007 rows=1 loops=2286)
                                              Index Cond: (id = mi_idx.info_type_id)
                                              Filter: ((info)::text = 'rating'::text)
                                              Rows Removed by Filter: 0

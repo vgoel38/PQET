@@ -54,7 +54,7 @@
                ->  Index Scan using movie_id_movie_info on movie_info mi  (cost=0.01..0.25 rows=9 width=50) (actual time=0.755..3.416 rows=31 loops=16470)
                      Index Cond: (movie_id = mc.movie_id)
                      Buffers: shared hit=174580 read=52727
-         ->  Index Scan using info_type_pkey on info_type it2  (cost=0.00..0.00 rows=1 width=4) (actual time=0.003..0.003 rows=0 loops=516327)
+         ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.003..0.003 rows=0 loops=516327)
                Index Cond: (id = mi.info_type_id)
                Filter: ((info)::text = 'release dates'::text)
                Rows Removed by Filter: 1

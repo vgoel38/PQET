@@ -55,9 +55,9 @@
                      ->  Materialize  (cost=0.00..8407.60 rows=2 width=46) (actual time=0.008..0.124 rows=1771 loops=192112)
                            Buffers: shared read=161893
                            ->  Nested Loop  (cost=0.00..8407.60 rows=2 width=46) (actual time=1554.007..8667.167 rows=1771 loops=1)
-                                 Join Filter: (it1.id = mi.info_type_id)
+                                 Join Filter: (it.id = mi.info_type_id)
                                  Buffers: shared read=161893
-                                 ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=25.339..25.352 rows=1 loops=1)
+                                 ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=25.339..25.352 rows=1 loops=1)
                                        Filter: ((info)::text = 'release dates'::text)
                                        Rows Removed by Filter: 112
                                        Buffers: shared read=1

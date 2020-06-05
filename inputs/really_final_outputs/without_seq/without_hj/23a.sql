@@ -25,14 +25,14 @@
                                                    ->  Nested Loop  (cost=0.03..23638.97 rows=80426 width=16) (actual time=6.963..4893.627 rows=227682 loops=1)
                                                          Buffers: shared hit=192204 read=18297
                                                          ->  Nested Loop  (cost=0.02..3319.95 rows=33772 width=4) (actual time=6.824..450.699 rows=24592 loops=1)
-                                                               Join Filter: (cc.status_id = cct1.id)
+                                                               Join Filter: (cc.status_id = cct.id)
                                                                Rows Removed by Join Filter: 110494
                                                                Buffers: shared hit=86927 read=1098
                                                                ->  Index Scan using movie_id_complete_cast on complete_cast cc  (cost=0.01..3283.51 rows=135086 width=8) (actual time=0.027..300.178 rows=135086 loops=1)
                                                                      Buffers: shared hit=86926 read=1097
                                                                ->  Materialize  (cost=0.00..6.12 rows=1 width=4) (actual time=0.000..0.000 rows=1 loops=135086)
                                                                      Buffers: shared hit=1 read=1
-                                                                     ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct1  (cost=0.00..6.12 rows=1 width=4) (actual time=0.044..0.046 rows=1 loops=1)
+                                                                     ->  Index Scan using comp_cast_type_kind_key on comp_cast_type cct  (cost=0.00..6.12 rows=1 width=4) (actual time=0.044..0.046 rows=1 loops=1)
                                                                            Index Cond: ((kind)::text = 'complete+verified'::text)
                                                                            Buffers: shared hit=1 read=1
                                                          ->  Index Scan using movie_id_movie_companies on movie_companies mc  (cost=0.01..0.60 rows=2 width=12) (actual time=0.115..0.174 rows=9 loops=24592)
@@ -62,7 +62,7 @@
                                  Index Cond: (id = mc.company_type_id)
                                  Heap Fetches: 0
                                  Buffers: shared hit=6 read=1
-                     ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.012..0.012 rows=1 loops=6)
+                     ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.03 rows=1 width=4) (actual time=0.012..0.012 rows=1 loops=6)
                            Index Cond: (id = mi.info_type_id)
                            Filter: ((info)::text = 'release dates'::text)
                            Buffers: shared hit=12

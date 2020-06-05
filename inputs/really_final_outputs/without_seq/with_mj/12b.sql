@@ -13,9 +13,9 @@
                      Sort Method: quicksort  Memory: 9046kB
                      Buffers: shared hit=70088 read=201494
                      ->  Merge Join  (cost=0.10..615305.68 rows=131290 width=46) (actual time=21420.197..21477.680 rows=121863 loops=1)
-                           Merge Cond: (it1.id = mi.info_type_id)
+                           Merge Cond: (it.id = mi.info_type_id)
                            Buffers: shared hit=70084 read=201494
-                           ->  Index Scan using info_type_pkey on info_type it1  (cost=0.00..9.21 rows=1 width=4) (actual time=0.089..0.095 rows=1 loops=1)
+                           ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..9.21 rows=1 width=4) (actual time=0.089..0.095 rows=1 loops=1)
                                  Filter: ((info)::text = 'budget'::text)
                                  Rows Removed by Filter: 112
                                  Buffers: shared hit=2
@@ -30,7 +30,7 @@
                Sort Method: quicksort  Memory: 28kB
                Buffers: shared hit=276472 read=41972
                ->  Merge Join  (cost=47462.05..47555.73 rows=5318 width=8) (actual time=7248.212..7248.237 rows=72 loops=1)
-                     Merge Cond: (mi_idx.info_type_id = it2.id)
+                     Merge Cond: (mi_idx.info_type_id = it.id)
                      Buffers: shared hit=276472 read=41972
                      ->  Sort  (cost=47455.92..47502.58 rows=600981 width=12) (actual time=6977.188..7058.623 rows=1742698 loops=1)
                            Sort Key: mi_idx.info_type_id
@@ -66,10 +66,10 @@
                                  ->  Index Scan using movie_info_idx_idx_mid on movie_info_idx mi_idx  (cost=0.01..12031.00 rows=1380035 width=8) (actual time=0.022..965.484 rows=2450477 loops=1)
                                        Buffers: shared hit=44746 read=12220
                      ->  Sort  (cost=6.13..6.13 rows=1 width=4) (actual time=0.059..0.059 rows=1 loops=1)
-                           Sort Key: it2.id
+                           Sort Key: it.id
                            Sort Method: quicksort  Memory: 25kB
                            Buffers: shared hit=1 read=1
-                           ->  Index Scan using info_type_info_key on info_type it2  (cost=0.00..6.13 rows=1 width=4) (actual time=0.047..0.047 rows=1 loops=1)
+                           ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=0.047..0.047 rows=1 loops=1)
                                  Index Cond: ((info)::text = 'bottom 10 rank'::text)
                                  Buffers: shared hit=1 read=1
  Planning Time: 5130.888 ms
