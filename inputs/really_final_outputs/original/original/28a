@@ -1,0 +1,102 @@
+                                                                                                                 QUERY PLAN                                                                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=516.82..516.82 rows=1 width=96) (actual time=90862.413..90862.413 rows=1 loops=1)
+   Buffers: shared hit=482735 read=39048
+   ->  Nested Loop  (cost=0.11..516.82 rows=1 width=42) (actual time=656.370..90855.447 rows=4803 loops=1)
+         Join Filter: (cc.status_id = cct2.id)
+         Rows Removed by Join Filter: 13665
+         Buffers: shared hit=482735 read=39048
+         ->  Nested Loop  (cost=0.11..516.79 rows=1 width=46) (actual time=656.355..90824.939 rows=6156 loops=1)
+               Join Filter: (mc.company_type_id = ct.id)
+               Buffers: shared hit=476579 read=39048
+               ->  Nested Loop  (cost=0.11..516.76 rows=1 width=50) (actual time=656.335..90800.848 rows=6156 loops=1)
+                     Join Filter: (it1.id = mi.info_type_id)
+                     Rows Removed by Join Filter: 677
+                     Buffers: shared hit=470423 read=39048
+                     ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.010..0.048 rows=1 loops=1)
+                           Filter: ((info)::text = 'countries'::text)
+                           Rows Removed by Filter: 112
+                           Buffers: shared hit=1
+                     ->  Nested Loop  (cost=0.11..516.71 rows=1 width=54) (actual time=656.320..90796.286 rows=6833 loops=1)
+                           Join Filter: (t.id = mi.movie_id)
+                           Buffers: shared hit=470422 read=39048
+                           ->  Nested Loop  (cost=0.09..516.55 rows=1 width=70) (actual time=213.888..63043.183 rows=5608 loops=1)
+                                 Join Filter: (kt.id = t.kind_id)
+                                 Rows Removed by Join Filter: 511
+                                 Buffers: shared hit=317431 read=34081
+                                 ->  Nested Loop  (cost=0.09..516.52 rows=1 width=74) (actual time=213.850..63010.718 rows=5756 loops=1)
+                                       Buffers: shared hit=311675 read=34081
+                                       ->  Nested Loop  (cost=0.08..516.48 rows=1 width=49) (actual time=174.024..44692.948 rows=15957 loops=1)
+                                             Buffers: shared hit=250823 read=31048
+                                             ->  Nested Loop  (cost=0.07..516.38 rows=1 width=34) (actual time=166.534..38991.626 rows=17044 loops=1)
+                                                   Buffers: shared hit=183510 read=30126
+                                                   ->  Nested Loop  (cost=0.05..516.35 rows=1 width=22) (actual time=138.043..21834.077 rows=5973 loops=1)
+                                                         Join Filter: (it2.id = mi_idx.info_type_id)
+                                                         Rows Removed by Join Filter: 12026
+                                                         Buffers: shared hit=161184 read=21833
+                                                         ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.012..0.020 rows=1 loops=1)
+                                                               Filter: ((info)::text = 'rating'::text)
+                                                               Rows Removed by Filter: 112
+                                                               Buffers: shared hit=1
+                                                         ->  Nested Loop  (cost=0.05..516.30 rows=29 width=26) (actual time=138.018..21823.734 rows=17999 loops=1)
+                                                               Buffers: shared hit=161183 read=21833
+                                                               ->  Nested Loop  (cost=0.04..516.07 rows=10 width=12) (actual time=118.098..11170.626 rows=6216 loops=1)
+                                                                     Join Filter: (cct1.id = cc.subject_id)
+                                                                     Rows Removed by Join Filter: 13808
+                                                                     Buffers: shared hit=140547 read=17344
+                                                                     ->  Seq Scan on comp_cast_type cct1  (cost=0.00..0.03 rows=1 width=4) (actual time=0.003..0.008 rows=1 loops=1)
+                                                                           Filter: ((kind)::text = 'crew'::text)
+                                                                           Rows Removed by Filter: 3
+                                                                           Buffers: shared hit=1
+                                                                     ->  Nested Loop  (cost=0.04..516.03 rows=41 width=16) (actual time=83.075..11157.900 rows=20024 loops=1)
+                                                                           Buffers: shared hit=140546 read=17344
+                                                                           ->  Nested Loop  (cost=0.03..514.14 rows=135 width=4) (actual time=52.976..9857.247 rows=37091 loops=1)
+                                                                                 Buffers: shared hit=10145 read=16297
+                                                                                 ->  Index Scan using keyword_idx_keyword on keyword k  (cost=0.01..24.53 rows=4 width=4) (actual time=38.027..112.871 rows=3 loops=1)
+                                                                                       Index Cond: (keyword = ANY ('{murder,murder-in-title,blood,violence}'::text[]))
+                                                                                       Buffers: shared hit=8 read=10
+                                                                                 ->  Index Scan using movie_keyword_idx_keywordid on movie_keyword mk  (cost=0.01..122.40 rows=39 width=8) (actual time=13.749..3240.356 rows=12364 loops=3)
+                                                                                       Index Cond: (keyword_id = k.id)
+                                                                                       Buffers: shared hit=10137 read=16287
+                                                                           ->  Index Scan using complete_cast_idx_mid on complete_cast cc  (cost=0.01..0.01 rows=1 width=12) (actual time=0.026..0.033 rows=1 loops=37091)
+                                                                                 Index Cond: (movie_id = mk.movie_id)
+                                                                                 Buffers: shared hit=130401 read=1047
+                                                               ->  Index Scan using movie_info_idx_idx_mid on movie_info_idx mi_idx  (cost=0.01..0.02 rows=3 width=14) (actual time=1.689..1.711 rows=3 loops=6216)
+                                                                     Index Cond: (movie_id = mk.movie_id)
+                                                                     Filter: (info < '8.5'::text)
+                                                                     Rows Removed by Filter: 0
+                                                                     Buffers: shared hit=20636 read=4489
+                                                   ->  Index Scan using movie_companies_idx_mid on movie_companies mc  (cost=0.01..0.03 rows=1 width=12) (actual time=2.496..2.869 rows=3 loops=5973)
+                                                         Index Cond: (movie_id = mk.movie_id)
+                                                         Filter: ((note !~~ '%(USA)%'::text) AND (note ~~ '%(200%)%'::text))
+                                                         Rows Removed by Filter: 11
+                                                         Buffers: shared hit=22326 read=8293
+                                             ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..0.10 rows=1 width=23) (actual time=0.332..0.332 rows=1 loops=17044)
+                                                   Index Cond: (id = mc.company_id)
+                                                   Filter: ((country_code)::text <> '[us]'::text)
+                                                   Rows Removed by Filter: 0
+                                                   Buffers: shared hit=67313 read=922
+                                       ->  Index Scan using title_idx_id on title t  (cost=0.01..0.04 rows=1 width=25) (actual time=1.146..1.146 rows=0 loops=15957)
+                                             Index Cond: (id = mk.movie_id)
+                                             Filter: (production_year > 2000)
+                                             Rows Removed by Filter: 1
+                                             Buffers: shared hit=60852 read=3033
+                                 ->  Seq Scan on kind_type kt  (cost=0.00..0.03 rows=2 width=4) (actual time=0.002..0.002 rows=1 loops=5756)
+                                       Filter: ((kind)::text = ANY ('{movie,episode}'::text[]))
+                                       Rows Removed by Filter: 0
+                                       Buffers: shared hit=5756
+                           ->  Index Scan using movie_info_idx_mid on movie_info mi  (cost=0.01..0.16 rows=1 width=8) (actual time=4.450..4.947 rows=1 loops=5608)
+                                 Index Cond: (movie_id = mk.movie_id)
+                                 Filter: (info = ANY ('{Sweden,Norway,Germany,Denmark,Swedish,Danish,Norwegian,German,USA,American}'::text[]))
+                                 Rows Removed by Filter: 257
+                                 Buffers: shared hit=152991 read=4967
+               ->  Seq Scan on company_type ct  (cost=0.00..0.03 rows=4 width=4) (actual time=0.001..0.001 rows=1 loops=6156)
+                     Buffers: shared hit=6156
+         ->  Seq Scan on comp_cast_type cct2  (cost=0.00..0.03 rows=3 width=4) (actual time=0.001..0.002 rows=3 loops=6156)
+               Filter: ((kind)::text <> 'complete+verified'::text)
+               Rows Removed by Filter: 0
+               Buffers: shared hit=6156
+ Planning Time: 15265.594 ms
+ Execution Time: 90862.936 ms
+(98 rows)
+

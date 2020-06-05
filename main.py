@@ -3,6 +3,7 @@ from display_plan import display_plan
 from postgres_cost_model import *
 from predictions import *
 from qerror import qerror
+import getopt
 
 def find_output_plan(input_plan_dict, query_string):
 
@@ -51,9 +52,11 @@ def parse_plan_json(input_current_node, output_current_node, output_plan_root, p
 			parse_plan_json(input_current_node['Plans'][i], output_current_node['Nodes'][i], output_plan_root, input_current_node, query_string)
 
 	#finding current operator's predictions
-	output_current_node['Actual Time'] = input_current_node['Actual Total Time'] * input_current_node['Actual Loops'] - subtree_time
+	output_current_node['Actual Time'] = max(0,input_current_node['Actual Total Time'] * input_current_node['Actual Loops'] - subtree_time)
 	output_current_node['Postgres Estimated Time'] = postgres_cost_model(input_current_node, parent_node, query_string)
 	output_current_node['Our Estimated Time'] = predictions(input_current_node, parent_node, query_string)
+	output_current_node['Postgres Qerror'] = qerror(output_current_node['Actual Time'], output_current_node['Postgres Estimated Time'])
+	output_current_node['Our Qerror'] = qerror(output_current_node['Actual Time'], output_current_node['Our Estimated Time'])
 	
 	#calculating qerror on current operator's estimates
 	output_plan_root['Postgres Estimated Plan Time'] += output_current_node['Postgres Estimated Time']
@@ -79,11 +82,26 @@ def main(file_plan, file_query):
 
 	output_plan_dict = find_output_plan(input_plan_dict, query_string)
 	display_plan(output_plan_dict, 'output.json')
+	return output_plan_dict
 
 if __name__ == "__main__":
 
-	main('input.json', 'sample_plans/query')
+	argv = sys.argv[1:]
+	opts, args = getopt.getopt(argv, "f:")
+	f = ''
+	for opt, arg in opts:
+		if opt == "-f":
+			f = arg
 
+	# main('inputs/really_final_outputs/original/with_nlj/13b.sql', 'sample_plans/query')
+	output_plan = main(f, 'sample_plans/query')
+	print('Actual Plan Time = ', output_plan['Actual Plan Time'])
+	print('Postgres Estimated Plan Time = ', output_plan['Postgres Estimated Plan Time'])
+	print('Our Estimated Plan Time = ', output_plan['Our Estimated Plan Time'])
+	print('Postgres Qerror = ', output_plan['Postgres Qerror'])
+	print('Our Qerror = ', output_plan['Our Qerror'])
+	print('Postgres Weighted Qerror = ', output_plan['Postgres Weighted Qerror'])
+	print('Our Weighted Qerror = ', output_plan['Our Weighted Qerror'])
 	# main('sample_plans/seq_scan.json', 'sample_plans/query')
 	# main('sample_plans/index_scan.json', 'sample_plans/query')
 	# main('sample_plans/nlj_seq_seq.json', 'sample_plans/query')

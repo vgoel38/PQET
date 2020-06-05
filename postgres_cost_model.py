@@ -192,13 +192,13 @@ def pg_seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num
 def pg_index_scan(node, parent_node):
 	if node['Actual Loops'] == 1:
 		try:
-			return float(node['Total Cost']) * float(node['Actual Rows']) / float(node['Plan Rows'])
+			return float(node['Total Cost']) * float(parent_node['Actual Rows']) * float(parent_node['Actual Loops']) / float(node['Plan Rows'])
 		except:
 			print('unable to find postgres index scan cost')
 			return 0
 	else:
 		try:
-			return float(node['Total Cost']) * float(parent_node['Actual Rows']) / (float(node['Plan Rows']) / float(parent_node['Plans'][0]['Plans Rows']))
+			return float(node['Total Cost']) * float(parent_node['Actual Rows']) * float(parent_node['Actual Loops']) / float(node['Plan Rows'])
 		except:
 			print('unable to find postgres index scan cost')
 			return 0

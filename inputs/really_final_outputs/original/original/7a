@@ -1,0 +1,60 @@
+                                                                                                            QUERY PLAN                                                                                                             
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=2048.59..2048.59 rows=1 width=64) (actual time=24868.463..24868.463 rows=1 loops=1)
+   Buffers: shared hit=547817 read=51349
+   ->  Nested Loop  (cost=0.06..2048.59 rows=1 width=32) (actual time=382.716..24868.369 rows=32 loops=1)
+         Buffers: shared hit=547817 read=51349
+         ->  Nested Loop  (cost=0.04..2048.57 rows=1 width=23) (actual time=351.685..23493.988 rows=151 loops=1)
+               Join Filter: (ml.link_type_id = lt.id)
+               Rows Removed by Join Filter: 359
+               Buffers: shared hit=547291 read=51271
+               ->  Nested Loop  (cost=0.04..2048.54 rows=1 width=27) (actual time=351.676..23491.577 rows=510 loops=1)
+                     Join Filter: (ci.movie_id = ml.linked_movie_id)
+                     Rows Removed by Join Filter: 100609428
+                     Buffers: shared hit=546781 read=51271
+                     ->  Nested Loop  (cost=0.04..2036.95 rows=1 width=19) (actual time=260.792..4922.388 rows=3354 loops=1)
+                           Join Filter: (n.id = ci.person_id)
+                           Buffers: shared hit=242 read=51108
+                           ->  Nested Loop  (cost=0.03..2035.32 rows=1 width=27) (actual time=210.909..4078.432 rows=20 loops=1)
+                                 Buffers: shared hit=138 read=51007
+                                 ->  Nested Loop  (cost=0.01..2035.21 rows=1 width=23) (actual time=142.659..3535.725 rows=17 loops=1)
+                                       Buffers: shared hit=105 read=50970
+                                       ->  Nested Loop  (cost=0.00..2029.08 rows=1 width=4) (actual time=64.227..2781.492 rows=64 loops=1)
+                                             Join Filter: (it.id = pi.info_type_id)
+                                             Buffers: shared hit=2 read=50817
+                                             ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=23.858..23.872 rows=1 loops=1)
+                                                   Filter: ((info)::text = 'mini biography'::text)
+                                                   Rows Removed by Filter: 112
+                                                   Buffers: shared read=1
+                                             ->  Seq Scan on person_info pi  (cost=0.00..2029.02 rows=64 width=8) (actual time=40.360..2757.432 rows=64 loops=1)
+                                                   Filter: (note = 'Volker Boehm'::text)
+                                                   Rows Removed by Filter: 2963600
+                                                   Buffers: shared hit=2 read=50816
+                                       ->  Index Scan using name_pkey on name n  (cost=0.01..6.13 rows=1 width=19) (actual time=11.777..11.777 rows=0 loops=64)
+                                             Index Cond: (id = pi.person_id)
+                                             Filter: (((name_pcode_cf)::text >= 'A'::text) AND ((name_pcode_cf)::text <= 'F'::text) AND (((gender)::text = 'm'::text) OR (((gender)::text = 'f'::text) AND (name ~~ 'B%'::text))))
+                                             Rows Removed by Filter: 1
+                                             Buffers: shared hit=103 read=153
+                                 ->  Index Scan using aka_name_idx_person on aka_name an  (cost=0.01..0.10 rows=1 width=4) (actual time=27.335..31.916 rows=1 loops=17)
+                                       Index Cond: (person_id = n.id)
+                                       Filter: (name ~~ '%a%'::text)
+                                       Rows Removed by Filter: 1
+                                       Buffers: shared hit=33 read=37
+                           ->  Index Scan using cast_info_idx_pid on cast_info ci  (cost=0.02..1.63 rows=31 width=8) (actual time=28.378..42.110 rows=168 loops=20)
+                                 Index Cond: (person_id = an.person_id)
+                                 Buffers: shared hit=104 read=101
+                     ->  Seq Scan on movie_link ml  (cost=0.00..7.19 rows=29997 width=8) (actual time=0.002..2.129 rows=29997 loops=3354)
+                           Buffers: shared hit=546539 read=163
+               ->  Seq Scan on link_type lt  (cost=0.00..0.03 rows=1 width=4) (actual time=0.002..0.003 rows=1 loops=510)
+                     Filter: ((link)::text = 'features'::text)
+                     Rows Removed by Filter: 14
+                     Buffers: shared hit=510
+         ->  Index Scan using title_idx_id on title t  (cost=0.01..0.02 rows=1 width=21) (actual time=9.100..9.100 rows=0 loops=151)
+               Index Cond: (id = ci.movie_id)
+               Filter: ((production_year >= 1980) AND (production_year <= 1995))
+               Rows Removed by Filter: 1
+               Buffers: shared hit=526 read=78
+ Planning Time: 6610.559 ms
+ Execution Time: 24868.905 ms
+(56 rows)
+

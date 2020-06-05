@@ -110,7 +110,7 @@ def parse_input_plans(filename):
 
 if __name__ == "__main__":
 
-	path = 'movie_info/movie_id/'
-	distinctLeftRows = [10000]
+	path = 'company_name/id/'
+	distinctLeftRows = [14000]
 	outputCard = [5000]
 	print(nestloop_index_scan_predict(distinctLeftRows, outputCard, path))

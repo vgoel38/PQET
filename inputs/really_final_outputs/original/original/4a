@@ -1,0 +1,45 @@
+                                                                                QUERY PLAN                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=1550.00..1550.00 rows=1 width=64) (actual time=17462.281..17462.282 rows=1 loops=1)
+   Buffers: shared hit=59412 read=36615
+   ->  Nested Loop  (cost=49.55..1550.00 rows=9 width=23) (actual time=1773.929..17439.754 rows=740 loops=1)
+         Join Filter: (mi_idx.movie_id = t.id)
+         Buffers: shared hit=59412 read=36615
+         ->  Hash Join  (cost=49.53..1549.01 rows=23 width=14) (actual time=85.973..6579.189 rows=5820 loops=1)
+               Hash Cond: (mi_idx.info_type_id = it.id)
+               Buffers: shared hit=42121 read=30595
+               ->  Nested Loop  (cost=49.48..1548.75 rows=2569 width=18) (actual time=85.822..6570.784 rows=8429 loops=1)
+                     Buffers: shared hit=42117 read=30595
+                     ->  Hash Join  (cost=49.47..1498.11 rows=2259 width=4) (actual time=85.705..2952.645 rows=12951 loops=1)
+                           Hash Cond: (mk.keyword_id = k.id)
+                           Buffers: shared hit=5 read=25398
+                           ->  Seq Scan on movie_keyword mk  (cost=0.00..1079.84 rows=4523930 width=8) (actual time=0.010..1743.473 rows=4523930 loops=1)
+                                 Buffers: shared hit=3 read=24451
+                           ->  Hash  (cost=49.46..49.46 rows=67 width=4) (actual time=85.330..85.331 rows=30 loops=1)
+                                 Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                 Buffers: shared hit=2 read=947
+                                 ->  Seq Scan on keyword k  (cost=0.00..49.46 rows=67 width=4) (actual time=24.505..85.285 rows=30 loops=1)
+                                       Filter: (keyword ~~ '%sequel%'::text)
+                                       Rows Removed by Filter: 134140
+                                       Buffers: shared hit=2 read=947
+                     ->  Index Scan using movie_info_idx_idx_mid on movie_info_idx mi_idx  (cost=0.01..0.02 rows=1 width=14) (actual time=0.276..0.278 rows=1 loops=12951)
+                           Index Cond: (movie_id = mk.movie_id)
+                           Filter: (info > '5.0'::text)
+                           Rows Removed by Filter: 1
+                           Buffers: shared hit=42112 read=5197
+               ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.087..0.087 rows=1 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     Buffers: shared hit=1
+                     ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.073..0.079 rows=1 loops=1)
+                           Filter: ((info)::text = 'rating'::text)
+                           Rows Removed by Filter: 112
+                           Buffers: shared hit=1
+         ->  Index Scan using title_idx_id on title t  (cost=0.01..0.04 rows=1 width=21) (actual time=1.865..1.865 rows=0 loops=5820)
+               Index Cond: (id = mk.movie_id)
+               Filter: (production_year > 2005)
+               Rows Removed by Filter: 1
+               Buffers: shared hit=17291 read=6020
+ Planning Time: 2123.817 ms
+ Execution Time: 17462.845 ms
+(41 rows)
+

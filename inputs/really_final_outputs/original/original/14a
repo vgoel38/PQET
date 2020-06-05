@@ -1,0 +1,62 @@
+                                                                                               QUERY PLAN                                                                                                
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=517.65..517.65 rows=1 width=64) (actual time=128433.856..128433.856 rows=1 loops=1)
+   Buffers: shared hit=270970 read=53449
+   ->  Nested Loop  (cost=0.07..517.65 rows=1 width=23) (actual time=10360.764..128430.651 rows=761 loops=1)
+         Join Filter: (t.kind_id = kt.id)
+         Rows Removed by Join Filter: 224
+         Buffers: shared hit=270970 read=53449
+         ->  Nested Loop  (cost=0.07..517.62 rows=1 width=27) (actual time=490.808..128423.868 rows=985 loops=1)
+               Join Filter: (mi.info_type_id = it1.id)
+               Rows Removed by Join Filter: 139
+               Buffers: shared hit=269985 read=53449
+               ->  Nested Loop  (cost=0.07..517.57 rows=1 width=31) (actual time=490.778..128401.220 rows=1124 loops=1)
+                     Join Filter: (t.id = mi.movie_id)
+                     Buffers: shared hit=268861 read=53449
+                     ->  Nested Loop  (cost=0.05..517.42 rows=1 width=39) (actual time=374.068..59283.142 rows=1488 loops=1)
+                           Buffers: shared hit=257502 read=40944
+                           ->  Nested Loop  (cost=0.04..517.29 rows=3 width=14) (actual time=61.412..19265.117 rows=31800 loops=1)
+                                 Join Filter: (mi_idx.info_type_id = it2.id)
+                                 Rows Removed by Join Filter: 62852
+                                 Buffers: shared hit=145689 read=25403
+                                 ->  Seq Scan on info_type it2  (cost=0.00..0.05 rows=1 width=4) (actual time=0.056..0.061 rows=1 loops=1)
+                                       Filter: ((info)::text = 'rating'::text)
+                                       Rows Removed by Filter: 112
+                                       Buffers: shared hit=1
+                                 ->  Nested Loop  (cost=0.04..517.18 rows=395 width=18) (actual time=61.343..19217.896 rows=94652 loops=1)
+                                       Buffers: shared hit=145688 read=25403
+                                       ->  Nested Loop  (cost=0.03..514.14 rows=135 width=4) (actual time=48.336..11378.098 rows=37091 loops=1)
+                                             Buffers: shared hit=10145 read=16297
+                                             ->  Index Scan using keyword_idx_keyword on keyword k  (cost=0.01..24.53 rows=4 width=4) (actual time=33.358..128.365 rows=3 loops=1)
+                                                   Index Cond: (keyword = ANY ('{murder,murder-in-title,blood,violence}'::text[]))
+                                                   Buffers: shared hit=8 read=10
+                                             ->  Index Scan using movie_keyword_idx_keywordid on movie_keyword mk  (cost=0.01..122.40 rows=39 width=8) (actual time=13.749..3740.871 rows=12364 loops=3)
+                                                   Index Cond: (keyword_id = k.id)
+                                                   Buffers: shared hit=10137 read=16287
+                                       ->  Index Scan using movie_info_idx_idx_mid on movie_info_idx mi_idx  (cost=0.01..0.02 rows=3 width=14) (actual time=0.203..0.208 rows=3 loops=37091)
+                                             Index Cond: (movie_id = mk.movie_id)
+                                             Filter: (info < '8.5'::text)
+                                             Rows Removed by Filter: 0
+                                             Buffers: shared hit=135543 read=9106
+                           ->  Index Scan using title_idx_id on title t  (cost=0.01..0.04 rows=1 width=25) (actual time=1.257..1.257 rows=0 loops=31800)
+                                 Index Cond: (id = mk.movie_id)
+                                 Filter: (production_year > 2010)
+                                 Rows Removed by Filter: 1
+                                 Buffers: shared hit=111813 read=15541
+                     ->  Index Scan using movie_info_idx_mid on movie_info mi  (cost=0.01..0.16 rows=1 width=8) (actual time=42.336..46.446 rows=1 loops=1488)
+                           Index Cond: (movie_id = mk.movie_id)
+                           Filter: (info = ANY ('{Sweden,Norway,Germany,Denmark,Swedish,Denish,Norwegian,German,USA,American}'::text[]))
+                           Rows Removed by Filter: 57
+                           Buffers: shared hit=11359 read=12505
+               ->  Seq Scan on info_type it1  (cost=0.00..0.05 rows=1 width=4) (actual time=0.010..0.014 rows=1 loops=1124)
+                     Filter: ((info)::text = 'countries'::text)
+                     Rows Removed by Filter: 20
+                     Buffers: shared hit=1124
+         ->  Seq Scan on kind_type kt  (cost=0.00..0.03 rows=1 width=4) (actual time=0.002..0.003 rows=1 loops=985)
+               Filter: ((kind)::text = 'movie'::text)
+               Rows Removed by Filter: 1
+               Buffers: shared hit=985
+ Planning Time: 4959.914 ms
+ Execution Time: 128461.921 ms
+(58 rows)
+

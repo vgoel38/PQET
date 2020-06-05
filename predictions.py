@@ -40,7 +40,7 @@ def find_dup(cols):
 	return dup
 
 def find_att_values(node, col):
-	print(node, col)
+	print(col)
 	relname, colname = extract_rel_col(col)
 	low = int((MIN_MD[relname])[colname])
 	high = int((MAX_MD[relname])[colname])
@@ -50,8 +50,6 @@ def find_att_values(node, col):
 		key = 'Filter'
 	elif node['Node Type'] == 'Index Scan':
 		key = 'Index Cond'
-	else:
-		print("unidentified node being looked for attributes")
 
 	if key in node:
 		if '>=' in node[key]:
@@ -94,7 +92,7 @@ def find_index_col(node):
 		print('Unable to find index col')
 
 def revise_corr(node):
-	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Materialize':
+	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Materialize' or node['Node Type'] == 'Aggregate':
 		return
 	elif node['Node Type'] == 'Index Scan':
 		index_col = find_index_col(node)
@@ -109,10 +107,11 @@ def revise_corr(node):
 		rel_name = ''
 		if node['Plans'][1]['Node Type'] == 'Seq Scan' or node['Plans'][1]['Node Type'] == 'Index Scan':
 			rel_name = node['Plans'][1]['Relation Name']
-		elif node['Plans'][1]['Node Type'] == 'Materialize':
+		elif node['Plans'][1]['Node Type'] == 'Materialize' and (node['Plans'][1]['Plans'][0] == 'Seq Scan' or node['Plans'][1]['Plans'][0] == 'Index Scan'):
 			rel_name = node['Plans'][1]['Plans'][0]['Relation Name']
 		else:
 			print('dont know how to revise corr')
+			return
 		
 		join_cond = ''
 		if 'Join Filter' in node:
@@ -137,7 +136,7 @@ def revise_corr(node):
 		print('corr not revised!')
 
 def revise_dup(node):
-	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Materialize':
+	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Materialize' or node['Node Type'] == 'Aggregate':
 		return
 	elif node['Node Type'] == 'Index Scan':
 		return

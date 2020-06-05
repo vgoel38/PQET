@@ -78,17 +78,17 @@ def index_scan_predict(path, attStart, attEnd):
 				predictedTimeStart = max(cardToTime[i].predict(predictedCardStart),0)
 				predictedTimeEnd = max(cardToTime[i].predict(predictedCardEnd),0)
 				predictedTime = max(predictedTimeEnd - predictedTimeStart,0)
-				print("tempStart=", tempStart, "tempEnd=", tempEnd, "predictedCardStart=", predictedCardStart, "predictedCardEnd=", predictedCardEnd, "predictedTimeStart = ", predictedTimeStart, "predictedTimeEnd = ", predictedTimeEnd, i, j)
+				# print("tempStart=", tempStart, "tempEnd=", tempEnd, "predictedCardStart=", predictedCardStart, "predictedCardEnd=", predictedCardEnd, "predictedTimeStart = ", predictedTimeStart, "predictedTimeEnd = ", predictedTimeEnd, i, j)
 				executionTimePerSegment[j]+=predictedTime
 				numContributingCurvesPerSegment[j]+=1
 
 	finalTime = 0
 	for i in range(len(executionTimePerSegment)):
 		if numContributingCurvesPerSegment[i] != 0:
-			finalTime += executionTimePerSegment[i]/numContributingCurvesPerSegment[i]
+			finalTime += float(executionTimePerSegment[i]/numContributingCurvesPerSegment[i])
 
-	finalCard = max(max(attToCard[i].predict(attEnd),0) - max(attToCard[i].predict(attStart),0),0)
-	return finalTime[0], finalCard[0]
+	finalCard = max(max(attToCard[i].predict(attEnd)[0],0) - max(attToCard[i].predict(attStart)[0],0),0)
+	return finalTime, finalCard
 
 
 if __name__ == "__main__":
