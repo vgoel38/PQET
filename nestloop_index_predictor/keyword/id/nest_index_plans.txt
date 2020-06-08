@@ -1,0 +1,286 @@
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35744.75 rows=134170 width=29) (actual time=2208.967..2603.027 rows=1000 loops=1)
+   Buffers: shared hit=2977 read=22174 dirtied=9
+   ->  Seq Scan on del_nest_index del  (cost=0.00..822.71 rows=2306618 width=4) (actual time=2186.676..2186.924 rows=1000 loops=1)
+         Buffers: shared read=21144 dirtied=9
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.415..0.415 rows=1 loops=1000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=2977 read=1030
+ Planning Time: 150.639 ms
+ Execution Time: 2622.465 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35752.17 rows=134170 width=29) (actual time=2185.343..2638.908 rows=1000 loops=1)
+   Buffers: shared hit=2946 read=22208 dirtied=10
+   ->  Seq Scan on del_nest_index del  (cost=0.00..822.90 rows=2307164 width=4) (actual time=2153.539..2153.918 rows=1000 loops=1)
+         Buffers: shared read=21149 dirtied=10
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.483..0.483 rows=1 loops=1000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=2946 read=1059
+ Planning Time: 164.670 ms
+ Execution Time: 2652.797 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35764.02 rows=134170 width=29) (actual time=1975.194..2411.877 rows=2000 loops=1)
+   Buffers: shared hit=6673 read=22485 dirtied=14
+   ->  Seq Scan on del_nest_index del  (cost=0.00..823.21 rows=2308036 width=4) (actual time=1953.911..1954.317 rows=2000 loops=1)
+         Buffers: shared read=21157 dirtied=14
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.228..0.228 rows=1 loops=2000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=6673 read=1328
+ Planning Time: 222.976 ms
+ Execution Time: 2425.890 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35777.36 rows=134170 width=29) (actual time=2443.961..2855.652 rows=2000 loops=1)
+   Buffers: shared hit=6693 read=22481 dirtied=18
+   ->  Seq Scan on del_nest_index del  (cost=0.00..823.56 rows=2309018 width=4) (actual time=2421.689..2422.309 rows=2000 loops=1)
+         Buffers: shared read=21166 dirtied=18
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.215..0.215 rows=1 loops=2000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=6693 read=1315
+ Planning Time: 156.308 ms
+ Execution Time: 2935.790 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35798.10 rows=134170 width=29) (actual time=2339.037..2816.429 rows=3000 loops=1)
+   Buffers: shared hit=10618 read=22571 dirtied=24
+   ->  Seq Scan on del_nest_index del  (cost=0.00..824.11 rows=2310545 width=4) (actual time=2305.341..2306.003 rows=3000 loops=1)
+         Buffers: shared read=21180 dirtied=24
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.169..0.169 rows=1 loops=3000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=10618 read=1391
+ Planning Time: 200.756 ms
+ Execution Time: 2818.974 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35817.38 rows=134170 width=29) (actual time=2597.993..3217.068 rows=3000 loops=1)
+   Buffers: shared hit=10614 read=22588 dirtied=28
+   ->  Seq Scan on del_nest_index del  (cost=0.00..824.61 rows=2311964 width=4) (actual time=2556.430..2557.066 rows=3000 loops=1)
+         Buffers: shared read=21193 dirtied=28
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.219..0.219 rows=1 loops=3000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=10614 read=1395
+ Planning Time: 317.313 ms
+ Execution Time: 3219.617 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35844.05 rows=134170 width=29) (actual time=2283.794..2776.852 rows=4000 loops=1)
+   Buffers: shared hit=14586 read=22636 dirtied=32
+   ->  Seq Scan on del_nest_index del  (cost=0.00..825.31 rows=2313927 width=4) (actual time=2232.043..2233.199 rows=4000 loops=1)
+         Buffers: shared read=21211 dirtied=32
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.135..0.135 rows=1 loops=4000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=14586 read=1425
+ Planning Time: 175.638 ms
+ Execution Time: 2779.620 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35869.25 rows=134170 width=29) (actual time=2154.664..2597.593 rows=4000 loops=1)
+   Buffers: shared hit=14589 read=22649 dirtied=36
+   ->  Seq Scan on del_nest_index del  (cost=0.00..825.98 rows=2315782 width=4) (actual time=2041.064..2041.893 rows=4000 loops=1)
+         Buffers: shared read=21228 dirtied=36
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.138..0.138 rows=1 loops=4000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=14589 read=1421
+ Planning Time: 217.310 ms
+ Execution Time: 2600.205 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35901.86 rows=134170 width=29) (actual time=2112.134..2593.393 rows=5000 loops=1)
+   Buffers: shared hit=18588 read=22682 dirtied=40
+   ->  Seq Scan on del_nest_index del  (cost=0.00..826.83 rows=2318182 width=4) (actual time=2008.892..2009.973 rows=5000 loops=1)
+         Buffers: shared read=21250 dirtied=40
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.116..0.116 rows=1 loops=5000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=18588 read=1432
+ Planning Time: 175.701 ms
+ Execution Time: 2596.082 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35935.95 rows=134170 width=29) (actual time=2269.054..2774.855 rows=5000 loops=1)
+   Buffers: shared hit=18582 read=22708 dirtied=46
+   ->  Seq Scan on del_nest_index del  (cost=0.00..827.73 rows=2320691 width=4) (actual time=2234.861..2236.093 rows=5000 loops=1)
+         Buffers: shared read=21273 dirtied=46
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.107..0.107 rows=1 loops=5000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=18582 read=1435
+ Planning Time: 175.711 ms
+ Execution Time: 2777.633 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..35974.48 rows=134170 width=29) (actual time=1998.782..2515.859 rows=6000 loops=1)
+   Buffers: shared hit=22585 read=22736 dirtied=50
+   ->  Seq Scan on del_nest_index del  (cost=0.00..828.74 rows=2323527 width=4) (actual time=1953.738..1954.843 rows=6000 loops=1)
+         Buffers: shared read=21299 dirtied=50
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.093..0.093 rows=1 loops=6000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=22585 read=1437
+ Planning Time: 200.646 ms
+ Execution Time: 2518.581 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36014.50 rows=134170 width=29) (actual time=2010.632..2520.797 rows=6000 loops=1)
+   Buffers: shared hit=22580 read=22765 dirtied=54
+   ->  Seq Scan on del_nest_index del  (cost=0.00..829.79 rows=2326473 width=4) (actual time=1964.859..1965.938 rows=6000 loops=1)
+         Buffers: shared read=21326 dirtied=54
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.092..0.092 rows=1 loops=6000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=22580 read=1439
+ Planning Time: 250.640 ms
+ Execution Time: 2523.510 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36060.45 rows=134170 width=29) (actual time=2084.457..2582.664 rows=7000 loops=1)
+   Buffers: shared hit=26585 read=22796 dirtied=59
+   ->  Seq Scan on del_nest_index del  (cost=0.00..831.00 rows=2329855 width=4) (actual time=2046.534..2047.843 rows=7000 loops=1)
+         Buffers: shared read=21357 dirtied=59
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.076..0.076 rows=1 loops=7000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=26585 read=1439
+ Planning Time: 250.626 ms
+ Execution Time: 2611.983 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36106.39 rows=134170 width=29) (actual time=2581.926..3188.201 rows=7000 loops=1)
+   Buffers: shared hit=26587 read=22827 dirtied=63
+   ->  Seq Scan on del_nest_index del  (cost=0.00..832.20 rows=2333236 width=4) (actual time=2543.677..2544.953 rows=7000 loops=1)
+         Buffers: shared read=21388 dirtied=63
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.091..0.091 rows=1 loops=7000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=26587 read=1439
+ Planning Time: 217.311 ms
+ Execution Time: 3191.501 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36158.27 rows=134170 width=29) (actual time=2293.172..2832.028 rows=8000 loops=1)
+   Buffers: shared hit=30592 read=22862 dirtied=67
+   ->  Seq Scan on del_nest_index del  (cost=0.00..833.56 rows=2337055 width=4) (actual time=2251.964..2254.171 rows=8000 loops=1)
+         Buffers: shared read=21423 dirtied=67
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.071..0.071 rows=1 loops=8000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=30592 read=1439
+ Planning Time: 225.641 ms
+ Execution Time: 2835.761 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36210.14 rows=134170 width=29) (actual time=2412.801..2889.168 rows=8000 loops=1)
+   Buffers: shared hit=30592 read=22897 dirtied=71
+   ->  Seq Scan on del_nest_index del  (cost=0.00..834.93 rows=2340873 width=4) (actual time=2314.317..2315.856 rows=8000 loops=1)
+         Buffers: shared read=21458 dirtied=71
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.071..0.071 rows=1 loops=8000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=30592 read=1439
+ Planning Time: 267.321 ms
+ Execution Time: 2892.576 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36269.42 rows=134170 width=29) (actual time=2332.786..2833.363 rows=9000 loops=1)
+   Buffers: shared hit=34600 read=22937 dirtied=76
+   ->  Seq Scan on del_nest_index del  (cost=0.00..836.48 rows=2345236 width=4) (actual time=2282.140..2283.716 rows=9000 loops=1)
+         Buffers: shared read=21498 dirtied=76
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.060..0.060 rows=1 loops=9000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=34600 read=1439
+ Planning Time: 275.629 ms
+ Execution Time: 2836.125 ms
+(9 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36328.71 rows=134170 width=29) (actual time=2230.499..2757.212 rows=9000 loops=1)
+   Buffers: shared hit=34587 read=22977 dirtied=81
+   ->  Seq Scan on del_nest_index del  (cost=0.00..838.04 rows=2349600 width=4) (actual time=2193.138..2194.651 rows=9000 loops=1)
+         Buffers: shared read=21538 dirtied=81
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.062..0.062 rows=1 loops=9000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=34587 read=1439
+ Planning Time: 158.983 ms
+ Execution Time: 2760.101 ms
+(9 rows)
+
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36393.92 rows=134170 width=29) (actual time=2148.765..2748.236 rows=10000 loops=1)
+   Buffers: shared hit=38590 read=23021 dirtied=85
+   ->  Seq Scan on del_nest_index del  (cost=0.00..839.75 rows=2354400 width=4) (actual time=2113.370..2115.120 rows=10000 loops=1)
+         Buffers: shared read=21582 dirtied=85
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.063..0.063 rows=1 loops=10000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=38590 read=1439
+ Planning Time: 208.975 ms
+ Execution Time: 2751.101 ms
+(9 rows)
+
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36460.62 rows=134170 width=29) (actual time=2020.815..2535.995 rows=10000 loops=1)
+   Buffers: shared hit=38604 read=23066 dirtied=90
+   ->  Seq Scan on del_nest_index del  (cost=0.00..841.50 rows=2359309 width=4) (actual time=1981.097..1982.725 rows=10000 loops=1)
+         Buffers: shared read=21627 dirtied=90
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.055..0.055 rows=1 loops=10000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=38604 read=1439
+ Planning Time: 175.645 ms
+ Execution Time: 2538.802 ms
+(9 rows)
+
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36531.75 rows=134170 width=29) (actual time=2253.671..2757.920 rows=11000 loops=1)
+   Buffers: shared hit=42607 read=23114 dirtied=94
+   ->  Seq Scan on del_nest_index del  (cost=0.00..843.37 rows=2364545 width=4) (actual time=2208.226..2210.085 rows=11000 loops=1)
+         Buffers: shared read=21675 dirtied=94
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.049..0.049 rows=1 loops=11000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=42607 read=1439
+ Planning Time: 167.302 ms
+ Execution Time: 2761.167 ms
+(9 rows)
+
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..36604.38 rows=134170 width=29) (actual time=2463.671..2931.497 rows=11000 loops=1)
+   Buffers: shared hit=42596 read=23163 dirtied=98
+   ->  Seq Scan on del_nest_index del  (cost=0.00..845.28 rows=2369891 width=4) (actual time=2421.284..2423.069 rows=11000 loops=1)
+         Buffers: shared read=21724 dirtied=98
+   ->  Index Scan using keyword_pkey on keyword k  (cost=0.01..0.02 rows=1 width=25) (actual time=0.046..0.046 rows=1 loops=11000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=42596 read=1439
+ Planning Time: 175.670 ms
+ Execution Time: 2934.464 ms
+(9 rows)
+
