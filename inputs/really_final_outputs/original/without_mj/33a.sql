@@ -81,13 +81,13 @@
                                        Index Cond: (id = t.kind_id)
                                        Filter: ((kind)::text = 'tv series'::text)
                                        Buffers: shared hit=18 read=2
-                           ->  Index Scan using company_name_pkey on company_name cn2  (cost=0.01..0.02 rows=1 width=23) (actual time=10.150..10.150 rows=1 loops=10)
+                           ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..0.02 rows=1 width=23) (actual time=10.150..10.150 rows=1 loops=10)
                                  Index Cond: (id = mc.company_id)
                                  Buffers: shared hit=26 read=14
                      ->  Index Scan using movie_id_movie_companies on movie_companies mc  (cost=0.01..0.05 rows=2 width=8) (actual time=4.165..4.890 rows=3 loops=10)
                            Index Cond: (movie_id = t.id)
                            Buffers: shared hit=36 read=12
-               ->  Index Scan using company_name_pkey on company_name cn1  (cost=0.01..0.02 rows=1 width=23) (actual time=4.820..4.820 rows=0 loops=28)
+               ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..0.02 rows=1 width=23) (actual time=4.820..4.820 rows=0 loops=28)
                      Index Cond: (id = mc.company_id)
                      Filter: ((country_code)::text = '[us]'::text)
                      Rows Removed by Filter: 1

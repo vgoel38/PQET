@@ -7,14 +7,14 @@
          Rows Removed by Join Filter: 106322128
          Buffers: shared hit=1918322 read=376640
          ->  Nested Loop  (cost=1305.66..17810.62 rows=1 width=24) (actual time=23180.015..42357.731 rows=62 loops=1)
-               Join Filter: (n1.id = an1.person_id)
+               Join Filter: (n.id = an.person_id)
                Rows Removed by Join Filter: 34250972
                Buffers: shared hit=421618 read=341446
                ->  Nested Loop  (cost=1305.66..17258.58 rows=1 width=16) (actual time=22922.341..35736.943 rows=38 loops=1)
-                     Join Filter: (ci.person_id = n1.id)
+                     Join Filter: (ci.person_id = n.id)
                      Rows Removed by Join Filter: 155535980
                      Buffers: shared hit=3 read=330051
-                     ->  Seq Scan on name n1  (cost=0.00..2679.69 rows=19696 width=4) (actual time=33.770..1117.907 rows=20911 loops=1)
+                     ->  Seq Scan on name n  (cost=0.00..2679.69 rows=19696 width=4) (actual time=33.770..1117.907 rows=20911 loops=1)
                            Filter: ((name ~~ '%Yo%'::text) AND (name !~~ '%Yu%'::text))
                            Rows Removed by Filter: 4146580
                            Buffers: shared read=55613
@@ -52,7 +52,7 @@
                                                          Filter: ((country_code)::text = '[jp]'::text)
                                                          Rows Removed by Filter: 228245
                                                          Buffers: shared read=2994
-               ->  Seq Scan on aka_name an1  (cost=0.00..419.75 rows=901343 width=20) (actual time=0.095..73.133 rows=901343 loops=38)
+               ->  Seq Scan on aka_name an  (cost=0.00..419.75 rows=901343 width=20) (actual time=0.095..73.133 rows=901343 loops=38)
                      Buffers: shared hit=421615 read=11395
          ->  Seq Scan on title t  (cost=0.00..1303.96 rows=2528312 width=21) (actual time=0.143..140.761 rows=1714874 loops=62)
                Buffers: shared hit=1496704 read=35194

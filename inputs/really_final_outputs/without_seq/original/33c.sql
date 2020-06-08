@@ -48,7 +48,7 @@
                                                                            ->  Index Scan using movie_id_movie_companies on movie_companies mc  (cost=0.01..0.07 rows=2 width=8) (actual time=0.011..0.014 rows=2 loops=21301)
                                                                                  Index Cond: (movie_id = mi_idx.movie_id)
                                                                                  Buffers: shared hit=88125 read=907
-                                                                     ->  Index Scan using company_name_pkey on company_name cn1  (cost=0.01..0.02 rows=1 width=23) (actual time=0.065..0.065 rows=0 loops=47762)
+                                                                     ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..0.02 rows=1 width=23) (actual time=0.065..0.065 rows=0 loops=47762)
                                                                            Index Cond: (id = mc.company_id)
                                                                            Filter: ((country_code)::text <> '[us]'::text)
                                                                            Rows Removed by Filter: 1
@@ -80,7 +80,7 @@
                      ->  Index Scan using movie_id_movie_companies on movie_companies mc  (cost=0.01..0.09 rows=2 width=8) (actual time=0.510..0.757 rows=5 loops=2996)
                            Index Cond: (movie_id = t.id)
                            Buffers: shared hit=14312 read=176
-               ->  Index Scan using company_name_pkey on company_name cn2  (cost=0.01..0.02 rows=1 width=23) (actual time=0.012..0.012 rows=1 loops=15007)
+               ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..0.02 rows=1 width=23) (actual time=0.012..0.012 rows=1 loops=15007)
                      Index Cond: (id = mc.company_id)
                      Buffers: shared hit=59978 read=50
          ->  Index Scan using movie_id_movie_info_idx on movie_info_idx mi_idx  (cost=0.01..0.03 rows=2 width=14) (actual time=0.111..0.112 rows=1 loops=15007)

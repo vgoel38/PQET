@@ -3,7 +3,7 @@
  Aggregate  (cost=200987.36..200987.36 rows=1 width=192) (actual time=29305.982..29305.982 rows=1 loops=1)
    Buffers: shared hit=8455671 read=85146
    ->  Hash Join  (cost=140932.13..200987.36 rows=1 width=84) (actual time=27764.025..29305.855 rows=114 loops=1)
-         Hash Cond: (mc.company_id = cn2.id)
+         Hash Cond: (mc.company_id = cn.id)
          Buffers: shared hit=8455671 read=85146
          ->  Hash Join  (cost=136318.69..196373.91 rows=1 width=69) (actual time=26945.199..28486.969 rows=114 loops=1)
                Hash Cond: (mi_idx.info_type_id = it.id)
@@ -17,7 +17,7 @@
                            Buckets: 1024  Batches: 1  Memory Usage: 25kB
                            Buffers: shared hit=6747840 read=81300
                            ->  Hash Join  (cost=76257.33..136312.55 rows=1 width=81) (actual time=23038.598..26869.324 rows=138 loops=1)
-                                 Hash Cond: (mc.company_id = cn1.id)
+                                 Hash Cond: (mc.company_id = cn.id)
                                  Buffers: shared hit=6747840 read=81300
                                  ->  Hash Join  (cost=71641.60..131696.82 rows=1 width=66) (actual time=19656.264..26658.349 rows=153 loops=1)
                                        Hash Cond: (t.kind_id = kt.id)
@@ -107,7 +107,7 @@
                                  ->  Hash  (cost=4597.20..4597.20 rows=126230 width=23) (actual time=209.924..209.925 rows=126230 loops=1)
                                        Buckets: 131072  Batches: 1  Memory Usage: 7967kB
                                        Buffers: shared hit=235554
-                                       ->  Index Scan using company_name_pkey on company_name cn1  (cost=0.01..4597.20 rows=126230 width=23) (actual time=0.038..172.581 rows=126230 loops=1)
+                                       ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..4597.20 rows=126230 width=23) (actual time=0.038..172.581 rows=126230 loops=1)
                                              Filter: ((country_code)::text <> '[us]'::text)
                                              Rows Removed by Filter: 108767
                                              Buffers: shared hit=235554
@@ -120,7 +120,7 @@
          ->  Hash  (cost=4578.95..4578.95 rows=234997 width=23) (actual time=818.185..818.185 rows=234997 loops=1)
                Buckets: 262144  Batches: 1  Memory Usage: 15097kB
                Buffers: shared hit=231714 read=3840
-               ->  Index Scan using company_name_pkey on company_name cn2  (cost=0.01..4578.95 rows=234997 width=23) (actual time=40.054..745.319 rows=234997 loops=1)
+               ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..4578.95 rows=234997 width=23) (actual time=40.054..745.319 rows=234997 loops=1)
                      Buffers: shared hit=231714 read=3840
  Planning Time: 5805.350 ms
  Execution Time: 29308.638 ms

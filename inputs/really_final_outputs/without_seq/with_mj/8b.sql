@@ -1,64 +1,490 @@
-                                                                                              QUERY PLAN                                                                                              
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Aggregate  (cost=486422.19..486422.19 rows=1 width=64) (actual time=58653.339..58653.339 rows=1 loops=1)
-   Buffers: shared hit=6787417 read=480350
-   ->  Merge Join  (cost=407825.35..486422.19 rows=1 width=33) (actual time=58652.201..58653.282 rows=6 loops=1)
-         Merge Cond: (an.person_id = ci.person_id)
-         Buffers: shared hit=6787417 read=480350
-         ->  Merge Join  (cost=0.03..91699.23 rows=4689 width=24) (actual time=40.388..5420.517 rows=2105 loops=1)
-               Merge Cond: (an.person_id = n.id)
-               Buffers: shared hit=2777730 read=58694
-               ->  Index Scan using aka_name_idx_person on aka_name an  (cost=0.01..42491.32 rows=901343 width=20) (actual time=0.040..553.684 rows=576728 loops=1)
-                     Buffers: shared hit=201918 read=12968
-               ->  Index Scan using name_pkey on name n  (cost=0.01..49135.93 rows=21680 width=4) (actual time=30.808..4771.683 rows=11663 loops=1)
-                     Filter: ((name ~~ '%Yo%'::text) AND (name !~~ '%Yu%'::text))
-                     Rows Removed by Filter: 2678222
-                     Buffers: shared hit=2575812 read=45726
-         ->  Sort  (cost=407825.33..407825.33 rows=1 width=21) (actual time=53232.259..53232.279 rows=26 loops=1)
-               Sort Key: ci.person_id
-               Sort Method: quicksort  Memory: 27kB
-               Buffers: shared hit=4009687 read=421656
-               ->  Merge Join  (cost=383996.89..407825.33 rows=1 width=21) (actual time=50672.283..53209.452 rows=25 loops=1)
-                     Merge Cond: (ci.movie_id = t.id)
-                     Buffers: shared hit=4009683 read=421656
-                     ->  Merge Join  (cost=383996.87..383998.08 rows=1 width=12) (actual time=43891.315..43899.013 rows=925 loops=1)
-                           Merge Cond: (ci.movie_id = mc.movie_id)
-                           Buffers: shared hit=1519809 read=378752
-                           ->  Sort  (cost=318837.41..318838.02 rows=7772 width=8) (actual time=30400.007..30402.366 rows=32758 loops=1)
-                                 Sort Key: ci.movie_id
-                                 Sort Method: quicksort  Memory: 3170kB
-                                 Buffers: shared hit=8 read=351682
-                                 ->  Merge Join  (cost=0.02..318821.82 rows=7772 width=8) (actual time=10147.210..30381.459 rows=34848 loops=1)
-                                       Merge Cond: (ci.role_id = rt.id)
-                                       Buffers: shared hit=8 read=351682
-                                       ->  Index Scan using cast_info_role_id on cast_info ci  (cost=0.02..318804.85 rows=93269 width=12) (actual time=22.946..30349.767 rows=93095 loops=1)
-                                             Filter: (note = '(voice: English version)'::text)
-                                             Rows Removed by Filter: 36151249
-                                             Buffers: shared hit=6 read=351682
-                                       ->  Index Scan using role_type_pkey on role_type rt  (cost=0.00..9.19 rows=1 width=4) (actual time=0.020..0.020 rows=1 loops=1)
-                                             Filter: ((role)::text = 'actress'::text)
-                                             Rows Removed by Filter: 1
-                                             Buffers: shared hit=2
-                           ->  Sort  (cost=65159.46..65159.46 rows=21 width=4) (actual time=13491.298..13491.920 rows=7988 loops=1)
-                                 Sort Key: mc.movie_id
-                                 Sort Method: quicksort  Memory: 783kB
-                                 Buffers: shared hit=1519801 read=27070
-                                 ->  Merge Join  (cost=0.03..65159.45 rows=21 width=4) (actual time=10485.715..13486.966 rows=8495 loops=1)
-                                       Merge Cond: (cn.id = mc.company_id)
-                                       Buffers: shared hit=1519801 read=27070
-                                       ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..4597.20 rows=6752 width=4) (actual time=150.501..796.745 rows=2408 loops=1)
-                                             Filter: ((country_code)::text = '[jp]'::text)
-                                             Rows Removed by Filter: 68157
-                                             Buffers: shared hit=69596 read=1157
-                                       ->  Index Scan using movie_companies_idx_cid on movie_companies mc  (cost=0.01..60561.66 rows=720 width=8) (actual time=6504.550..12686.492 rows=8569 loops=1)
-                                             Filter: ((note ~~ '%(Japan)%'::text) AND (note !~~ '%(USA)%'::text) AND ((note ~~ '%(2006)%'::text) OR (note ~~ '%(2007)%'::text)))
-                                             Rows Removed by Filter: 2600560
-                                             Buffers: shared hit=1450205 read=25913
-                     ->  Index Scan using title_idx_id on title t  (cost=0.01..23827.24 rows=34 width=21) (actual time=6774.263..9310.346 rows=7 loops=1)
-                           Filter: ((production_year >= 2006) AND (production_year <= 2007) AND ((title ~~ 'One Piece%'::text) OR (title ~~ 'Dragon Ball Z%'::text)))
-                           Rows Removed by Filter: 2528305
-                           Buffers: shared hit=2489874 read=42904
- Planning Time: 4495.901 ms
- Execution Time: 58678.960 ms
-(60 rows)
-
+ [                                                                                                                                                                         
+   {                                                                                                                                                                       
+     "Plan": {                                                                                                                                                             
+       "Node Type": "Aggregate",                                                                                                                                           
+       "Strategy": "Plain",                                                                                                                                                
+       "Partial Mode": "Simple",                                                                                                                                           
+       "Parallel Aware": false,                                                                                                                                            
+       "Startup Cost": 486422.19,                                                                                                                                          
+       "Total Cost": 486422.19,                                                                                                                                            
+       "Plan Rows": 1,                                                                                                                                                     
+       "Plan Width": 64,                                                                                                                                                   
+       "Actual Startup Time": 52358.937,                                                                                                                                   
+       "Actual Total Time": 52358.937,                                                                                                                                     
+       "Actual Rows": 1,                                                                                                                                                   
+       "Actual Loops": 1,                                                                                                                                                  
+       "Shared Hit Blocks": 6787417,                                                                                                                                       
+       "Shared Read Blocks": 480350,                                                                                                                                       
+       "Shared Dirtied Blocks": 0,                                                                                                                                         
+       "Shared Written Blocks": 0,                                                                                                                                         
+       "Local Hit Blocks": 0,                                                                                                                                              
+       "Local Read Blocks": 0,                                                                                                                                             
+       "Local Dirtied Blocks": 0,                                                                                                                                          
+       "Local Written Blocks": 0,                                                                                                                                          
+       "Temp Read Blocks": 0,                                                                                                                                              
+       "Temp Written Blocks": 0,                                                                                                                                           
+       "Plans": [                                                                                                                                                          
+         {                                                                                                                                                                 
+           "Node Type": "Merge Join",                                                                                                                                      
+           "Parent Relationship": "Outer",                                                                                                                                 
+           "Parallel Aware": false,                                                                                                                                        
+           "Join Type": "Inner",                                                                                                                                           
+           "Startup Cost": 407825.35,                                                                                                                                      
+           "Total Cost": 486422.19,                                                                                                                                        
+           "Plan Rows": 1,                                                                                                                                                 
+           "Plan Width": 33,                                                                                                                                               
+           "Actual Startup Time": 52358.451,                                                                                                                               
+           "Actual Total Time": 52358.899,                                                                                                                                 
+           "Actual Rows": 6,                                                                                                                                               
+           "Actual Loops": 1,                                                                                                                                              
+           "Inner Unique": false,                                                                                                                                          
+           "Merge Cond": "(an.person_id = ci.person_id)",                                                                                                                  
+           "Shared Hit Blocks": 6787417,                                                                                                                                   
+           "Shared Read Blocks": 480350,                                                                                                                                   
+           "Shared Dirtied Blocks": 0,                                                                                                                                     
+           "Shared Written Blocks": 0,                                                                                                                                     
+           "Local Hit Blocks": 0,                                                                                                                                          
+           "Local Read Blocks": 0,                                                                                                                                         
+           "Local Dirtied Blocks": 0,                                                                                                                                      
+           "Local Written Blocks": 0,                                                                                                                                      
+           "Temp Read Blocks": 0,                                                                                                                                          
+           "Temp Written Blocks": 0,                                                                                                                                       
+           "Plans": [                                                                                                                                                      
+             {                                                                                                                                                             
+               "Node Type": "Merge Join",                                                                                                                                  
+               "Parent Relationship": "Outer",                                                                                                                             
+               "Parallel Aware": false,                                                                                                                                    
+               "Join Type": "Inner",                                                                                                                                       
+               "Startup Cost": 0.03,                                                                                                                                       
+               "Total Cost": 91699.23,                                                                                                                                     
+               "Plan Rows": 4689,                                                                                                                                          
+               "Plan Width": 24,                                                                                                                                           
+               "Actual Startup Time": 25.439,                                                                                                                              
+               "Actual Total Time": 4914.073,                                                                                                                              
+               "Actual Rows": 2105,                                                                                                                                        
+               "Actual Loops": 1,                                                                                                                                          
+               "Inner Unique": true,                                                                                                                                       
+               "Merge Cond": "(an.person_id = n.id)",                                                                                                                      
+               "Shared Hit Blocks": 2777730,                                                                                                                               
+               "Shared Read Blocks": 58694,                                                                                                                                
+               "Shared Dirtied Blocks": 0,                                                                                                                                 
+               "Shared Written Blocks": 0,                                                                                                                                 
+               "Local Hit Blocks": 0,                                                                                                                                      
+               "Local Read Blocks": 0,                                                                                                                                     
+               "Local Dirtied Blocks": 0,                                                                                                                                  
+               "Local Written Blocks": 0,                                                                                                                                  
+               "Temp Read Blocks": 0,                                                                                                                                      
+               "Temp Written Blocks": 0,                                                                                                                                   
+               "Plans": [                                                                                                                                                  
+                 {                                                                                                                                                         
+                   "Node Type": "Index Scan",                                                                                                                              
+                   "Parent Relationship": "Outer",                                                                                                                         
+                   "Parallel Aware": false,                                                                                                                                
+                   "Scan Direction": "Forward",                                                                                                                            
+                   "Index Name": "person_id_aka_name",                                                                                                                     
+                   "Relation Name": "aka_name",                                                                                                                            
+                   "Alias": "an",                                                                                                                                          
+                   "Startup Cost": 0.01,                                                                                                                                   
+                   "Total Cost": 42491.32,                                                                                                                                 
+                   "Plan Rows": 901343,                                                                                                                                    
+                   "Plan Width": 20,                                                                                                                                       
+                   "Actual Startup Time": 0.025,                                                                                                                           
+                   "Actual Total Time": 494.496,                                                                                                                           
+                   "Actual Rows": 576728,                                                                                                                                  
+                   "Actual Loops": 1,                                                                                                                                      
+                   "Shared Hit Blocks": 201918,                                                                                                                            
+                   "Shared Read Blocks": 12968,                                                                                                                            
+                   "Shared Dirtied Blocks": 0,                                                                                                                             
+                   "Shared Written Blocks": 0,                                                                                                                             
+                   "Local Hit Blocks": 0,                                                                                                                                  
+                   "Local Read Blocks": 0,                                                                                                                                 
+                   "Local Dirtied Blocks": 0,                                                                                                                              
+                   "Local Written Blocks": 0,                                                                                                                              
+                   "Temp Read Blocks": 0,                                                                                                                                  
+                   "Temp Written Blocks": 0                                                                                                                                
+                 },                                                                                                                                                        
+                 {                                                                                                                                                         
+                   "Node Type": "Index Scan",                                                                                                                              
+                   "Parent Relationship": "Inner",                                                                                                                         
+                   "Parallel Aware": false,                                                                                                                                
+                   "Scan Direction": "Forward",                                                                                                                            
+                   "Index Name": "name_pkey",                                                                                                                              
+                   "Relation Name": "name",                                                                                                                                
+                   "Alias": "n",                                                                                                                                           
+                   "Startup Cost": 0.01,                                                                                                                                   
+                   "Total Cost": 49135.93,                                                                                                                                 
+                   "Plan Rows": 21680,                                                                                                                                     
+                   "Plan Width": 4,                                                                                                                                        
+                   "Actual Startup Time": 16.276,                                                                                                                          
+                   "Actual Total Time": 4326.479,                                                                                                                          
+                   "Actual Rows": 11663,                                                                                                                                   
+                   "Actual Loops": 1,                                                                                                                                      
+                   "Filter": "((name ~~ '%Yo%'::text) AND (name !~~ '%Yu%'::text))",                                                                                       
+                   "Rows Removed by Filter": 2678222,                                                                                                                      
+                   "Shared Hit Blocks": 2575812,                                                                                                                           
+                   "Shared Read Blocks": 45726,                                                                                                                            
+                   "Shared Dirtied Blocks": 0,                                                                                                                             
+                   "Shared Written Blocks": 0,                                                                                                                             
+                   "Local Hit Blocks": 0,                                                                                                                                  
+                   "Local Read Blocks": 0,                                                                                                                                 
+                   "Local Dirtied Blocks": 0,                                                                                                                              
+                   "Local Written Blocks": 0,                                                                                                                              
+                   "Temp Read Blocks": 0,                                                                                                                                  
+                   "Temp Written Blocks": 0                                                                                                                                
+                 }                                                                                                                                                         
+               ]                                                                                                                                                           
+             },                                                                                                                                                            
+             {                                                                                                                                                             
+               "Node Type": "Sort",                                                                                                                                        
+               "Parent Relationship": "Inner",                                                                                                                             
+               "Parallel Aware": false,                                                                                                                                    
+               "Startup Cost": 407825.33,                                                                                                                                  
+               "Total Cost": 407825.33,                                                                                                                                    
+               "Plan Rows": 1,                                                                                                                                             
+               "Plan Width": 21,                                                                                                                                           
+               "Actual Startup Time": 47444.397,                                                                                                                           
+               "Actual Total Time": 47444.418,                                                                                                                             
+               "Actual Rows": 26,                                                                                                                                          
+               "Actual Loops": 1,                                                                                                                                          
+               "Sort Key": ["ci.person_id"],                                                                                                                               
+               "Sort Method": "quicksort",                                                                                                                                 
+               "Sort Space Used": 27,                                                                                                                                      
+               "Sort Space Type": "Memory",                                                                                                                                
+               "Shared Hit Blocks": 4009687,                                                                                                                               
+               "Shared Read Blocks": 421656,                                                                                                                               
+               "Shared Dirtied Blocks": 0,                                                                                                                                 
+               "Shared Written Blocks": 0,                                                                                                                                 
+               "Local Hit Blocks": 0,                                                                                                                                      
+               "Local Read Blocks": 0,                                                                                                                                     
+               "Local Dirtied Blocks": 0,                                                                                                                                  
+               "Local Written Blocks": 0,                                                                                                                                  
+               "Temp Read Blocks": 0,                                                                                                                                      
+               "Temp Written Blocks": 0,                                                                                                                                   
+               "Plans": [                                                                                                                                                  
+                 {                                                                                                                                                         
+                   "Node Type": "Merge Join",                                                                                                                              
+                   "Parent Relationship": "Outer",                                                                                                                         
+                   "Parallel Aware": false,                                                                                                                                
+                   "Join Type": "Inner",                                                                                                                                   
+                   "Startup Cost": 383996.89,                                                                                                                              
+                   "Total Cost": 407825.33,                                                                                                                                
+                   "Plan Rows": 1,                                                                                                                                         
+                   "Plan Width": 21,                                                                                                                                       
+                   "Actual Startup Time": 45084.969,                                                                                                                       
+                   "Actual Total Time": 47414.595,                                                                                                                         
+                   "Actual Rows": 25,                                                                                                                                      
+                   "Actual Loops": 1,                                                                                                                                      
+                   "Inner Unique": true,                                                                                                                                   
+                   "Merge Cond": "(ci.movie_id = t.id)",                                                                                                                   
+                   "Shared Hit Blocks": 4009683,                                                                                                                           
+                   "Shared Read Blocks": 421656,                                                                                                                           
+                   "Shared Dirtied Blocks": 0,                                                                                                                             
+                   "Shared Written Blocks": 0,                                                                                                                             
+                   "Local Hit Blocks": 0,                                                                                                                                  
+                   "Local Read Blocks": 0,                                                                                                                                 
+                   "Local Dirtied Blocks": 0,                                                                                                                              
+                   "Local Written Blocks": 0,                                                                                                                              
+                   "Temp Read Blocks": 0,                                                                                                                                  
+                   "Temp Written Blocks": 0,                                                                                                                               
+                   "Plans": [                                                                                                                                              
+                     {                                                                                                                                                     
+                       "Node Type": "Merge Join",                                                                                                                          
+                       "Parent Relationship": "Outer",                                                                                                                     
+                       "Parallel Aware": false,                                                                                                                            
+                       "Join Type": "Inner",                                                                                                                               
+                       "Startup Cost": 383996.87,                                                                                                                          
+                       "Total Cost": 383998.08,                                                                                                                            
+                       "Plan Rows": 1,                                                                                                                                     
+                       "Plan Width": 12,                                                                                                                                   
+                       "Actual Startup Time": 37949.738,                                                                                                                   
+                       "Actual Total Time": 37965.000,                                                                                                                     
+                       "Actual Rows": 925,                                                                                                                                 
+                       "Actual Loops": 1,                                                                                                                                  
+                       "Inner Unique": false,                                                                                                                              
+                       "Merge Cond": "(ci.movie_id = mc.movie_id)",                                                                                                        
+                       "Shared Hit Blocks": 1519809,                                                                                                                       
+                       "Shared Read Blocks": 378752,                                                                                                                       
+                       "Shared Dirtied Blocks": 0,                                                                                                                         
+                       "Shared Written Blocks": 0,                                                                                                                         
+                       "Local Hit Blocks": 0,                                                                                                                              
+                       "Local Read Blocks": 0,                                                                                                                             
+                       "Local Dirtied Blocks": 0,                                                                                                                          
+                       "Local Written Blocks": 0,                                                                                                                          
+                       "Temp Read Blocks": 0,                                                                                                                              
+                       "Temp Written Blocks": 0,                                                                                                                           
+                       "Plans": [                                                                                                                                          
+                         {                                                                                                                                                 
+                           "Node Type": "Sort",                                                                                                                            
+                           "Parent Relationship": "Outer",                                                                                                                 
+                           "Parallel Aware": false,                                                                                                                        
+                           "Startup Cost": 318837.41,                                                                                                                      
+                           "Total Cost": 318838.02,                                                                                                                        
+                           "Plan Rows": 7772,                                                                                                                              
+                           "Plan Width": 8,                                                                                                                                
+                           "Actual Startup Time": 24672.303,                                                                                                               
+                           "Actual Total Time": 24676.531,                                                                                                                 
+                           "Actual Rows": 32758,                                                                                                                           
+                           "Actual Loops": 1,                                                                                                                              
+                           "Sort Key": ["ci.movie_id"],                                                                                                                    
+                           "Sort Method": "quicksort",                                                                                                                     
+                           "Sort Space Used": 3170,                                                                                                                        
+                           "Sort Space Type": "Memory",                                                                                                                    
+                           "Shared Hit Blocks": 8,                                                                                                                         
+                           "Shared Read Blocks": 351682,                                                                                                                   
+                           "Shared Dirtied Blocks": 0,                                                                                                                     
+                           "Shared Written Blocks": 0,                                                                                                                     
+                           "Local Hit Blocks": 0,                                                                                                                          
+                           "Local Read Blocks": 0,                                                                                                                         
+                           "Local Dirtied Blocks": 0,                                                                                                                      
+                           "Local Written Blocks": 0,                                                                                                                      
+                           "Temp Read Blocks": 0,                                                                                                                          
+                           "Temp Written Blocks": 0,                                                                                                                       
+                           "Plans": [                                                                                                                                      
+                             {                                                                                                                                             
+                               "Node Type": "Merge Join",                                                                                                                  
+                               "Parent Relationship": "Outer",                                                                                                             
+                               "Parallel Aware": false,                                                                                                                    
+                               "Join Type": "Inner",                                                                                                                       
+                               "Startup Cost": 0.02,                                                                                                                       
+                               "Total Cost": 318821.82,                                                                                                                    
+                               "Plan Rows": 7772,                                                                                                                          
+                               "Plan Width": 8,                                                                                                                            
+                               "Actual Startup Time": 8716.025,                                                                                                            
+                               "Actual Total Time": 24648.985,                                                                                                             
+                               "Actual Rows": 34848,                                                                                                                       
+                               "Actual Loops": 1,                                                                                                                          
+                               "Inner Unique": true,                                                                                                                       
+                               "Merge Cond": "(ci.role_id = rt.id)",                                                                                                       
+                               "Shared Hit Blocks": 8,                                                                                                                     
+                               "Shared Read Blocks": 351682,                                                                                                               
+                               "Shared Dirtied Blocks": 0,                                                                                                                 
+                               "Shared Written Blocks": 0,                                                                                                                 
+                               "Local Hit Blocks": 0,                                                                                                                      
+                               "Local Read Blocks": 0,                                                                                                                     
+                               "Local Dirtied Blocks": 0,                                                                                                                  
+                               "Local Written Blocks": 0,                                                                                                                  
+                               "Temp Read Blocks": 0,                                                                                                                      
+                               "Temp Written Blocks": 0,                                                                                                                   
+                               "Plans": [                                                                                                                                  
+                                 {                                                                                                                                         
+                                   "Node Type": "Index Scan",                                                                                                              
+                                   "Parent Relationship": "Outer",                                                                                                         
+                                   "Parallel Aware": false,                                                                                                                
+                                   "Scan Direction": "Forward",                                                                                                            
+                                   "Index Name": "role_id_cast_info",                                                                                                      
+                                   "Relation Name": "cast_info",                                                                                                           
+                                   "Alias": "ci",                                                                                                                          
+                                   "Startup Cost": 0.02,                                                                                                                   
+                                   "Total Cost": 318804.85,                                                                                                                
+                                   "Plan Rows": 93269,                                                                                                                     
+                                   "Plan Width": 12,                                                                                                                       
+                                   "Actual Startup Time": 47.438,                                                                                                          
+                                   "Actual Total Time": 24619.420,                                                                                                         
+                                   "Actual Rows": 93095,                                                                                                                   
+                                   "Actual Loops": 1,                                                                                                                      
+                                   "Filter": "(note = '(voice: English version)'::text)",                                                                                  
+                                   "Rows Removed by Filter": 36151249,                                                                                                     
+                                   "Shared Hit Blocks": 6,                                                                                                                 
+                                   "Shared Read Blocks": 351682,                                                                                                           
+                                   "Shared Dirtied Blocks": 0,                                                                                                             
+                                   "Shared Written Blocks": 0,                                                                                                             
+                                   "Local Hit Blocks": 0,                                                                                                                  
+                                   "Local Read Blocks": 0,                                                                                                                 
+                                   "Local Dirtied Blocks": 0,                                                                                                              
+                                   "Local Written Blocks": 0,                                                                                                              
+                                   "Temp Read Blocks": 0,                                                                                                                  
+                                   "Temp Written Blocks": 0                                                                                                                
+                                 },                                                                                                                                        
+                                 {                                                                                                                                         
+                                   "Node Type": "Index Scan",                                                                                                              
+                                   "Parent Relationship": "Inner",                                                                                                         
+                                   "Parallel Aware": false,                                                                                                                
+                                   "Scan Direction": "Forward",                                                                                                            
+                                   "Index Name": "role_type_pkey",                                                                                                         
+                                   "Relation Name": "role_type",                                                                                                           
+                                   "Alias": "rt",                                                                                                                          
+                                   "Startup Cost": 0.00,                                                                                                                   
+                                   "Total Cost": 9.19,                                                                                                                     
+                                   "Plan Rows": 1,                                                                                                                         
+                                   "Plan Width": 4,                                                                                                                        
+                                   "Actual Startup Time": 0.024,                                                                                                           
+                                   "Actual Total Time": 0.024,                                                                                                             
+                                   "Actual Rows": 1,                                                                                                                       
+                                   "Actual Loops": 1,                                                                                                                      
+                                   "Filter": "((role)::text = 'actress'::text)",                                                                                           
+                                   "Rows Removed by Filter": 1,                                                                                                            
+                                   "Shared Hit Blocks": 2,                                                                                                                 
+                                   "Shared Read Blocks": 0,                                                                                                                
+                                   "Shared Dirtied Blocks": 0,                                                                                                             
+                                   "Shared Written Blocks": 0,                                                                                                             
+                                   "Local Hit Blocks": 0,                                                                                                                  
+                                   "Local Read Blocks": 0,                                                                                                                 
+                                   "Local Dirtied Blocks": 0,                                                                                                              
+                                   "Local Written Blocks": 0,                                                                                                              
+                                   "Temp Read Blocks": 0,                                                                                                                  
+                                   "Temp Written Blocks": 0                                                                                                                
+                                 }                                                                                                                                         
+                               ]                                                                                                                                           
+                             }                                                                                                                                             
+                           ]                                                                                                                                               
+                         },                                                                                                                                                
+                         {                                                                                                                                                 
+                           "Node Type": "Sort",                                                                                                                            
+                           "Parent Relationship": "Inner",                                                                                                                 
+                           "Parallel Aware": false,                                                                                                                        
+                           "Startup Cost": 65159.46,                                                                                                                       
+                           "Total Cost": 65159.46,                                                                                                                         
+                           "Plan Rows": 21,                                                                                                                                
+                           "Plan Width": 4,                                                                                                                                
+                           "Actual Startup Time": 13277.423,                                                                                                               
+                           "Actual Total Time": 13278.392,                                                                                                                 
+                           "Actual Rows": 7988,                                                                                                                            
+                           "Actual Loops": 1,                                                                                                                              
+                           "Sort Key": ["mc.movie_id"],                                                                                                                    
+                           "Sort Method": "quicksort",                                                                                                                     
+                           "Sort Space Used": 783,                                                                                                                         
+                           "Sort Space Type": "Memory",                                                                                                                    
+                           "Shared Hit Blocks": 1519801,                                                                                                                   
+                           "Shared Read Blocks": 27070,                                                                                                                    
+                           "Shared Dirtied Blocks": 0,                                                                                                                     
+                           "Shared Written Blocks": 0,                                                                                                                     
+                           "Local Hit Blocks": 0,                                                                                                                          
+                           "Local Read Blocks": 0,                                                                                                                         
+                           "Local Dirtied Blocks": 0,                                                                                                                      
+                           "Local Written Blocks": 0,                                                                                                                      
+                           "Temp Read Blocks": 0,                                                                                                                          
+                           "Temp Written Blocks": 0,                                                                                                                       
+                           "Plans": [                                                                                                                                      
+                             {                                                                                                                                             
+                               "Node Type": "Merge Join",                                                                                                                  
+                               "Parent Relationship": "Outer",                                                                                                             
+                               "Parallel Aware": false,                                                                                                                    
+                               "Join Type": "Inner",                                                                                                                       
+                               "Startup Cost": 0.03,                                                                                                                       
+                               "Total Cost": 65159.45,                                                                                                                     
+                               "Plan Rows": 21,                                                                                                                            
+                               "Plan Width": 4,                                                                                                                            
+                               "Actual Startup Time": 10473.638,                                                                                                           
+                               "Actual Total Time": 13273.347,                                                                                                             
+                               "Actual Rows": 8495,                                                                                                                        
+                               "Actual Loops": 1,                                                                                                                          
+                               "Inner Unique": false,                                                                                                                      
+                               "Merge Cond": "(cn.id = mc.company_id)",                                                                                                    
+                               "Shared Hit Blocks": 1519801,                                                                                                               
+                               "Shared Read Blocks": 27070,                                                                                                                
+                               "Shared Dirtied Blocks": 0,                                                                                                                 
+                               "Shared Written Blocks": 0,                                                                                                                 
+                               "Local Hit Blocks": 0,                                                                                                                      
+                               "Local Read Blocks": 0,                                                                                                                     
+                               "Local Dirtied Blocks": 0,                                                                                                                  
+                               "Local Written Blocks": 0,                                                                                                                  
+                               "Temp Read Blocks": 0,                                                                                                                      
+                               "Temp Written Blocks": 0,                                                                                                                   
+                               "Plans": [                                                                                                                                  
+                                 {                                                                                                                                         
+                                   "Node Type": "Index Scan",                                                                                                              
+                                   "Parent Relationship": "Outer",                                                                                                         
+                                   "Parallel Aware": false,                                                                                                                
+                                   "Scan Direction": "Forward",                                                                                                            
+                                   "Index Name": "company_name_pkey",                                                                                                      
+                                   "Relation Name": "company_name",                                                                                                        
+                                   "Alias": "cn",                                                                                                                          
+                                   "Startup Cost": 0.01,                                                                                                                   
+                                   "Total Cost": 4597.20,                                                                                                                  
+                                   "Plan Rows": 6752,                                                                                                                      
+                                   "Plan Width": 4,                                                                                                                        
+                                   "Actual Startup Time": 138.447,                                                                                                         
+                                   "Actual Total Time": 791.342,                                                                                                           
+                                   "Actual Rows": 2408,                                                                                                                    
+                                   "Actual Loops": 1,                                                                                                                      
+                                   "Filter": "((country_code)::text = '[jp]'::text)",                                                                                      
+                                   "Rows Removed by Filter": 68157,                                                                                                        
+                                   "Shared Hit Blocks": 69596,                                                                                                             
+                                   "Shared Read Blocks": 1157,                                                                                                             
+                                   "Shared Dirtied Blocks": 0,                                                                                                             
+                                   "Shared Written Blocks": 0,                                                                                                             
+                                   "Local Hit Blocks": 0,                                                                                                                  
+                                   "Local Read Blocks": 0,                                                                                                                 
+                                   "Local Dirtied Blocks": 0,                                                                                                              
+                                   "Local Written Blocks": 0,                                                                                                              
+                                   "Temp Read Blocks": 0,                                                                                                                  
+                                   "Temp Written Blocks": 0                                                                                                                
+                                 },                                                                                                                                        
+                                 {                                                                                                                                         
+                                   "Node Type": "Index Scan",                                                                                                              
+                                   "Parent Relationship": "Inner",                                                                                                         
+                                   "Parallel Aware": false,                                                                                                                
+                                   "Scan Direction": "Forward",                                                                                                            
+                                   "Index Name": "company_id_movie_companies",                                                                                             
+                                   "Relation Name": "movie_companies",                                                                                                     
+                                   "Alias": "mc",                                                                                                                          
+                                   "Startup Cost": 0.01,                                                                                                                   
+                                   "Total Cost": 60561.66,                                                                                                                 
+                                   "Plan Rows": 720,                                                                                                                       
+                                   "Plan Width": 8,                                                                                                                        
+                                   "Actual Startup Time": 6538.000,                                                                                                        
+                                   "Actual Total Time": 12478.412,                                                                                                         
+                                   "Actual Rows": 8569,                                                                                                                    
+                                   "Actual Loops": 1,                                                                                                                      
+                                   "Filter": "((note ~~ '%(Japan)%'::text) AND (note !~~ '%(USA)%'::text) AND ((note ~~ '%(2006)%'::text) OR (note ~~ '%(2007)%'::text)))",
+                                   "Rows Removed by Filter": 2600560,                                                                                                      
+                                   "Shared Hit Blocks": 1450205,                                                                                                           
+                                   "Shared Read Blocks": 25913,                                                                                                            
+                                   "Shared Dirtied Blocks": 0,                                                                                                             
+                                   "Shared Written Blocks": 0,                                                                                                             
+                                   "Local Hit Blocks": 0,                                                                                                                  
+                                   "Local Read Blocks": 0,                                                                                                                 
+                                   "Local Dirtied Blocks": 0,                                                                                                              
+                                   "Local Written Blocks": 0,                                                                                                              
+                                   "Temp Read Blocks": 0,                                                                                                                  
+                                   "Temp Written Blocks": 0                                                                                                                
+                                 }                                                                                                                                         
+                               ]                                                                                                                                           
+                             }                                                                                                                                             
+                           ]                                                                                                                                               
+                         }                                                                                                                                                 
+                       ]                                                                                                                                                   
+                     },                                                                                                                                                    
+                     {                                                                                                                                                     
+                       "Node Type": "Index Scan",                                                                                                                          
+                       "Parent Relationship": "Inner",                                                                                                                     
+                       "Parallel Aware": false,                                                                                                                            
+                       "Scan Direction": "Forward",                                                                                                                        
+                       "Index Name": "title_idx_id",                                                                                                                       
+                       "Relation Name": "title",                                                                                                                           
+                       "Alias": "t",                                                                                                                                       
+                       "Startup Cost": 0.01,                                                                                                                               
+                       "Total Cost": 23827.24,                                                                                                                             
+                       "Plan Rows": 34,                                                                                                                                    
+                       "Plan Width": 21,                                                                                                                                   
+                       "Actual Startup Time": 7120.921,                                                                                                                    
+                       "Actual Total Time": 9449.420,                                                                                                                      
+                       "Actual Rows": 7,                                                                                                                                   
+                       "Actual Loops": 1,                                                                                                                                  
+                       "Filter": "((production_year >= 2006) AND (production_year <= 2007) AND ((title ~~ 'One Piece%'::text) OR (title ~~ 'Dragon Ball Z%'::text)))",     
+                       "Rows Removed by Filter": 2528305,                                                                                                                  
+                       "Shared Hit Blocks": 2489874,                                                                                                                       
+                       "Shared Read Blocks": 42904,                                                                                                                        
+                       "Shared Dirtied Blocks": 0,                                                                                                                         
+                       "Shared Written Blocks": 0,                                                                                                                         
+                       "Local Hit Blocks": 0,                                                                                                                              
+                       "Local Read Blocks": 0,                                                                                                                             
+                       "Local Dirtied Blocks": 0,                                                                                                                          
+                       "Local Written Blocks": 0,                                                                                                                          
+                       "Temp Read Blocks": 0,                                                                                                                              
+                       "Temp Written Blocks": 0                                                                                                                            
+                     }                                                                                                                                                     
+                   ]                                                                                                                                                       
+                 }                                                                                                                                                         
+               ]                                                                                                                                                           
+             }                                                                                                                                                             
+           ]                                                                                                                                                               
+         }                                                                                                                                                                 
+       ]                                                                                                                                                                   
+     },                                                                                                                                                                    
+     "Planning Time": 4639.909,                                                                                                                                            
+     "Triggers": [                                                                                                                                                         
+     ],                                                                                                                                                                    
+     "Execution Time": 52359.790                                                                                                                                           
+   }                                                                                                                                                                       
+ ]

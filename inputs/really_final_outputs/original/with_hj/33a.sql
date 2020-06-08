@@ -3,7 +3,7 @@
  Aggregate  (cost=6817.32..6817.32 rows=1 width=192) (actual time=5728.703..5728.703 rows=1 loops=1)
    Buffers: shared hit=66239 read=66400
    ->  Hash Join  (cost=5743.71..6817.32 rows=1 width=84) (actual time=5233.434..5728.656 rows=8 loops=1)
-         Hash Cond: (mc.company_id = cn1.id)
+         Hash Cond: (mc.company_id = cn.id)
          Buffers: shared hit=66239 read=66400
          ->  Hash Join  (cost=5602.85..6676.46 rows=1 width=69) (actual time=5079.520..5574.734 rows=28 loops=1)
                Hash Cond: (mc.movie_id = t.id)
@@ -20,7 +20,7 @@
                                  Hash Cond: (mi_idx.info_type_id = it.id)
                                  Buffers: shared hit=47448 read=63404
                                  ->  Hash Join  (cost=4529.15..5602.77 rows=1 width=85) (actual time=4157.007..5046.246 rows=407 loops=1)
-                                       Hash Cond: (mc.company_id = cn2.id)
+                                       Hash Cond: (mc.company_id = cn.id)
                                        Buffers: shared hit=47448 read=63403
                                        ->  Hash Join  (cost=4384.50..5458.11 rows=1 width=70) (actual time=4040.195..4929.036 rows=407 loops=1)
                                              Hash Cond: (mc.movie_id = t.id)
@@ -101,7 +101,7 @@
                                        ->  Hash  (cost=110.16..110.16 rows=234997 width=23) (actual time=114.776..114.776 rows=234997 loops=1)
                                              Buckets: 262144  Batches: 1  Memory Usage: 15097kB
                                              Buffers: shared hit=2994
-                                             ->  Seq Scan on company_name cn2  (cost=0.00..110.16 rows=234997 width=23) (actual time=0.014..49.146 rows=234997 loops=1)
+                                             ->  Seq Scan on company_name cn  (cost=0.00..110.16 rows=234997 width=23) (actual time=0.014..49.146 rows=234997 loops=1)
                                                    Buffers: shared hit=2994
                                  ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=1.557..1.557 rows=1 loops=1)
                                        Buckets: 1024  Batches: 1  Memory Usage: 9kB
@@ -120,7 +120,7 @@
          ->  Hash  (cost=128.41..128.41 rows=84843 width=23) (actual time=153.536..153.536 rows=84843 loops=1)
                Buckets: 131072  Batches: 1  Memory Usage: 5810kB
                Buffers: shared read=2994
-               ->  Seq Scan on company_name cn1  (cost=0.00..128.41 rows=84843 width=23) (actual time=17.658..117.675 rows=84843 loops=1)
+               ->  Seq Scan on company_name cn  (cost=0.00..128.41 rows=84843 width=23) (actual time=17.658..117.675 rows=84843 loops=1)
                      Filter: ((country_code)::text = '[us]'::text)
                      Rows Removed by Filter: 150154
                      Buffers: shared read=2994

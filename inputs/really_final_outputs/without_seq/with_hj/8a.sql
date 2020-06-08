@@ -6,7 +6,7 @@
          Hash Cond: (ci.movie_id = t.id)
          Buffers: shared hit=8405230 read=508902
          ->  Hash Join  (cost=156524.95..475337.46 rows=1 width=24) (actual time=29728.557..43028.070 rows=62 loops=1)
-               Hash Cond: (n1.id = an1.person_id)
+               Hash Cond: (n.id = an.person_id)
                Buffers: shared hit=5915357 read=465994
                ->  Hash Join  (cost=113901.33..432713.84 rows=1 width=16) (actual time=28096.818..41396.310 rows=38 loops=1)
                      Hash Cond: (ci.movie_id = mc.movie_id)
@@ -15,7 +15,7 @@
                            Hash Cond: (ci.role_id = rt.id)
                            Buffers: shared hit=3938600 read=422374
                            ->  Hash Join  (cost=49139.13..367951.57 rows=485 width=16) (actual time=5116.000..28185.805 rows=938 loops=1)
-                                 Hash Cond: (ci.person_id = n1.id)
+                                 Hash Cond: (ci.person_id = n.id)
                                  Buffers: shared hit=3938600 read=422372
                                  ->  Index Scan using role_id_cast_info on cast_info ci  (cost=0.02..318804.85 rows=93269 width=12) (actual time=49.049..23942.032 rows=93095 loops=1)
                                        Filter: (note = '(voice: English version)'::text)
@@ -24,7 +24,7 @@
                                  ->  Hash  (cost=49135.93..49135.93 rows=21680 width=4) (actual time=4221.070..4221.070 rows=20911 loops=1)
                                        Buckets: 32768  Batches: 1  Memory Usage: 992kB
                                        Buffers: shared hit=3938598 read=70686
-                                       ->  Index Scan using name_pkey on name n1  (cost=0.01..49135.93 rows=21680 width=4) (actual time=30.452..4212.946 rows=20911 loops=1)
+                                       ->  Index Scan using name_pkey on name n  (cost=0.01..49135.93 rows=21680 width=4) (actual time=30.452..4212.946 rows=20911 loops=1)
                                              Filter: ((name ~~ '%Yo%'::text) AND (name !~~ '%Yu%'::text))
                                              Rows Removed by Filter: 4146580
                                              Buffers: shared hit=3938598 read=70686
@@ -54,7 +54,7 @@
                ->  Hash  (cost=42491.32..42491.32 rows=901343 width=20) (actual time=1629.187..1629.187 rows=901343 loops=1)
                      Buckets: 1048576  Batches: 1  Memory Usage: 55915kB
                      Buffers: shared hit=294845 read=13860
-                     ->  Index Scan using person_id_aka_name on aka_name an1  (cost=0.01..42491.32 rows=901343 width=20) (actual time=39.811..1230.776 rows=901343 loops=1)
+                     ->  Index Scan using person_id_aka_name on aka_name an  (cost=0.01..42491.32 rows=901343 width=20) (actual time=39.811..1230.776 rows=901343 loops=1)
                            Buffers: shared hit=294845 read=13860
          ->  Hash  (cost=23042.05..23042.05 rows=2528312 width=21) (actual time=10834.000..10834.000 rows=2528312 loops=1)
                Buckets: 4194304  Batches: 1  Memory Usage: 168636kB

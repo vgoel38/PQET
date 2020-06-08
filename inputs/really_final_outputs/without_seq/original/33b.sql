@@ -59,7 +59,7 @@
                                                                ->  Index Scan using movie_id_movie_companies on movie_companies mc  (cost=0.01..0.07 rows=2 width=8) (actual time=0.067..0.081 rows=5 loops=2064)
                                                                      Index Cond: (movie_id = mi_idx.movie_id)
                                                                      Buffers: shared hit=9435 read=461
-                                                         ->  Index Scan using company_name_pkey on company_name cn1  (cost=0.01..0.02 rows=1 width=23) (actual time=0.216..0.216 rows=0 loops=9674)
+                                                         ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..0.02 rows=1 width=23) (actual time=0.216..0.216 rows=0 loops=9674)
                                                                Index Cond: (id = mc.company_id)
                                                                Filter: ((country_code)::text = '[nl]'::text)
                                                                Rows Removed by Filter: 1
@@ -77,7 +77,7 @@
                                  ->  Index Scan using movie_id_movie_companies on movie_companies mc  (cost=0.01..0.68 rows=2 width=8) (actual time=0.178..0.200 rows=4 loops=1)
                                        Index Cond: (movie_id = t.id)
                                        Buffers: shared hit=2 read=3
-                           ->  Index Scan using company_name_pkey on company_name cn2  (cost=0.01..0.02 rows=1 width=23) (actual time=0.014..0.014 rows=1 loops=4)
+                           ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..0.02 rows=1 width=23) (actual time=0.014..0.014 rows=1 loops=4)
                                  Index Cond: (id = mc.company_id)
                                  Buffers: shared hit=16
                      ->  Index Scan using title_idx_id on title t  (cost=0.01..0.06 rows=1 width=25) (actual time=1.280..1.280 rows=1 loops=4)

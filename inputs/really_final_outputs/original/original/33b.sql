@@ -88,12 +88,12 @@
                      ->  Index Scan using movie_info_idx_idx_mid on movie_info_idx mi_idx  (cost=0.01..0.03 rows=3 width=14) (actual time=3.281..3.285 rows=3 loops=14)
                            Index Cond: (movie_id = mc.movie_id)
                            Buffers: shared hit=54 read=2
-               ->  Index Scan using company_name_pkey on company_name cn1  (cost=0.01..0.02 rows=1 width=23) (actual time=4.423..4.423 rows=0 loops=14)
+               ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..0.02 rows=1 width=23) (actual time=4.423..4.423 rows=0 loops=14)
                      Index Cond: (id = mc.company_id)
                      Filter: ((country_code)::text = '[nl]'::text)
                      Rows Removed by Filter: 1
                      Buffers: shared hit=51 read=5
-         ->  Index Scan using company_name_pkey on company_name cn2  (cost=0.01..0.02 rows=1 width=23) (actual time=24.403..24.403 rows=1 loops=4)
+         ->  Index Scan using company_name_pkey on company_name cn  (cost=0.01..0.02 rows=1 width=23) (actual time=24.403..24.403 rows=1 loops=4)
                Index Cond: (id = mc.company_id)
                Buffers: shared hit=11 read=5
  Planning Time: 6178.167 ms

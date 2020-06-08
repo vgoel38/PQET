@@ -9,7 +9,7 @@
                Hash Cond: (mi_idx.info_type_id = it.id)
                Buffers: shared hit=66236 read=66399
                ->  Hash Join  (cost=5438.04..6511.65 rows=1 width=92) (actual time=4578.986..5071.139 rows=42 loops=1)
-                     Hash Cond: (mc.company_id = cn2.id)
+                     Hash Cond: (mc.company_id = cn.id)
                      Buffers: shared hit=66236 read=66398
                      ->  Hash Join  (cost=5293.39..6367.00 rows=1 width=77) (actual time=4416.619..4908.745 rows=42 loops=1)
                            Hash Cond: (mc.movie_id = t.id)
@@ -73,14 +73,14 @@
                                                                                                    Buckets: 65536 (originally 32768)  Batches: 1 (originally 1)  Memory Usage: 3739kB
                                                                                                    Buffers: shared hit=2995 read=18788
                                                                                                    ->  Hash Join  (cost=128.75..1111.21 rows=25981 width=23) (actual time=51.819..941.814 rows=56410 loops=1)
-                                                                                                         Hash Cond: (mc.company_id = cn1.id)
+                                                                                                         Hash Cond: (mc.company_id = cn.id)
                                                                                                          Buffers: shared hit=2995 read=18788
                                                                                                          ->  Seq Scan on movie_companies mc  (cost=0.00..769.75 rows=2609129 width=8) (actual time=0.010..435.063 rows=2609129 loops=1)
                                                                                                                Buffers: shared hit=1 read=18788
                                                                                                          ->  Hash  (cost=128.41..128.41 rows=2340 width=23) (actual time=51.756..51.756 rows=2340 loops=1)
                                                                                                                Buckets: 4096  Batches: 1  Memory Usage: 160kB
                                                                                                                Buffers: shared hit=2994
-                                                                                                               ->  Seq Scan on company_name cn1  (cost=0.00..128.41 rows=2340 width=23) (actual time=0.044..50.344 rows=2340 loops=1)
+                                                                                                               ->  Seq Scan on company_name cn  (cost=0.00..128.41 rows=2340 width=23) (actual time=0.044..50.344 rows=2340 loops=1)
                                                                                                                      Filter: ((country_code)::text = '[nl]'::text)
                                                                                                                      Rows Removed by Filter: 232657
                                                                                                                      Buffers: shared hit=2994
@@ -108,7 +108,7 @@
                      ->  Hash  (cost=110.16..110.16 rows=234997 width=23) (actual time=160.341..160.341 rows=234997 loops=1)
                            Buckets: 262144  Batches: 1  Memory Usage: 15097kB
                            Buffers: shared read=2994
-                           ->  Seq Scan on company_name cn2  (cost=0.00..110.16 rows=234997 width=23) (actual time=24.779..89.704 rows=234997 loops=1)
+                           ->  Seq Scan on company_name cn  (cost=0.00..110.16 rows=234997 width=23) (actual time=24.779..89.704 rows=234997 loops=1)
                                  Buffers: shared read=2994
                ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=9.865..9.865 rows=1 loops=1)
                      Buckets: 1024  Batches: 1  Memory Usage: 9kB

@@ -22,11 +22,11 @@
                                              Filter: (note = '(voice: English version)'::text)
                                              Rows Removed by Filter: 7417125
                                              Buffers: shared read=69446
-                                 ->  Index Scan using person_id_aka_name on aka_name an1  (cost=0.01..0.47 rows=2 width=20) (actual time=0.065..0.072 rows=2 loops=34848)
+                                 ->  Index Scan using person_id_aka_name on aka_name an  (cost=0.01..0.47 rows=2 width=20) (actual time=0.065..0.072 rows=2 loops=34848)
                                        Index Cond: (person_id = ci.person_id)
                                        Buffers: shared hit=136014 read=1550
-                           ->  Index Scan using name_pkey on name n1  (cost=0.01..0.25 rows=1 width=4) (actual time=0.031..0.031 rows=0 loops=75365)
-                                 Index Cond: (id = an1.person_id)
+                           ->  Index Scan using name_pkey on name n  (cost=0.01..0.25 rows=1 width=4) (actual time=0.031..0.031 rows=0 loops=75365)
+                                 Index Cond: (id = an.person_id)
                                  Filter: ((name ~~ '%Yo%'::text) AND (name !~~ '%Yu%'::text))
                                  Rows Removed by Filter: 1
                                  Buffers: shared hit=301831 read=1603

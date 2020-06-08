@@ -10,6 +10,8 @@ import numpy as np
 from geometric_mean import gm
 from product import prod
 
+relations_scanned = []
+
 #-------------------Supporting Methods---------------------------
 #INCOMPLETE
 def extract_rel_col(col):
@@ -82,7 +84,7 @@ def find_left_col(node):
 
 def find_index_col(node):
 	relname = node['Relation Name']
-	if 'pkey' in node['Index Name']:
+	if 'pkey' in node['Index Name'] or 'info_key' in node['Index Name'] or 'kind_key' in node['Index Name']:
 		return 'id'
 	elif relname in node['Index Name']:
 		if (relname+'_idx' in node['Index Name']):
@@ -133,17 +135,19 @@ def revise_corr(node):
 		else:
 			join_cond = node['Plans'][1]['Index Cond']
 			join_cond = '('+node['Plans'][1]['Relation Name']+'.'+join_cond.split('(')[1]
+
+		print(join_cond)
 		
 		if ALIAS_MD[rel_name] in join_cond:
 			rel_name = ALIAS_MD[rel_name]
 		col1 = join_cond.split(' = ')[0].split('(')[1]
 		col2 = join_cond.split(' = ')[1].split(')')[0]
 		join_col = ''
-		if rel_name in col1:
+		if rel_name == col1.split('.')[0] or ALIAS_MD[rel_name] == col1.split('.')[0]:
 			join_col = col1.split('.')[1]
-		elif rel_name in col2:
+		elif rel_name == col2.split('.')[0] or ALIAS_MD[rel_name] == col2.split('.')[0]:
 			join_col = col2.split('.')[1]
-		for col in REL_MD[rel_name]:
+		for col in REL_MD[rel_name]:	
 			CORR_MD[rel_name][col] = gm([CORR_MD[rel_name][col],CORR_MD[rel_name][join_col]])
 			CORR_MD[ALIAS_MD[rel_name]][col] = gm([CORR_MD[rel_name][col],CORR_MD[ALIAS_MD[rel_name]][join_col]])
 	else:
@@ -191,8 +195,13 @@ def find_join_cols(join_cond):
 
 #---------------------Main Method---------------------------------
 def predictions(node, parent_node, query):
+
 	#Seq Scan
 	if node['Node Type'] == 'Seq Scan':
+		if node['Relation Name'] in relations_scanned:
+			return 0
+		else:
+			relations_scanned.append(node['Relation Name'])
 		if node['Actual Loops'] > 1:
 			print('ERROR! Seq scan has multiple loops! CANNOT Predict')
 		unfiltered_input_card = node['Actual Rows']
@@ -202,6 +211,10 @@ def predictions(node, parent_node, query):
 	
 	#Index Scan
 	elif node['Node Type'] == 'Index Scan':
+		if node['Relation Name'] in relations_scanned:
+			return 0
+		else:
+			relations_scanned.append(node['Relation Name'])
 		return index_scan(node, parent_node)
 
 	#Materalize
@@ -286,8 +299,10 @@ def seq_scan(num_pages, total_input_card, filtered_input_card, num_loops, num_fi
 #Index Scan
 def index_scan(node, parent_node):
 
-	if node['Relation Name'] == 'movie_link':
-		return 0
+	# if node['Relation Name'] in ['movie_companies', 'company_type', 'info_type', 'movie_info_idx', 'info_type_id']:
+	# if node['Relation Name'] in ['company_type', 'movie_companies', 'kind_type', 'movie_info_idx', 'info_type']:
+	# if node['Relation Name'] in ['movie_companies', 'company_type', 'aka_title', 'info_type', 'movie_keyword', 'keyword']:
+		# return 0
 
 	if parent_node == {}:
 		col = find_index_col(node)
@@ -297,11 +312,43 @@ def index_scan(node, parent_node):
 		predTime, predCard = index_scan_predict(path, attStart, attEnd)
 		return predTime
 	elif node['Parent Relationship'] == 'Outer' or parent_node['Node Type'] == 'Merge Join':
+		
+		index_index = {
+			'info_type':0,
+			'cast_info':19864 + CPU_TUPLE_COST * 36244344,
+			'movie_info_idx':1524 + 0 * 1380035,
+			'name':3903 + CPU_TUPLE_COST * 4167491,
+			'role_type':0,
+			'movie_companies':12133 + 0 * 2 * 2609129,
+			'aka_name':1987,
+			'company_type':0,
+			'aka_title':0,
+			'movie_keyword':2436,
+			'keyword':0,
+			'complete_cast':0,
+			'kind_type':0,
+			'comp_cast_type':0,
+			'company_name':780,
+			'movie_link':0,
+			'link_type':0,
+			'company_type':0,
+			'person_info':5625 + CPU_TUPLE_COST * 2963664
+		}
+		
+		if node['Relation Name'] in index_index:
+			return index_index[node['Relation Name']]
+		
 		col = find_index_col(node)
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + col + '/'
 		attStart, attEnd = find_att_values(node, node['Relation Name']+'.'+col)
 		predTime, predCard = index_scan_predict(path, attStart, attEnd)
-		return predTime
+		print(predTime)
+		# predTime = predTime * node['Actual Rows'] / predCard
+		print(col, attStart, attEnd, predTime, predCard, node['Actual Rows'])
+		filter_cost = 0
+		if 'Filter' in node:
+			filter_cost = CPU_TUPLE_COST * predCard
+		return predTime + filter_cost
 	else:
 		leftcol = find_left_col(node)
 		rightcol = find_index_col(node)

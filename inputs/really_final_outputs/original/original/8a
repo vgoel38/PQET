@@ -45,11 +45,11 @@
                                  Filter: ((role)::text = 'actress'::text)
                                  Rows Removed by Filter: 11
                                  Buffers: shared hit=1
-               ->  Index Scan using aka_name_idx_person on aka_name an1  (cost=0.01..0.48 rows=2 width=20) (actual time=1.606..1.724 rows=2 loops=7438)
+               ->  Index Scan using aka_name_idx_person on aka_name an  (cost=0.01..0.48 rows=2 width=20) (actual time=1.606..1.724 rows=2 loops=7438)
                      Index Cond: (person_id = ci.person_id)
                      Buffers: shared hit=28001 read=1051
-         ->  Index Scan using name_pkey on name n1  (cost=0.01..0.25 rows=1 width=4) (actual time=0.393..0.393 rows=0 loops=17379)
-               Index Cond: (id = an1.person_id)
+         ->  Index Scan using name_pkey on name n  (cost=0.01..0.25 rows=1 width=4) (actual time=0.393..0.393 rows=0 loops=17379)
+               Index Cond: (id = an.person_id)
                Filter: ((name ~~ '%Yo%'::text) AND (name !~~ '%Yu%'::text))
                Rows Removed by Filter: 1
                Buffers: shared hit=68712 read=939

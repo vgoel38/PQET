@@ -2400,3 +2400,81 @@
  Execution Time: 264329.285 ms
 (9 rows)
 
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..164825.37 rows=2406218 width=98) (actual time=2105.345..266652.433 rows=55000 loops=1)
+   Buffers: shared hit=184869 read=57361 dirtied=245
+   ->  Seq Scan on del_nest_index del  (cost=0.00..858.23 rows=2406218 width=4) (actual time=2037.955..2093.828 rows=55000 loops=1)
+         Buffers: shared read=22057 dirtied=245
+   ->  Index Scan using title_idx_id on title t  (cost=0.01..0.07 rows=1 width=94) (actual time=4.804..4.804 rows=1 loops=55000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=184869 read=35304
+ Planning Time: 426.072 ms
+ Execution Time: 266688.055 ms
+(9 rows)
+
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..165193.75 rows=2432727 width=98) (actual time=2124.736..267541.924 rows=55000 loops=1)
+   Buffers: shared hit=184914 read=57548 dirtied=488
+   ->  Seq Scan on del_nest_index del  (cost=0.00..867.69 rows=2432727 width=4) (actual time=2053.973..2110.563 rows=55000 loops=1)
+         Buffers: shared read=22300 dirtied=488
+   ->  Index Scan using title_idx_id on title t  (cost=0.01..0.07 rows=1 width=94) (actual time=4.820..4.820 rows=1 loops=55000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=184914 read=35248
+ Planning Time: 442.720 ms
+ Execution Time: 267578.175 ms
+(9 rows)
+
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..165597.01 rows=2461745 width=98) (actual time=2193.320..271902.267 rows=60000 loops=1)
+   Buffers: shared hit=203876 read=58840 dirtied=510
+   ->  Seq Scan on del_nest_index del  (cost=0.00..878.04 rows=2461745 width=4) (actual time=2083.054..2140.564 rows=60000 loops=1)
+         Buffers: shared read=22566 dirtied=510
+   ->  Index Scan using title_idx_id on title t  (cost=0.01..0.07 rows=1 width=94) (actual time=4.490..4.490 rows=1 loops=60000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=203876 read=36274
+ Planning Time: 359.447 ms
+ Execution Time: 271937.445 ms
+(9 rows)
+
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..165998.76 rows=2490655 width=98) (actual time=2198.998..269384.911 rows=60000 loops=1)
+   Buffers: shared hit=203987 read=59003 dirtied=532
+   ->  Seq Scan on del_nest_index del  (cost=0.00..888.35 rows=2490655 width=4) (actual time=2086.990..2147.282 rows=60000 loops=1)
+         Buffers: shared read=22831 dirtied=532
+   ->  Index Scan using title_idx_id on title t  (cost=0.01..0.07 rows=1 width=94) (actual time=4.448..4.448 rows=1 loops=60000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=203987 read=36172
+ Planning Time: 351.069 ms
+ Execution Time: 269423.324 ms
+(9 rows)
+
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..166435.37 rows=2522073 width=98) (actual time=2176.304..276585.381 rows=65000 loops=1)
+   Buffers: shared hit=223000 read=60303 dirtied=554
+   ->  Seq Scan on del_nest_index del  (cost=0.00..899.55 rows=2522073 width=4) (actual time=2113.950..2176.002 rows=65000 loops=1)
+         Buffers: shared read=23119 dirtied=554
+   ->  Index Scan using title_idx_id on title t  (cost=0.01..0.07 rows=1 width=94) (actual time=4.216..4.216 rows=1 loops=65000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=223000 read=37184
+ Planning Time: 334.401 ms
+ Execution Time: 276621.311 ms
+(9 rows)
+
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..166870.46 rows=2528312 width=98) (actual time=2325.979..269991.258 rows=65000 loops=1)
+   Buffers: shared hit=223086 read=60507 dirtied=576
+   ->  Seq Scan on del_nest_index del  (cost=0.00..910.72 rows=2553382 width=4) (actual time=2255.383..2316.102 rows=65000 loops=1)
+         Buffers: shared read=23406 dirtied=576
+   ->  Index Scan using title_idx_id on title t  (cost=0.01..0.06 rows=1 width=94) (actual time=4.113..4.113 rows=1 loops=65000)
+         Index Cond: (id = del.a)
+         Buffers: shared hit=223086 read=37101
+ Planning Time: 359.337 ms
+ Execution Time: 270028.844 ms
+(9 rows)
+

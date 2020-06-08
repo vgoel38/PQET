@@ -9,7 +9,7 @@
                Hash Cond: (ci.movie_id = mc.movie_id)
                Buffers: shared hit=14 read=341432
                ->  Hash Join  (cost=3176.82..16431.14 rows=35 width=20) (actual time=8559.107..15264.938 rows=659 loops=1)
-                     Hash Cond: (ci.person_id = an1.person_id)
+                     Hash Cond: (ci.person_id = an.person_id)
                      Buffers: shared hit=9 read=319654
                      ->  Hash Join  (cost=0.03..13253.45 rows=7772 width=8) (actual time=3913.981..11996.660 rows=34848 loops=1)
                            Hash Cond: (ci.role_id = rt.id)
@@ -29,14 +29,14 @@
                            Buckets: 8192  Batches: 1  Memory Usage: 293kB
                            Buffers: shared hit=4 read=67004
                            ->  Hash Join  (cost=2682.87..3176.10 rows=4689 width=24) (actual time=2612.694..3258.584 rows=4031 loops=1)
-                                 Hash Cond: (an1.person_id = n1.id)
+                                 Hash Cond: (an.person_id = n.id)
                                  Buffers: shared hit=4 read=67004
-                                 ->  Seq Scan on aka_name an1  (cost=0.00..419.75 rows=901343 width=20) (actual time=0.011..424.887 rows=901343 loops=1)
+                                 ->  Seq Scan on aka_name an  (cost=0.00..419.75 rows=901343 width=20) (actual time=0.011..424.887 rows=901343 loops=1)
                                        Buffers: shared hit=2 read=11393
                                  ->  Hash  (cost=2679.69..2679.69 rows=21680 width=4) (actual time=2607.597..2607.597 rows=20911 loops=1)
                                        Buckets: 32768  Batches: 1  Memory Usage: 992kB
                                        Buffers: shared hit=2 read=55611
-                                       ->  Seq Scan on name n1  (cost=0.00..2679.69 rows=21680 width=4) (actual time=10.379..2595.473 rows=20911 loops=1)
+                                       ->  Seq Scan on name n  (cost=0.00..2679.69 rows=21680 width=4) (actual time=10.379..2595.473 rows=20911 loops=1)
                                              Filter: ((name ~~ '%Yo%'::text) AND (name !~~ '%Yu%'::text))
                                              Rows Removed by Filter: 4146580
                                              Buffers: shared hit=2 read=55611

@@ -29,15 +29,15 @@
                Buckets: 4194304  Batches: 1  Memory Usage: 158723kB
                Buffers: shared hit=295475 read=380623
                ->  Hash Join  (cost=367308.56..410019.98 rows=2625959 width=20) (actual time=23704.318..25030.275 rows=2343724 loops=1)
-                     Hash Cond: (a1.person_id = n1.id)
+                     Hash Cond: (a.person_id = n.id)
                      Buffers: shared hit=295475 read=380623
-                     ->  Index Scan using person_id_aka_name on aka_name a1  (cost=0.01..42491.32 rows=901343 width=20) (actual time=45.052..669.188 rows=901343 loops=1)
+                     ->  Index Scan using person_id_aka_name on aka_name a  (cost=0.01..42491.32 rows=901343 width=20) (actual time=45.052..669.188 rows=901343 loops=1)
                            Buffers: shared hit=294845 read=13860
                      ->  Hash  (cost=366865.21..366865.21 rows=3020362 width=12) (actual time=23616.955..23616.955 rows=2728943 loops=1)
                            Buckets: 4194304  Batches: 1  Memory Usage: 150028kB
                            Buffers: shared hit=630 read=366763
                            ->  Hash Join  (cost=47359.09..366865.21 rows=3020362 width=12) (actual time=14847.709..22923.985 rows=2728943 loops=1)
-                                 Hash Cond: (ci.person_id = n1.id)
+                                 Hash Cond: (ci.person_id = n.id)
                                  Buffers: shared hit=630 read=366763
                                  ->  Hash Join  (cost=6.14..319266.03 rows=3020362 width=8) (actual time=13039.362..20203.135 rows=2728943 loops=1)
                                        Hash Cond: (ci.role_id = rt.id)
@@ -53,7 +53,7 @@
                                  ->  Hash  (cost=46741.24..46741.24 rows=4167491 width=4) (actual time=1798.615..1798.615 rows=4167491 loops=1)
                                        Buckets: 4194304  Batches: 1  Memory Usage: 179282kB
                                        Buffers: shared hit=628 read=15075
-                                       ->  Index Only Scan using name_pkey on name n1  (cost=0.01..46741.24 rows=4167491 width=4) (actual time=34.467..679.183 rows=4167491 loops=1)
+                                       ->  Index Only Scan using name_pkey on name n  (cost=0.01..46741.24 rows=4167491 width=4) (actual time=34.467..679.183 rows=4167491 loops=1)
                                              Heap Fetches: 0
                                              Buffers: shared hit=628 read=15075
  Planning Time: 3815.576 ms

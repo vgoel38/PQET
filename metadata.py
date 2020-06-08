@@ -918,7 +918,7 @@ ALIAS_MD = {
 	'mc'				:		'movie_companies',
 	'movie_info'		:		'mi',
 	'mi'				:		'movie_info',
-	'movie_info_idx'	:		['miidx', 'mi_idx'],
+	'movie_info_idx'	:		'miidx',
 	'miidx'				:		'movie_info_idx',
 	'mi_idx'			:		'movie_info_idx',
 	'movie_keyword'		:		'mk',

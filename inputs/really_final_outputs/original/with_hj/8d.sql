@@ -6,15 +6,15 @@
          Hash Cond: (ci.movie_id = t.id)
          Buffers: shared hit=3 read=377444
          ->  Hash Join  (cost=17033.92..17673.79 rows=2625959 width=20) (actual time=14897.126..15288.211 rows=218966 loops=1)
-               Hash Cond: (an1.person_id = n1.id)
+               Hash Cond: (an.person_id = n.id)
                Buffers: shared read=319663
-               ->  Seq Scan on aka_name an1  (cost=0.00..419.75 rows=901343 width=20) (actual time=10.321..167.008 rows=901343 loops=1)
+               ->  Seq Scan on aka_name an  (cost=0.00..419.75 rows=901343 width=20) (actual time=10.321..167.008 rows=901343 loops=1)
                      Buffers: shared read=11395
                ->  Hash  (cost=16590.59..16590.59 rows=3020362 width=12) (actual time=14861.100..14861.100 rows=276403 loops=1)
                      Buckets: 4194304  Batches: 1  Memory Usage: 44645kB
                      Buffers: shared read=308268
                      ->  Hash Join  (cost=2644.31..16590.59 rows=3020362 width=12) (actual time=12047.826..14798.338 rows=276403 loops=1)
-                           Hash Cond: (ci.person_id = n1.id)
+                           Hash Cond: (ci.person_id = n.id)
                            Buffers: shared read=308268
                            ->  Hash Join  (cost=0.03..13700.09 rows=3020362 width=8) (actual time=9300.053..11968.218 rows=276403 loops=1)
                                  Hash Cond: (ci.role_id = rt.id)
@@ -31,7 +31,7 @@
                            ->  Hash  (cost=2032.56..2032.56 rows=4167491 width=4) (actual time=2737.933..2737.933 rows=4167491 loops=1)
                                  Buckets: 4194304  Batches: 1  Memory Usage: 179282kB
                                  Buffers: shared read=55613
-                                 ->  Seq Scan on name n1  (cost=0.00..2032.56 rows=4167491 width=4) (actual time=3.596..1450.419 rows=4167491 loops=1)
+                                 ->  Seq Scan on name n  (cost=0.00..2032.56 rows=4167491 width=4) (actual time=3.596..1450.419 rows=4167491 loops=1)
                                        Buffers: shared read=55613
          ->  Hash  (cost=2875.18..2875.18 rows=941996 width=25) (actual time=4081.929..4081.930 rows=1153798 loops=1)
                Buckets: 2097152 (originally 1048576)  Batches: 1 (originally 1)  Memory Usage: 84892kB

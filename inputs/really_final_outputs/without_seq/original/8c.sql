@@ -6,7 +6,7 @@
          Hash Cond: (ci.movie_id = t.id)
          Buffers: shared hit=28040728 read=122727
          ->  Nested Loop  (cost=4609.71..141208.23 rows=1820954 width=24) (actual time=991.672..148013.823 rows=2487611 loops=1)
-               Join Filter: (a1.person_id = n1.id)
+               Join Filter: (a.person_id = n.id)
                Buffers: shared hit=25550854 read=79823
                ->  Nested Loop  (cost=4609.70..113959.60 rows=1820954 width=32) (actual time=965.253..140439.571 rows=2487611 loops=1)
                      Buffers: shared hit=18073458 read=69553
@@ -33,10 +33,10 @@
                                        Filter: ((country_code)::text = '[us]'::text)
                                        Rows Removed by Filter: 150154
                                        Buffers: shared hit=231720 read=3834
-                     ->  Index Scan using person_id_aka_name on aka_name a1  (cost=0.01..0.01 rows=2 width=20) (actual time=0.002..0.003 rows=1 loops=1970658)
+                     ->  Index Scan using person_id_aka_name on aka_name a  (cost=0.01..0.01 rows=2 width=20) (actual time=0.002..0.003 rows=1 loops=1970658)
                            Index Cond: (person_id = ci.person_id)
                            Buffers: shared hit=7321615 read=12818
-               ->  Index Only Scan using name_pkey on name n1  (cost=0.01..0.01 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=2487611)
+               ->  Index Only Scan using name_pkey on name n  (cost=0.01..0.01 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=2487611)
                      Index Cond: (id = ci.person_id)
                      Heap Fetches: 0
                      Buffers: shared hit=7477396 read=10270
