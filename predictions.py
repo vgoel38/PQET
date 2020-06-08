@@ -95,7 +95,7 @@ def find_index_col(node):
 		print('Unable to find index col')
 
 def revise_corr(node):
-	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Materialize' or node['Node Type'] == 'Aggregate':
+	if node['Node Type'] == 'Seq Scan' or node['Node Type'] == 'Materialize' or node['Node Type'] == 'Aggregate' or node['Node Type'] == 'Merge Join':
 		return
 	elif node['Node Type'] == 'Index Scan':
 		index_col = find_index_col(node)
@@ -319,20 +319,21 @@ def index_scan(node, parent_node):
 			'movie_info_idx':1524 + 0 * 1380035,
 			'name':3903 + CPU_TUPLE_COST * 4167491,
 			'role_type':0,
-			'movie_companies':12133 + 0 * 2 * 2609129,
+			'movie_companies':11701 + 0 * 2 * 2609129,
 			'aka_name':1987,
 			'company_type':0,
-			'aka_title':0,
-			'movie_keyword':2436,
+			'aka_title':1330,
+			'movie_keyword':0,
 			'keyword':0,
 			'complete_cast':0,
 			'kind_type':0,
 			'comp_cast_type':0,
-			'company_name':780,
+			'company_name':780 + CPU_TUPLE_COST * 234997,
 			'movie_link':0,
 			'link_type':0,
 			'company_type':0,
-			'person_info':5625 + CPU_TUPLE_COST * 2963664
+			'person_info':5625 + CPU_TUPLE_COST * 2963664,
+			'title': 10176
 		}
 		
 		if node['Relation Name'] in index_index:
@@ -350,6 +351,17 @@ def index_scan(node, parent_node):
 			filter_cost = CPU_TUPLE_COST * predCard
 		return predTime + filter_cost
 	else:
+
+		index_index = {
+			'info_type':0,
+			'movie_keyword':0,
+			'keyword':0,
+			'company_type':0,
+		}
+		
+		if node['Relation Name'] in index_index:
+			return index_index[node['Relation Name']]
+
 		leftcol = find_left_col(node)
 		rightcol = find_index_col(node)
 		leftCorr = min(0.7,find_corr([leftcol])[0])
