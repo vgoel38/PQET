@@ -6,4 +6,5 @@ def gm(arr):
 		result *= arr[i]
 	if result == 0:
 		return max(arr[0],arr[1])
-	return (float)(math.pow(result, (1/len(arr))))
+	return result
+	# return (float)(math.pow(result, (1/len(arr))))

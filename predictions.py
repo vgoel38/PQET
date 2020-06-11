@@ -313,31 +313,31 @@ def index_scan(node, parent_node):
 		return predTime
 	elif node['Parent Relationship'] == 'Outer' or parent_node['Node Type'] == 'Merge Join':
 		
-		index_index = {
-			'info_type':0,
-			'cast_info':19864 + CPU_TUPLE_COST * 36244344,
-			'movie_info_idx':1524 + 0 * 1380035,
-			'name':3903 + CPU_TUPLE_COST * 4167491,
-			'role_type':0,
-			'movie_companies':11701 + 0 * 2 * 2609129,
-			'aka_name':1987,
-			'company_type':0,
-			'aka_title':1330,
-			'movie_keyword':0,
-			'keyword':0,
-			'complete_cast':0,
-			'kind_type':0,
-			'comp_cast_type':0,
-			'company_name':780 + CPU_TUPLE_COST * 234997,
-			'movie_link':0,
-			'link_type':0,
-			'company_type':0,
-			'person_info':5625 + CPU_TUPLE_COST * 2963664,
-			'title': 10176
-		}
+		# index_index = {
+		# 	'info_type':0,
+		# 	'cast_info':19864 + CPU_TUPLE_COST * 36244344,
+		# 	'movie_info_idx':1524 + 0 * 1380035,
+		# 	'name':3903 + CPU_TUPLE_COST * 4167491,
+		# 	'role_type':0,
+		# 	'movie_companies':11701 + 0 * 2 * 2609129,
+		# 	'aka_name':1987,
+		# 	'company_type':0,
+		# 	'aka_title':1330,
+		# 	'movie_keyword':0,
+		# 	'keyword':0,
+		# 	'complete_cast':0,
+		# 	'kind_type':0,
+		# 	'comp_cast_type':0,
+		# 	'company_name':780 + CPU_TUPLE_COST * 234997,
+		# 	'movie_link':0,
+		# 	'link_type':0,
+		# 	'company_type':0,
+		# 	'person_info':5625 + CPU_TUPLE_COST * 2963664,
+		# 	'title': 10176
+		# }
 		
-		if node['Relation Name'] in index_index:
-			return index_index[node['Relation Name']]
+		# if node['Relation Name'] in index_index:
+		# 	return index_index[node['Relation Name']]
 		
 		col = find_index_col(node)
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + col + '/'
@@ -352,19 +352,16 @@ def index_scan(node, parent_node):
 		return predTime + filter_cost
 	else:
 
-		index_index = {
-			'info_type':0,
-			'movie_keyword':0,
-			'keyword':0,
-			'company_type':0,
-		}
+		# index_index = {
+		# 	'cast_info':0,
+		# }
 		
-		if node['Relation Name'] in index_index:
-			return index_index[node['Relation Name']]
+		# if node['Relation Name'] in index_index:
+		# 	return index_index[node['Relation Name']]
 
 		leftcol = find_left_col(node)
 		rightcol = find_index_col(node)
-		leftCorr = min(0.7,find_corr([leftcol])[0])
+		leftCorr = find_corr([leftcol])[0]
 		leftDup = find_dup([leftcol])[0]
 		# leftDup = 0.5
 		path = 'index_scan_predictor/' + node['Relation Name'] + '/' + rightcol + '/'
@@ -378,6 +375,7 @@ def index_scan(node, parent_node):
 		timeInIsolation = timeInIsolation * (1 - leftDup)
 		timeInIsolation += parent_node['Plans'][0]['Actual Rows'] * leftDup * TIME_PER_DUPLICATE_TUPLE
 
+		print("card =", [node['Actual Loops']*(1 - leftDup)], "leftCol=", leftcol, "rightCol=", node['Relation Name'],rightcol)
 		path = 'nestloop_index_predictor/' + node['Relation Name'] + '/' + rightcol + '/'
 		timeInJoin, cardInJoin = nestloop_index_scan_predict([node['Actual Loops']*(1 - leftDup)], [parent_node['Actual Rows']], path)
 		# timeInJoin = nestloop_index_scan_predict([parent_node['Plans'][0]['Actual Rows']], [parent_node['Actual Rows']], path)
@@ -390,14 +388,18 @@ def index_scan(node, parent_node):
 			join_factor = min(1,(node['Actual Loops'] * cardInJoin / (node['Actual Loops']*(1 - leftDup))) / (parent_node['Actual Rows'] * parent_node['Actual Loops']))
 		except:
 			join_factor = 0
+		
+		if node['Actual Loops']*(1 - leftDup) < 1000:
+			leftCorr = 0
+		elif node['Actual Loops']*(1 - leftDup) > 1000 and node['Actual Loops']*(1 - leftDup) < 2000:
+			leftCorr = min(leftCorr, 0.3)
+		elif node['Actual Loops']*(1 - leftDup) > 2000 and node['Actual Loops']*(1 - leftDup) < 4000:
+			leftCorr = max(leftCorr, 0.5)
+		elif node['Actual Loops']*(1 - leftDup) > 4000 and node['Actual Loops']*(1 - leftDup) < 8000:
+			leftCorr = max(leftCorr, 0.7)
+		elif node['Actual Loops']*(1 - leftDup) > 8000:
+			leftCorr = max(leftCorr, 0.9)
 		print("timeInIsolation = ", timeInIsolation, "timeInJoin =", timeInJoin, "card =", [node['Actual Loops']*(1 - leftDup)], "leftCorr =", leftCorr, "leftDup =", leftDup, "leftCol=", leftcol, "rightCol=", rightcol, "join_factor=", join_factor)
-
-		# if leftCorr == 1:
-		# 	return timeInIsolation
-		# else:
-		# 	return timeInJoin
-
-		# print("index time = ", timeInIsolation * leftCorr + timeInJoin * (1 - leftCorr))
 
 		return (timeInIsolation * leftCorr + timeInJoin * (1 - leftCorr))*join_factor
 
