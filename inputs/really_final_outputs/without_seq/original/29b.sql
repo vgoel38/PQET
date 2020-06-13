@@ -106,7 +106,7 @@
                ->  Index Scan using person_id_person_info on person_info pi  (cost=0.01..0.21 rows=5 width=8) (actual time=2.073..2.345 rows=163 loops=15)
                      Index Cond: (person_id = an.person_id)
                      Buffers: shared hit=183 read=12
-         ->  Index Scan using info_type_pkey on info_type it3  (cost=0.00..0.00 rows=1 width=4) (actual time=0.003..0.003 rows=0 loops=2445)
+         ->  Index Scan using info_type_pkey on info_type it  (cost=0.00..0.00 rows=1 width=4) (actual time=0.003..0.003 rows=0 loops=2445)
                Index Cond: (id = pi.info_type_id)
                Filter: ((info)::text = 'height'::text)
                Rows Removed by Filter: 1

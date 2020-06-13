@@ -11,10 +11,10 @@
                      Join Filter: (n.id = an.person_id)
                      Buffers: shared hit=802 read=466
                      ->  Nested Loop  (cost=0.12..13.82 rows=1 width=80) (actual time=569.784..1868.174 rows=1 loops=1)
-                           Join Filter: (it3.id = pi.info_type_id)
+                           Join Filter: (it.id = pi.info_type_id)
                            Rows Removed by Join Filter: 162
                            Buffers: shared hit=802 read=461
-                           ->  Seq Scan on info_type it3  (cost=0.00..0.05 rows=1 width=4) (actual time=25.098..25.129 rows=1 loops=1)
+                           ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=25.098..25.129 rows=1 loops=1)
                                  Filter: ((info)::text = 'height'::text)
                                  Rows Removed by Filter: 112
                                  Buffers: shared read=1

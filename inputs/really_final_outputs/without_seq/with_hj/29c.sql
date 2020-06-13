@@ -109,14 +109,14 @@
                                                          Hash Cond: (pi.person_id = n.id)
                                                          Buffers: shared hit=4170520 read=129604
                                                          ->  Hash Join  (cost=6.14..156089.71 rows=26227 width=4) (actual time=102.251..5899.614 rows=620526 loops=1)
-                                                               Hash Cond: (pi.info_type_id = it3.id)
+                                                               Hash Cond: (pi.info_type_id = it.id)
                                                                Buffers: shared hit=231922 read=58918
                                                                ->  Index Scan using person_id_person_info on person_info pi  (cost=0.01..155839.26 rows=2963664 width=8) (actual time=102.153..5122.311 rows=2963664 loops=1)
                                                                      Buffers: shared hit=231920 read=58918
                                                                ->  Hash  (cost=6.13..6.13 rows=1 width=4) (actual time=0.045..0.046 rows=1 loops=1)
                                                                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                      Buffers: shared hit=2
-                                                                     ->  Index Scan using info_type_info_key on info_type it3  (cost=0.00..6.13 rows=1 width=4) (actual time=0.034..0.036 rows=1 loops=1)
+                                                                     ->  Index Scan using info_type_info_key on info_type it  (cost=0.00..6.13 rows=1 width=4) (actual time=0.034..0.036 rows=1 loops=1)
                                                                            Index Cond: ((info)::text = 'trivia'::text)
                                                                            Buffers: shared hit=2
                                                          ->  Hash  (cost=49135.93..49135.93 rows=37708 width=19) (actual time=4332.916..4332.916 rows=50011 loops=1)

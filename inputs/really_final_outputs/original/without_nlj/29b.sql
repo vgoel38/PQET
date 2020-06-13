@@ -112,14 +112,14 @@
                                              Hash Cond: (pi.person_id = n.id)
                                              Buffers: shared hit=5 read=106427
                                              ->  Hash Join  (cost=0.05..2043.30 rows=26227 width=4) (actual time=0.105..2321.080 rows=142345 loops=1)
-                                                   Hash Cond: (pi.info_type_id = it3.id)
+                                                   Hash Cond: (pi.info_type_id = it.id)
                                                    Buffers: shared hit=3 read=50816
                                                    ->  Seq Scan on person_info pi  (cost=0.00..1798.92 rows=2963664 width=8) (actual time=0.013..1522.101 rows=2963664 loops=1)
                                                          Buffers: shared hit=2 read=50816
                                                    ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.061..0.061 rows=1 loops=1)
                                                          Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                          Buffers: shared hit=1
-                                                         ->  Seq Scan on info_type it3  (cost=0.00..0.05 rows=1 width=4) (actual time=0.023..0.055 rows=1 loops=1)
+                                                         ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.023..0.055 rows=1 loops=1)
                                                                Filter: ((info)::text = 'height'::text)
                                                                Rows Removed by Filter: 112
                                                                Buffers: shared hit=1

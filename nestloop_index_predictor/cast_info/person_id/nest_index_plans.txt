@@ -1,0 +1,234 @@
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=150.427..36655.573 rows=8938 loops=1)
+   Buffers: shared hit=2694 read=27049 dirtied=13
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=66.541..2265.979 rows=1000 loops=1)
+         Buffers: shared read=24380 dirtied=13
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=32.424..34.373 rows=9 loops=1000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=2694 read=2669
+ Planning Time: 417.271 ms
+ Execution Time: 36661.030 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=116.995..36139.112 rows=6933 loops=1)
+   Buffers: shared hit=2676 read=27010 dirtied=10
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=66.591..2242.984 rows=1000 loops=1)
+         Buffers: shared read=24380 dirtied=10
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=32.079..33.881 rows=7 loops=1000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=2676 read=2630
+ Planning Time: 383.955 ms
+ Execution Time: 36144.315 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=138.354..69426.541 rows=16973 loops=1)
+   Buffers: shared hit=5701 read=29450 dirtied=14
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=67.301..2258.340 rows=2000 loops=1)
+         Buffers: shared read=24380 dirtied=14
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=31.445..33.568 rows=8 loops=2000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=5701 read=5070
+ Planning Time: 542.327 ms
+ Execution Time: 69434.186 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=133.806..68326.501 rows=17341 loops=1)
+   Buffers: shared hit=5713 read=29440 dirtied=18
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=59.264..2272.255 rows=2000 loops=1)
+         Buffers: shared read=24380 dirtied=18
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=30.762..33.011 rows=9 loops=2000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=5713 read=5060
+ Planning Time: 642.247 ms
+ Execution Time: 68334.129 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=131.825..100138.637 rows=27104 loops=1)
+   Buffers: shared hit=8773 read=31752 dirtied=23
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=72.090..2245.210 rows=3000 loops=1)
+         Buffers: shared read=24380 dirtied=23
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=30.501..32.614 rows=9 loops=3000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=8773 read=7372
+ Planning Time: 375.645 ms
+ Execution Time: 100149.201 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=129.067..99413.155 rows=29503 loops=1)
+   Buffers: shared hit=8761 read=31728 dirtied=28
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=83.184..2284.834 rows=3000 loops=1)
+         Buffers: shared read=24380 dirtied=28
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=30.344..32.359 rows=10 loops=3000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=8761 read=7348
+ Planning Time: 408.938 ms
+ Execution Time: 99424.231 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=143.216..130500.692 rows=33991 loops=1)
+   Buffers: shared hit=11884 read=33971 dirtied=32
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=90.123..2263.645 rows=4000 loops=1)
+         Buffers: shared read=24380 dirtied=32
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=29.935..32.043 rows=8 loops=4000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=11884 read=9591
+ Planning Time: 383.890 ms
+ Execution Time: 130514.093 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=146.010..131342.058 rows=36919 loops=1)
+   Buffers: shared hit=11854 read=34051 dirtied=36
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=99.441..2301.063 rows=4000 loops=1)
+         Buffers: shared read=24380 dirtied=36
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=30.125..32.244 rows=9 loops=4000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=11854 read=9671
+ Planning Time: 383.940 ms
+ Execution Time: 131355.692 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=170.028..161951.859 rows=58223 loops=1)
+   Buffers: shared hit=14993 read=36459 dirtied=41
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=107.578..2320.135 rows=5000 loops=1)
+         Buffers: shared read=24380 dirtied=41
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=29.735..31.908 rows=12 loops=5000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=14993 read=12079
+ Planning Time: 400.594 ms
+ Execution Time: 161970.517 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=157.657..160419.980 rows=52723 loops=1)
+   Buffers: shared hit=14982 read=36289 dirtied=46
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=100.512..2261.158 rows=5000 loops=1)
+         Buffers: shared read=24380 dirtied=46
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=29.599..31.614 rows=11 loops=5000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=14982 read=11909
+ Planning Time: 400.595 ms
+ Execution Time: 160437.383 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=142.476..191007.275 rows=59591 loops=1)
+   Buffers: shared hit=18059 read=38447 dirtied=50
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=92.339..2290.786 rows=6000 loops=1)
+         Buffers: shared read=24380 dirtied=50
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=29.462..31.435 rows=10 loops=6000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=18059 read=14067
+ Planning Time: 392.193 ms
+ Execution Time: 191027.337 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=135.483..191382.389 rows=62056 loops=1)
+   Buffers: shared hit=18122 read=38573 dirtied=54
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=92.732..2273.422 rows=6000 loops=1)
+         Buffers: shared read=24380 dirtied=54
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=29.347..31.501 rows=10 loops=6000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=18122 read=14193
+ Planning Time: 383.935 ms
+ Execution Time: 191402.174 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=158.620..220528.248 rows=63360 loops=1)
+   Buffers: shared hit=21302 read=40614 dirtied=58
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=101.364..2280.500 rows=7000 loops=1)
+         Buffers: shared read=24380 dirtied=58
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=29.157..31.162 rows=9 loops=7000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=21302 read=16234
+ Planning Time: 392.282 ms
+ Execution Time: 220550.593 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=163.801..218378.723 rows=62110 loops=1)
+   Buffers: shared hit=21299 read=40439 dirtied=62
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=102.075..2321.402 rows=7000 loops=1)
+         Buffers: shared read=24380 dirtied=62
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=28.971..30.849 rows=9 loops=7000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=21299 read=16059
+ Planning Time: 383.949 ms
+ Execution Time: 218400.779 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=173.320..249649.156 rows=68129 loops=1)
+   Buffers: shared hit=24498 read=42916 dirtied=67
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=121.876..2357.584 rows=8000 loops=1)
+         Buffers: shared read=24380 dirtied=67
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=28.763..30.895 rows=9 loops=8000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=24498 read=18536
+ Planning Time: 408.954 ms
+ Execution Time: 249673.804 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=163.217..248906.570 rows=78659 loops=1)
+   Buffers: shared hit=24533 read=42935 dirtied=72
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=121.194..2323.052 rows=8000 loops=1)
+         Buffers: shared read=24380 dirtied=72
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=28.698..30.806 rows=10 loops=8000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=24533 read=18555
+ Planning Time: 392.294 ms
+ Execution Time: 248932.242 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=176.719..277802.130 rows=83583 loops=1)
+   Buffers: shared hit=27701 read=45021 dirtied=76
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=138.403..2289.655 rows=9000 loops=1)
+         Buffers: shared read=24380 dirtied=76
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=28.573..30.596 rows=9 loops=9000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=27701 read=20641
+ Planning Time: 475.683 ms
+ Execution Time: 277830.692 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..479001.75 rows=617518 width=46) (actual time=212.165..279353.722 rows=74121 loops=1)
+   Buffers: shared hit=27695 read=44999 dirtied=80
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=126.084..2326.954 rows=9000 loops=1)
+         Buffers: shared read=24380 dirtied=80
+   ->  Index Scan using person_id_cast_info on cast_info ci  (cost=0.02..23.91 rows=31 width=42) (actual time=28.643..30.765 rows=8 loops=9000)
+         Index Cond: (person_id = del.a)
+         Buffers: shared hit=27695 read=20619
+ Planning Time: 400.618 ms
+ Execution Time: 279380.561 ms
+(9 rows)
+

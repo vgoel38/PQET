@@ -23,10 +23,10 @@
                                        Join Filter: (t.id = mi.movie_id)
                                        Buffers: shared hit=403298 read=492
                                        ->  Nested Loop  (cost=0.11..13.03 rows=1 width=61) (actual time=854.781..2347.765 rows=10494 loops=1)
-                                             Join Filter: (it3.id = pi.info_type_id)
+                                             Join Filter: (it.id = pi.info_type_id)
                                              Rows Removed by Join Filter: 34716
                                              Buffers: shared hit=4563 read=455
-                                             ->  Seq Scan on info_type it3  (cost=0.00..0.05 rows=1 width=4) (actual time=0.013..0.052 rows=1 loops=1)
+                                             ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.013..0.052 rows=1 loops=1)
                                                    Filter: ((info)::text = 'trivia'::text)
                                                    Rows Removed by Filter: 112
                                                    Buffers: shared hit=1

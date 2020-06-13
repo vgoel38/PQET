@@ -1,0 +1,364 @@
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=124.831..26946.945 rows=3406 loops=1)
+   Buffers: shared hit=461 read=28061
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=42.263..2265.931 rows=200 loops=1)
+         Buffers: shared read=24380
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=32.638..123.326 rows=17 loops=200)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=461 read=3681
+ Planning Time: 412.788 ms
+ Execution Time: 26955.704 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=121.602..13899.841 rows=1541 loops=1)
+   Buffers: shared hit=214 read=26054 dirtied=3
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=38.424..2263.237 rows=100 loops=1)
+         Buffers: shared read=24380 dirtied=3
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=34.549..116.295 rows=15 loops=100)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=214 read=1674
+ Planning Time: 442.592 ms
+ Execution Time: 13904.003 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=125.770..22922.905 rows=2670 loops=1)
+   Buffers: shared hit=454 read=27328 dirtied=2
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=33.790..2263.637 rows=200 loops=1)
+         Buffers: shared read=24380 dirtied=2
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=31.597..103.239 rows=13 loops=200)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=454 read=2948
+ Planning Time: 417.614 ms
+ Execution Time: 22928.509 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=88.363..25547.491 rows=3280 loops=1)
+   Buffers: shared hit=464 read=27930 dirtied=3
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=34.106..2263.651 rows=200 loops=1)
+         Buffers: shared read=24380 dirtied=3
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=31.231..116.346 rows=16 loops=200)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=464 read=3550
+ Planning Time: 425.948 ms
+ Execution Time: 25553.332 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=134.565..35895.727 rows=4377 loops=1)
+   Buffers: shared hit=721 read=29187 dirtied=3
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=38.481..2612.069 rows=300 loops=1)
+         Buffers: shared read=24380 dirtied=3
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=31.859..110.878 rows=15 loops=300)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=721 read=4807
+ Planning Time: 517.609 ms
+ Execution Time: 35902.739 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=127.634..33704.733 rows=4199 loops=1)
+   Buffers: shared hit=795 read=28920 dirtied=5
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=34.383..2378.088 rows=300 loops=1)
+         Buffers: shared read=24380 dirtied=5
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=31.922..104.359 rows=14 loops=300)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=795 read=4540
+ Planning Time: 659.255 ms
+ Execution Time: 33711.285 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=125.937..45668.866 rows=5758 loops=1)
+   Buffers: shared hit=1035 read=30561 dirtied=4
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=34.442..2263.556 rows=400 loops=1)
+         Buffers: shared read=24380 dirtied=4
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=31.497..108.446 rows=14 loops=400)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=1035 read=6181
+ Planning Time: 434.226 ms
+ Execution Time: 45677.241 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=131.823..47284.278 rows=6067 loops=1)
+   Buffers: shared hit=1043 read=30937 dirtied=4
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=39.002..2263.968 rows=400 loops=1)
+         Buffers: shared read=24380 dirtied=4
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=30.905..112.484 rows=15 loops=400)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=1043 read=6557
+ Planning Time: 442.618 ms
+ Execution Time: 47293.692 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=105.972..52650.363 rows=6793 loops=1)
+   Buffers: shared hit=1306 read=31673 dirtied=5
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=34.805..2257.591 rows=500 loops=1)
+         Buffers: shared read=24380 dirtied=5
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=31.143..100.726 rows=14 loops=500)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=1306 read=7293
+ Planning Time: 458.927 ms
+ Execution Time: 52660.233 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=103.448..56432.576 rows=7457 loops=1)
+   Buffers: shared hit=1371 read=32314 dirtied=6
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=39.099..2259.107 rows=500 loops=1)
+         Buffers: shared read=24380 dirtied=6
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=30.540..108.280 rows=15 loops=500)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=1371 read=7934
+ Planning Time: 400.588 ms
+ Execution Time: 56443.188 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=133.313..70179.976 rows=9504 loops=1)
+   Buffers: shared hit=1767 read=34351 dirtied=6
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=47.461..2270.383 rows=600 loops=1)
+         Buffers: shared read=24380 dirtied=6
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=30.268..113.113 rows=16 loops=600)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=1767 read=9971
+ Planning Time: 450.645 ms
+ Execution Time: 70192.440 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=92.164..66214.173 rows=8747 loops=1)
+   Buffers: shared hit=1686 read=33621 dirtied=6
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=34.949..2266.596 rows=600 loops=1)
+         Buffers: shared read=24380 dirtied=6
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=30.294..106.515 rows=15 loops=600)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=1686 read=9241
+ Planning Time: 408.923 ms
+ Execution Time: 66226.146 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=104.787..73571.095 rows=9645 loops=1)
+   Buffers: shared hit=1995 read=34617 dirtied=7
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=43.975..2269.042 rows=700 loops=1)
+         Buffers: shared read=24380 dirtied=7
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=30.107..101.800 rows=14 loops=700)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=1995 read=10237
+ Planning Time: 375.601 ms
+ Execution Time: 73584.040 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=98.230..77402.791 rows=10268 loops=1)
+   Buffers: shared hit=1986 read=35261 dirtied=8
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=35.445..2247.022 rows=700 loops=1)
+         Buffers: shared read=24380 dirtied=8
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=30.041..107.297 rows=15 loops=700)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=1986 read=10881
+ Planning Time: 425.671 ms
+ Execution Time: 77417.046 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=135.917..87068.304 rows=11830 loops=1)
+   Buffers: shared hit=2308 read=36809 dirtied=8
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=44.166..2263.638 rows=800 loops=1)
+         Buffers: shared read=24380 dirtied=8
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=29.671..105.941 rows=15 loops=800)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=2308 read=12429
+ Planning Time: 400.629 ms
+ Execution Time: 87083.200 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=95.508..85860.628 rows=11534 loops=1)
+   Buffers: shared hit=2343 read=36491 dirtied=8
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=44.849..2263.070 rows=800 loops=1)
+         Buffers: shared read=24380 dirtied=8
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=29.799..104.434 rows=14 loops=800)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=2343 read=12111
+ Planning Time: 417.269 ms
+ Execution Time: 85874.934 ms
+(9 rows)
+
+                                                                  QUERY PLAN                                                                   
+-----------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=123.441..90883.998 rows=11887 loops=1)
+   Buffers: shared hit=2623 read=36974 dirtied=8
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=45.061..2277.767 rows=900 loops=1)
+         Buffers: shared read=24380 dirtied=8
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=29.580..98.391 rows=13 loops=900)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=2623 read=12594
+ Planning Time: 408.891 ms
+ Execution Time: 90899.577 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=131.485..95541.954 rows=12701 loops=1)
+   Buffers: shared hit=2642 read=37827 dirtied=8
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=36.454..2389.346 rows=900 loops=1)
+         Buffers: shared read=24380 dirtied=8
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=29.420..103.441 rows=14 loops=900)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=2642 read=13447
+ Planning Time: 400.645 ms
+ Execution Time: 95557.712 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=161.302..103847.266 rows=13934 loops=1)
+   Buffers: shared hit=3080 read=39033 dirtied=9
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=65.652..2279.218 rows=1000 loops=1)
+         Buffers: shared read=24380 dirtied=9
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=29.170..101.507 rows=14 loops=1000)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=3080 read=14653
+ Planning Time: 425.598 ms
+ Execution Time: 103865.579 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=161.530..105505.661 rows=14380 loops=1)
+   Buffers: shared hit=3076 read=39364 dirtied=10
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=65.498..2273.936 rows=1000 loops=1)
+         Buffers: shared read=24380 dirtied=10
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=29.699..103.168 rows=14 loops=1000)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=3076 read=14984
+ Planning Time: 400.655 ms
+ Execution Time: 105523.735 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=140.366..123535.063 rows=16988 loops=1)
+   Buffers: shared hit=3817 read=41984 dirtied=11
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=74.140..2270.078 rows=1200 loops=1)
+         Buffers: shared read=24380 dirtied=11
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=28.608..100.986 rows=14 loops=1200)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=3817 read=17604
+ Planning Time: 458.960 ms
+ Execution Time: 123556.056 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=128.529..125184.723 rows=17095 loops=1)
+   Buffers: shared hit=3839 read=42048 dirtied=12
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=65.950..2266.398 rows=1200 loops=1)
+         Buffers: shared read=24380 dirtied=12
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=29.336..102.370 rows=14 loops=1200)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=3839 read=17668
+ Planning Time: 375.605 ms
+ Execution Time: 125206.088 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=133.008..149611.382 rows=21176 loops=1)
+   Buffers: shared hit=4720 read=45992 dirtied=13
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=66.346..2265.536 rows=1400 loops=1)
+         Buffers: shared read=24380 dirtied=13
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=28.465..105.180 rows=15 loops=1400)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=4720 read=21612
+ Planning Time: 392.255 ms
+ Execution Time: 149637.956 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=159.704..144797.732 rows=20333 loops=1)
+   Buffers: shared hit=4737 read=45115 dirtied=14
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=66.230..2263.950 rows=1400 loops=1)
+         Buffers: shared read=24380 dirtied=14
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=28.911..101.747 rows=15 loops=1400)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=4737 read=20735
+ Planning Time: 600.601 ms
+ Execution Time: 144821.586 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=293.948..161569.862 rows=22588 loops=1)
+   Buffers: shared hit=5368 read=47531 dirtied=15
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=232.906..2458.645 rows=1600 loops=1)
+         Buffers: shared read=24380 dirtied=15
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=28.520..99.381 rows=14 loops=1600)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=5368 read=23151
+ Planning Time: 383.939 ms
+ Execution Time: 161595.709 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=134.336..166599.730 rows=23532 loops=1)
+   Buffers: shared hit=5568 read=48203 dirtied=16
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=66.536..2273.467 rows=1600 loops=1)
+         Buffers: shared read=24380 dirtied=16
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=28.223..102.642 rows=15 loops=1600)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=5568 read=23823
+ Planning Time: 600.584 ms
+ Execution Time: 166628.466 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=336.385..176924.892 rows=24667 loops=1)
+   Buffers: shared hit=6203 read=49534 dirtied=16
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=249.414..2450.975 rows=1800 loops=1)
+         Buffers: shared read=24380 dirtied=16
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=28.272..96.871 rows=14 loops=1800)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=6203 read=25154
+ Planning Time: 408.950 ms
+ Execution Time: 177053.024 ms
+(9 rows)
+
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.02..793717.98 rows=456857 width=46) (actual time=130.900..186580.022 rows=26613 loops=1)
+   Buffers: shared hit=6476 read=51204 dirtied=16
+   ->  Seq Scan on del_nest_index del  (cost=0.00..766.11 rows=20000 width=4) (actual time=66.726..2271.106 rows=1800 loops=1)
+         Buffers: shared read=24380 dirtied=16
+   ->  Index Scan using movie_id_cast_info on cast_info ci  (cost=0.02..39.65 rows=23 width=42) (actual time=28.082..102.331 rows=15 loops=1800)
+         Index Cond: (movie_id = del.a)
+         Buffers: shared hit=6476 read=26824
+ Planning Time: 392.256 ms
+ Execution Time: 186610.757 ms
+(9 rows)
+

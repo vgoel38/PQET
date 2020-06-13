@@ -352,12 +352,13 @@ def index_scan(node, parent_node):
 		return predTime + filter_cost
 	else:
 
-		# index_index = {
-		# 	'cast_info':0,
-		# }
+		index_index = {
+			'movie_companies':0,
+			'movie_link':0
+		}
 		
-		# if node['Relation Name'] in index_index:
-		# 	return index_index[node['Relation Name']]
+		if node['Relation Name'] in index_index:
+			return index_index[node['Relation Name']]
 
 		leftcol = find_left_col(node)
 		rightcol = find_index_col(node)
@@ -388,19 +389,42 @@ def index_scan(node, parent_node):
 			join_factor = min(1,(node['Actual Loops'] * cardInJoin / (node['Actual Loops']*(1 - leftDup))) / (parent_node['Actual Rows'] * parent_node['Actual Loops']))
 		except:
 			join_factor = 0
-		
-		if node['Actual Loops']*(1 - leftDup) < 1000:
-			leftCorr = 0
-		elif node['Actual Loops']*(1 - leftDup) > 1000 and node['Actual Loops']*(1 - leftDup) < 2000:
-			leftCorr = min(leftCorr, 0.3)
-		elif node['Actual Loops']*(1 - leftDup) > 2000 and node['Actual Loops']*(1 - leftDup) < 4000:
-			leftCorr = max(leftCorr, 0.5)
-		elif node['Actual Loops']*(1 - leftDup) > 4000 and node['Actual Loops']*(1 - leftDup) < 8000:
-			leftCorr = max(leftCorr, 0.7)
-		elif node['Actual Loops']*(1 - leftDup) > 8000:
-			leftCorr = max(leftCorr, 0.9)
-		print("timeInIsolation = ", timeInIsolation, "timeInJoin =", timeInJoin, "card =", [node['Actual Loops']*(1 - leftDup)], "leftCorr =", leftCorr, "leftDup =", leftDup, "leftCol=", leftcol, "rightCol=", rightcol, "join_factor=", join_factor)
 
+		exceptions1 = ['cast_info.movie_id']
+		exceptions2 = ['movie_companies.movie_id', 'company_name.id']
+
+		if node['Relation Name']+'.'+rightcol in exceptions1:
+			if node['Actual Loops']*(1 - leftDup) < 10000:
+				leftCorr = 0
+			elif node['Actual Loops']*(1 - leftDup) > 10000 and node['Actual Loops']*(1 - leftDup) < 20000:
+				leftCorr = 0.3
+			elif node['Actual Loops']*(1 - leftDup) > 20000 and node['Actual Loops']*(1 - leftDup) < 40000:
+				leftCorr = 0.5
+			elif node['Actual Loops']*(1 - leftDup) > 40000 and node['Actual Loops']*(1 - leftDup) < 80000:
+				leftCorr = 0.7
+			elif node['Actual Loops']*(1 - leftDup) > 80000:
+				leftCorr = 0.8
+		elif node['Relation Name']+'.'+rightcol in exceptions2:
+			leftCorr = 0
+		else:
+			if node['Actual Loops']*(1 - leftDup) < 1000:
+				leftCorr = 0
+			elif node['Actual Loops']*(1 - leftDup) > 1000 and node['Actual Loops']*(1 - leftDup) < 2000:
+				leftCorr = 0.3
+			elif node['Actual Loops']*(1 - leftDup) > 2000 and node['Actual Loops']*(1 - leftDup) < 4000:
+				leftCorr = 0.5
+			elif node['Actual Loops']*(1 - leftDup) > 4000 and node['Actual Loops']*(1 - leftDup) < 8000:
+				leftCorr = 0.7
+			elif node['Actual Loops']*(1 - leftDup) > 8000:
+				leftCorr = 0.8
+
+		# if node['Relation Name'] == 'title':
+		# 	timeInJoin = 274847.072
+		# elif node['Relation Name'] == 'name':
+		# 	timeInJoin = 277788.258
+		# elif node['Relation Name'] == 'cast_info':
+		# 	timeInJoin = 1968236
+		print("Time=", (timeInIsolation * leftCorr + timeInJoin * (1 - leftCorr))*join_factor, "timeInIsolation = ", timeInIsolation, "timeInJoin =", timeInJoin, "card =", [node['Actual Loops']*(1 - leftDup)], "leftCorr =", leftCorr, "leftDup =", leftDup, "leftCol=", leftcol, "rightCol=", rightcol, "join_factor=", join_factor)
 		return (timeInIsolation * leftCorr + timeInJoin * (1 - leftCorr))*join_factor
 
 #Materalisation with Rescan
@@ -500,5 +524,6 @@ def groupby(strategy, input_card, output_card, num_groups_cols, num_avg_cols, nu
 
 if __name__ == "__main__":
 
-	print(nlj(5000, 5009, 3125, 1, 0))
+	# print(smj(14835029, 36244344, 1, 460456073))
+	print(sort([0], [0.9356699609646669], 36244344, 1, 460456073))
 

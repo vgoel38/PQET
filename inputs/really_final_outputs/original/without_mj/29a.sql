@@ -18,10 +18,10 @@
                      ->  Nested Loop  (cost=0.14..13.47 rows=1 width=65) (actual time=2797.670..4112.682 rows=810 loops=1)
                            Buffers: shared hit=1925215 read=536
                            ->  Nested Loop  (cost=0.12..13.46 rows=1 width=69) (actual time=977.023..3764.652 rows=87480 loops=1)
-                                 Join Filter: (it3.id = pi.info_type_id)
+                                 Join Filter: (it.id = pi.info_type_id)
                                  Rows Removed by Join Filter: 176580
                                  Buffers: shared hit=1575425 read=406
-                                 ->  Seq Scan on info_type it3  (cost=0.00..0.05 rows=1 width=4) (actual time=0.019..0.056 rows=1 loops=1)
+                                 ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.019..0.056 rows=1 loops=1)
                                        Filter: ((info)::text = 'trivia'::text)
                                        Rows Removed by Filter: 112
                                        Buffers: shared hit=1

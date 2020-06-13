@@ -115,7 +115,7 @@
                                  Hash Cond: (n.id = an.person_id)
                                  Buffers: shared hit=7 read=117820
                                  ->  Hash Join  (cost=2685.39..4728.18 rows=243 width=23) (actual time=2607.539..4947.947 rows=10064 loops=1)
-                                       Hash Cond: (pi.info_type_id = it3.id)
+                                       Hash Cond: (pi.info_type_id = it.id)
                                        Buffers: shared hit=5 read=106427
                                        ->  Hash Join  (cost=2685.35..4725.87 rows=27415 width=27) (actual time=2607.495..4935.698 rows=46248 loops=1)
                                              Hash Cond: (pi.person_id = n.id)
@@ -132,7 +132,7 @@
                                        ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.025..0.025 rows=1 loops=1)
                                              Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                              Buffers: shared hit=1
-                                             ->  Seq Scan on info_type it3  (cost=0.00..0.05 rows=1 width=4) (actual time=0.013..0.022 rows=1 loops=1)
+                                             ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.013..0.022 rows=1 loops=1)
                                                    Filter: ((info)::text = 'trivia'::text)
                                                    Rows Removed by Filter: 112
                                                    Buffers: shared hit=1

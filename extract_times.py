@@ -1,6 +1,6 @@
 import os, json
 
-directory = '/home/dsladmin/Desktop/PQET/PQET2/outputs/without_seq/with_mj/'
+directory = '/home/dsladmin/Desktop/PQET/PQET2/outputs/without_index/without_hj/'
 
 actual_time = []
 our_time = []

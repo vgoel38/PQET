@@ -3,7 +3,7 @@
  Aggregate  (cost=130.49..130.49 rows=1 width=96) (actual time=38463.179..38463.180 rows=1 loops=1)
    Buffers: shared hit=1253259 read=5472
    ->  Nested Loop  (cost=0.16..130.49 rows=1 width=48) (actual time=16549.551..38456.672 rows=16308 loops=1)
-         Join Filter: (pi.info_type_id = it3.id)
+         Join Filter: (pi.info_type_id = it.id)
          Rows Removed by Join Filter: 51519
          Buffers: shared hit=1253259 read=5472
          ->  Nested Loop  (cost=0.16..130.44 rows=1 width=52) (actual time=16357.605..37733.505 rows=67827 loops=1)
@@ -109,7 +109,7 @@
                      Filter: ((production_year >= 2000) AND (production_year <= 2010))
                      Rows Removed by Filter: 0
                      Buffers: shared hit=272917 read=11
-         ->  Seq Scan on info_type it3  (cost=0.00..0.05 rows=1 width=4) (actual time=0.003..0.010 rows=1 loops=67827)
+         ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.003..0.010 rows=1 loops=67827)
                Filter: ((info)::text = 'trivia'::text)
                Rows Removed by Filter: 89
                Buffers: shared hit=67827

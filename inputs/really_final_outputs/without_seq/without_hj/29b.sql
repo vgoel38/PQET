@@ -926,7 +926,7 @@
                    "Scan Direction": "Forward",                                                                                                                         
                    "Index Name": "info_type_pkey",                                                                                                                      
                    "Relation Name": "info_type",                                                                                                                        
-                   "Alias": "it3",                                                                                                                                      
+                   "Alias": "it",                                                                                                                                      
                    "Startup Cost": 0.00,                                                                                                                                
                    "Total Cost": 0.00,                                                                                                                                  
                    "Plan Rows": 1,                                                                                                                                      

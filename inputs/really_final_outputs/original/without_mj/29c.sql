@@ -29,7 +29,7 @@
                                        Join Filter: (ci.person_id = an.person_id)
                                        Buffers: shared hit=4433938 read=15692
                                        ->  Nested Loop  (cost=0.11..135.28 rows=1 width=65) (actual time=8005.244..126257.291 rows=402798 loops=1)
-                                             Join Filter: (pi.info_type_id = it3.id)
+                                             Join Filter: (pi.info_type_id = it.id)
                                              Rows Removed by Join Filter: 1076564
                                              Buffers: shared hit=2626079 read=15121
                                              ->  Nested Loop  (cost=0.11..135.24 rows=1 width=69) (actual time=8005.207..107610.742 rows=1479362 loops=1)
@@ -94,7 +94,7 @@
                                                    ->  Index Scan using movie_id_movie_companies on movie_companies mc  (cost=0.01..0.03 rows=2 width=8) (actual time=0.042..0.058 rows=25 loops=59617)
                                                          Index Cond: (movie_id = mk.movie_id)
                                                          Buffers: shared hit=311977 read=269
-                                             ->  Seq Scan on info_type it3  (cost=0.00..0.05 rows=1 width=4) (actual time=0.004..0.012 rows=1 loops=1479362)
+                                             ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.004..0.012 rows=1 loops=1479362)
                                                    Filter: ((info)::text = 'trivia'::text)
                                                    Rows Removed by Filter: 86
                                                    Buffers: shared hit=1479362

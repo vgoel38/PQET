@@ -99,14 +99,14 @@
                                                          Buckets: 1048576 (originally 32768)  Batches: 1 (originally 1)  Memory Usage: 30008kB
                                                          Buffers: shared read=50819
                                                          ->  Hash Join  (cost=0.05..2043.30 rows=26227 width=4) (actual time=24.145..2161.404 rows=620526 loops=1)
-                                                               Hash Cond: (pi.info_type_id = it3.id)
+                                                               Hash Cond: (pi.info_type_id = it.id)
                                                                Buffers: shared read=50819
                                                                ->  Seq Scan on person_info pi  (cost=0.00..1798.92 rows=2963664 width=8) (actual time=23.922..1302.376 rows=2963664 loops=1)
                                                                      Buffers: shared read=50818
                                                                ->  Hash  (cost=0.05..0.05 rows=1 width=4) (actual time=0.178..0.178 rows=1 loops=1)
                                                                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
                                                                      Buffers: shared read=1
-                                                                     ->  Seq Scan on info_type it3  (cost=0.00..0.05 rows=1 width=4) (actual time=0.134..0.168 rows=1 loops=1)
+                                                                     ->  Seq Scan on info_type it  (cost=0.00..0.05 rows=1 width=4) (actual time=0.134..0.168 rows=1 loops=1)
                                                                            Filter: ((info)::text = 'trivia'::text)
                                                                            Rows Removed by Filter: 112
                                                                            Buffers: shared read=1
