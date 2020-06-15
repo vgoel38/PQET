@@ -525,5 +525,5 @@ def groupby(strategy, input_card, output_card, num_groups_cols, num_avg_cols, nu
 if __name__ == "__main__":
 
 	# print(smj(14835029, 36244344, 1, 460456073))
-	print(sort([0], [0.9356699609646669], 36244344, 1, 460456073))
+	print(sort([0.702236, 0.00577839, 1], [0.8882085129809085, 0.9356699609646669, 0.9999997240948746], 36244344, 3, 0))
 

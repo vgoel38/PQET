@@ -1,4 +1,4 @@
-cd really_final_outputs/without_index/without_hj
+cd really_final_outputs/without_index/with_mj_without_filters
 for FILE in `ls *.sql`;
 do
 	tail -n +3 "$FILE" > "$FILE.tmp" && mv "$FILE.tmp" "$FILE"

@@ -94,6 +94,7 @@ if __name__ == "__main__":
 			f = arg
 
 	# main('inputs/really_final_outputs/original/with_nlj/13b.sql', 'sample_plans/query')
+	# main('input.json','sample_plans/query')
 	output_plan = main(f, 'sample_plans/query')
 	print('Actual Plan Time = ', output_plan['Actual Plan Time'])
 	print('Postgres Estimated Plan Time = ', output_plan['Postgres Estimated Plan Time'])
