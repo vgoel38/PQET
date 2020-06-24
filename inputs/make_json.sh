@@ -1,5 +1,5 @@
-cd really_final_outputs/without_index/with_mj_without_filters
-for FILE in `ls *.sql`;
+cd really_final_outputs/spilling
+for FILE in `ls *.sql_cstw10`;
 do
 	tail -n +3 "$FILE" > "$FILE.tmp" && mv "$FILE.tmp" "$FILE"
 	sed 's/+//g' "$FILE" > "$FILE.tmp" && mv "$FILE.tmp" "$FILE"

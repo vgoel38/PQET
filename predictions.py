@@ -248,17 +248,17 @@ def predictions(node, parent_node, query):
 			print('ERROR! Child of sort has multiple loops!')
 		
 		sort_cols = node['Sort Key']
-		if parent_node == {} or parent_node['Node Type'] == 'Aggregate':
+		if parent_node == {}:
 			for i in range(len(sort_cols)):
 				sort_cols[i] = node['Plans'][0]['Relation Name'] + '.' + sort_cols[i]
-			return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], len(sort_cols), 0)
+			return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], node['Plans'][0]['Actual Rows']*(node['Plan Width']+31), len(sort_cols), 0)
 		else:
 			if parent_node['Actual Loops'] > 1:
 				print('ERROR! Parent of Sort has multiple loops!')
 			if node['Parent Relationship'] == 'Outer':
-				return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], len(sort_cols), 0)
+				return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], node['Plans'][0]['Actual Rows']*(node['Plan Width']+31), len(sort_cols), 0)
 			elif node['Parent Relationship'] == 'Inner':
-				return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], len(sort_cols), parent_node['Actual Rows'])
+				return sort(find_corr(sort_cols), find_dup(sort_cols), node['Plans'][0]['Actual Rows'], node['Plans'][0]['Actual Rows']*(node['Plan Width']+31), len(sort_cols), parent_node['Actual Rows'])
 			else:
 				print('sort node parent relationship unidentified')
 
@@ -279,7 +279,8 @@ def predictions(node, parent_node, query):
 		num_groups_cols = 0
 		if 'Group Key' in node:
 			num_groups_cols = len(node['Group Key'])
-		return groupby(node['Strategy'], node['Plans'][0]['Actual Rows'], node['Actual Rows'], num_groups_cols, num_avg_cols, num_other_cols, find_num_preds(node))
+		return pg_groupby(node['Plans'][0]['Actual Rows'], node['Actual Rows'], num_groups_cols, num_avg_cols + num_other_cols, find_num_preds(node))
+		# return groupby(node['Strategy'], node['Plans'][0]['Actual Rows'], node['Actual Rows'], num_groups_cols, num_avg_cols, num_other_cols, find_num_preds(node))
 		
 	#ERROR
 	else:
@@ -462,7 +463,13 @@ def sort_single_col(corr, dup, input_card):
 
 	return scan_cost + comparison_cost + moving_cost
 
-def sort(corr, dup, input_card, num_cols, parent_output_card):
+def sort(corr, dup, input_card, input_bytes, num_cols, parent_output_card):
+	BLCKSZ = 8192
+	sort_mem_bytes = 10*1024*1024
+	merge_order = 38
+
+	if input_card == 0 or input_bytes < sort_mem_bytes:
+		return 0
 
 	total_cost = 0
 	current_dup = 1
@@ -472,12 +479,43 @@ def sort(corr, dup, input_card, num_cols, parent_output_card):
 		total_cost += current_dup * sort_single_col(current_corr * corr[i], dup[i], input_card)
 		current_corr = current_corr * corr[i]
 	
-	output_cost = CPU_TUPLE_COST * parent_output_card
-	
 	if max(parent_output_card - input_card, 0) == 0: 
-		return total_cost + output_cost
+		total_cost += CPU_TUPLE_COST * parent_output_card
 	else:
-		return total_cost + SORT_RESCAN_NONMAT_COST * max(parent_output_card - input_card, 0)
+		total_cost += SORT_RESCAN_NONMAT_COST * max(parent_output_card - input_card, 0)
+
+	num_pages = math.ceil(input_bytes / BLCKSZ)
+	log_runs = math.ceil(math.log(math.log(input_bytes/sort_mem_bytes,2),math.log(merge_order,2)))
+	num_page_accesses = 2 * num_pages * log_runs
+	
+	# print('input_bytes=', input_bytes, 'num_pages=',num_pages, 'log_runs=',log_runs, 'num_page_accesses=', num_page_accesses)
+	disk_cost = 0.007740441
+
+	return total_cost + disk_cost
+
+def ext_sort(node_type, input_card, input_bytes, parent_output_card):
+	
+	output_cost = 0
+
+	if input_card == 0 or input_bytes < sort_mem_bytes:
+		return 0
+	if node_type == 'Outer':
+		output_cost = CPU_OPERATOR_COST * input_card
+	elif node_type == 'Inner':
+		output_cost = CPU_OPERATOR_COST * (input_card + max(0, parent_output_card - input_card))
+	else:
+		print("Unidentified node type for sort")
+
+	comparison_cost = 2 * CPU_OPERATOR_COST * input_card * math.log(input_card,2)
+	
+	num_pages = math.ceil(input_bytes / BLCKSZ)
+	log_runs = math.ceil(math.log(math.log(input_bytes/sort_mem_bytes,2),math.log(merge_order,2)))
+	num_page_accesses = 2 * num_pages * log_runs
+	
+	print('input_bytes=', input_bytes, 'num_pages=',num_pages, 'log_runs=',log_runs, 'num_page_accesses=', num_page_accesses)
+	disk_cost = 0.007740441
+
+	return comparison_cost + disk_cost + output_cost
 
 
 #Merge Join
@@ -513,6 +551,8 @@ def groupby(strategy, input_card, output_card, num_groups_cols, num_avg_cols, nu
 	aggregation_cost = (2 * CPU_OPERATOR_COST * num_avg_cols +  CPU_OPERATOR_COST * num_other_cols) * input_card
 	filter_cost = CPU_OPERATOR_COST * num_filters * input_card
 	output_cost = CPU_TUPLE_COST * output_card
+
+	print(comparison_cost, aggregation_cost, output_cost, num_avg_cols, num_other_cols)
 	
 	if strategy == 'Sorted' or strategy == 'Plain':
 		return comparison_cost + aggregation_cost + filter_cost + output_cost
@@ -525,5 +565,6 @@ def groupby(strategy, input_card, output_card, num_groups_cols, num_avg_cols, nu
 if __name__ == "__main__":
 
 	# print(smj(14835029, 36244344, 1, 460456073))
-	print(sort([0.702236, 0.00577839, 1], [0.8882085129809085, 0.9356699609646669, 0.9999997240948746], 36244344, 3, 0))
-
+	# print(sort([0.702236, 0.00577839, 1], [0.8882085129809085, 0.9356699609646669, 0.9999997240948746], 36244344, 3, 0))
+	# print(groupby('Hashed', 177388547, 1303652, 3, 0, 3, 0))
+	print(sort('Outer', 36244344, 36244344*(42+31), 0))

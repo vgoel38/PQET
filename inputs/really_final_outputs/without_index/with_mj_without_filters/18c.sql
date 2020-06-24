@@ -1,3 +1,5 @@
+[
+{
      "Plan": {                                                            
        "Node Type": "Aggregate",                                          
        "Strategy": "Plain",                                               
@@ -141,7 +143,7 @@
                            "Actual Rows": 1380035,                        
                            "Actual Loops": 1,                             
                            "Inner Unique": false,                         
-                           "Merge Cond": "(it2.id = mi_idx.info_type_id)",
+                           "Merge Cond": "(it.id = mi_idx.info_type_id)",
                            "Shared Hit Blocks": 3,                        
                            "Shared Read Blocks": 8451,                    
                            "Shared Dirtied Blocks": 0,                    
@@ -165,7 +167,7 @@
                                "Actual Total Time": 0.049,                
                                "Actual Rows": 113,                        
                                "Actual Loops": 1,                         
-                               "Sort Key": ["it2.id"],                    
+                               "Sort Key": ["it.id"],                    
                                "Sort Method": "quicksort",                
                                "Sort Space Used": 30,                     
                                "Sort Space Type": "Memory",               
@@ -185,7 +187,7 @@
                                    "Parent Relationship": "Outer",        
                                    "Parallel Aware": false,               
                                    "Relation Name": "info_type",          
-                                   "Alias": "it2",                        
+                                   "Alias": "it",                        
                                    "Startup Cost": 0.00,                  
                                    "Total Cost": 0.04,                    
                                    "Plan Rows": 113,                      
@@ -362,7 +364,7 @@
                        "Actual Rows": 14835720,                           
                        "Actual Loops": 1,                                 
                        "Inner Unique": false,                             
-                       "Merge Cond": "(it1.id = mi.info_type_id)",        
+                       "Merge Cond": "(it.id = mi.info_type_id)",        
                        "Shared Hit Blocks": 3,                            
                        "Shared Read Blocks": 161890,                      
                        "Shared Dirtied Blocks": 0,                        
@@ -386,7 +388,7 @@
                            "Actual Total Time": 0.072,                    
                            "Actual Rows": 111,                            
                            "Actual Loops": 1,                             
-                           "Sort Key": ["it1.id"],                        
+                           "Sort Key": ["it.id"],                        
                            "Sort Method": "quicksort",                    
                            "Sort Space Used": 30,                         
                            "Sort Space Type": "Memory",                   
@@ -406,7 +408,7 @@
                                "Parent Relationship": "Outer",            
                                "Parallel Aware": false,                   
                                "Relation Name": "info_type",              
-                               "Alias": "it1",                            
+                               "Alias": "it",                            
                                "Startup Cost": 0.00,                      
                                "Total Cost": 0.04,                        
                                "Plan Rows": 113,                          
@@ -661,3 +663,5 @@
      "Triggers": [                                                        
      ],                                                                   
      "Execution Time": 703559.856                                         
+}
+]

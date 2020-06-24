@@ -1,0 +1,383 @@
+{
+  "Our Estimated Time": 165358.86004745256,
+  "Actual Plan Time": 604437.618,
+  "Our Qerror": 1.0776691092607218,
+  "Nodes": [
+    {
+      "Actual Loops": 1,
+      "Actual Time": 423144.037,
+      "Our Estimated Time": 294878.53990169556,
+      "Our Qerror": 1.4349773881173742,
+      "Nodes": [
+        {
+          "Actual Loops": 1,
+          "Actual Time": 39022.795000000006,
+          "Our Estimated Time": 50779.59357147455,
+          "Our Qerror": 1.3012802791669469,
+          "Nodes": [
+            {
+              "Actual Loops": 1,
+              "Actual Time": 1417.4210000000003,
+              "Our Estimated Time": 1785.5789685740965,
+              "Our Qerror": 1.2597379103132351,
+              "Nodes": [
+                {
+                  "Actual Loops": 1,
+                  "Actual Time": 975.701,
+                  "Our Estimated Time": 785.0750871187279,
+                  "Our Qerror": 1.0,
+                  "Nodes": [
+                    {
+                      "Actual Loops": 1,
+                      "Actual Time": 687.308,
+                      "Our Estimated Time": 533.4797086871157,
+                      "Our Qerror": 1.0,
+                      "Nodes": [
+                        {
+                          "Actual Loops": 1,
+                          "Actual Time": 247.90099999999995,
+                          "Our Estimated Time": 910.4038933531692,
+                          "Our Qerror": 1.0,
+                          "Nodes": [
+                            {
+                              "Actual Loops": 1,
+                              "Actual Time": 0.09,
+                              "Our Estimated Time": 0.021784826424854915,
+                              "Our Qerror": 1.0,
+                              "Nodes": [
+                                {
+                                  "Actual Loops": 1,
+                                  "Actual Time": 0.058,
+                                  "Our Estimated Time": 3.0759066216146547,
+                                  "Our Qerror": 1.0,
+                                  "Postgres Estimated Time": 3.0759066216146547,
+                                  "Actual Rows": 113,
+                                  "Node Type": "Seq Scan",
+                                  "Postgres Qerror": 1.0
+                                }
+                              ],
+                              "Postgres Estimated Time": 0.12844404891569294,
+                              "Actual Rows": 113,
+                              "Node Type": "Sort",
+                              "Postgres Qerror": 1.0
+                            },
+                            {
+                              "Actual Loops": 1,
+                              "Actual Time": 423.54,
+                              "Our Estimated Time": 520.6404527550037,
+                              "Our Qerror": 1.0,
+                              "Nodes": [
+                                {
+                                  "Actual Loops": 1,
+                                  "Actual Time": 313.104,
+                                  "Our Estimated Time": 458.94776691884636,
+                                  "Our Qerror": 1.0,
+                                  "Postgres Estimated Time": 458.94776691884636,
+                                  "Actual Rows": 1380035,
+                                  "Node Type": "Seq Scan",
+                                  "Postgres Qerror": 1.0
+                                }
+                              ],
+                              "Postgres Estimated Time": 4477.883478561319,
+                              "Actual Rows": 1380035,
+                              "Node Type": "Sort",
+                              "Postgres Qerror": 4.477883478561319
+                            }
+                          ],
+                          "Postgres Estimated Time": 321.4452840420969,
+                          "Actual Rows": 1380035,
+                          "Node Type": "Merge Join",
+                          "Postgres Qerror": 1.0
+                        }
+                      ],
+                      "Postgres Estimated Time": 4477.883478561319,
+                      "Actual Rows": 1380012,
+                      "Node Type": "Sort",
+                      "Postgres Qerror": 4.477883478561319
+                    },
+                    {
+                      "Actual Loops": 1,
+                      "Actual Time": 1624.9360000000001,
+                      "Our Estimated Time": 874.9666953759227,
+                      "Our Qerror": 1.6249360000000002,
+                      "Nodes": [
+                        {
+                          "Actual Loops": 1,
+                          "Actual Time": 484.0719999999999,
+                          "Our Estimated Time": 1281.894845137992,
+                          "Our Qerror": 1.281894845137992,
+                          "Nodes": [
+                            {
+                              "Actual Loops": 1,
+                              "Actual Time": 0.008,
+                              "Our Estimated Time": 0.0008402580565418778,
+                              "Our Qerror": 1.0,
+                              "Nodes": [
+                                {
+                                  "Actual Loops": 1,
+                                  "Actual Time": 0.016,
+                                  "Our Estimated Time": 3.061248555241601,
+                                  "Our Qerror": 1.0,
+                                  "Postgres Estimated Time": 3.061248555241601,
+                                  "Actual Rows": 7,
+                                  "Node Type": "Seq Scan",
+                                  "Postgres Qerror": 1.0
+                                }
+                              ],
+                              "Postgres Estimated Time": 0.0035949486217594522,
+                              "Actual Rows": 7,
+                              "Node Type": "Sort",
+                              "Postgres Qerror": 1.0
+                            },
+                            {
+                              "Actual Loops": 1,
+                              "Actual Time": 923.797,
+                              "Our Estimated Time": 954.0520481742176,
+                              "Our Qerror": 1.0,
+                              "Nodes": [
+                                {
+                                  "Actual Loops": 1,
+                                  "Actual Time": 1003.287,
+                                  "Our Estimated Time": 1481.7712940524057,
+                                  "Our Qerror": 1.4769166689615292,
+                                  "Postgres Estimated Time": 1481.7712940524057,
+                                  "Actual Rows": 2528312,
+                                  "Node Type": "Seq Scan",
+                                  "Postgres Qerror": 1.4769166689615292
+                                }
+                              ],
+                              "Postgres Estimated Time": 8546.687299612666,
+                              "Actual Rows": 2528312,
+                              "Node Type": "Sort",
+                              "Postgres Qerror": 8.546687299612666
+                            }
+                          ],
+                          "Postgres Estimated Time": 588.8927001134034,
+                          "Actual Rows": 2528312,
+                          "Node Type": "Merge Join",
+                          "Postgres Qerror": 1.0
+                        }
+                      ],
+                      "Postgres Estimated Time": 8546.687299612666,
+                      "Actual Rows": 3445851,
+                      "Node Type": "Sort",
+                      "Postgres Qerror": 5.259707028223059
+                    }
+                  ],
+                  "Postgres Estimated Time": 517.7285391618386,
+                  "Actual Rows": 1380012,
+                  "Node Type": "Merge Join",
+                  "Postgres Qerror": 1.0
+                },
+                {
+                  "Actual Loops": 1,
+                  "Actual Time": 1634.667,
+                  "Our Estimated Time": 1230.657927809225,
+                  "Our Qerror": 1.3282870593536729,
+                  "Nodes": [
+                    {
+                      "Actual Loops": 1,
+                      "Actual Time": 697.694,
+                      "Our Estimated Time": 1285.9494637638636,
+                      "Our Qerror": 1.2859494637638635,
+                      "Nodes": [
+                        {
+                          "Actual Loops": 1,
+                          "Actual Time": 1180.3939999999998,
+                          "Our Estimated Time": 779.4005894735888,
+                          "Our Qerror": 1.1803939999999997,
+                          "Nodes": [
+                            {
+                              "Actual Loops": 1,
+                              "Actual Time": 504.846,
+                              "Our Estimated Time": 1308.039194516954,
+                              "Our Qerror": 1.308039194516954,
+                              "Nodes": [
+                                {
+                                  "Actual Loops": 1,
+                                  "Actual Time": 0.004999999999999999,
+                                  "Our Estimated Time": 0.0004216007300576,
+                                  "Our Qerror": 1.0,
+                                  "Nodes": [
+                                    {
+                                      "Actual Loops": 1,
+                                      "Actual Time": 0.014,
+                                      "Our Estimated Time": 3.060833704306515,
+                                      "Our Qerror": 1.0,
+                                      "Postgres Estimated Time": 3.060833704306515,
+                                      "Actual Rows": 4,
+                                      "Node Type": "Seq Scan",
+                                      "Postgres Qerror": 1.0
+                                    }
+                                  ],
+                                  "Postgres Estimated Time": 0.001552794002838,
+                                  "Actual Rows": 3,
+                                  "Node Type": "Sort",
+                                  "Postgres Qerror": 1.0
+                                },
+                                {
+                                  "Actual Loops": 1,
+                                  "Actual Time": 634.8060000000002,
+                                  "Our Estimated Time": 727.42835123382,
+                                  "Our Qerror": 1.0,
+                                  "Nodes": [
+                                    {
+                                      "Actual Loops": 1,
+                                      "Actual Time": 535.18,
+                                      "Our Estimated Time": 953.0893913896143,
+                                      "Our Qerror": 1.0,
+                                      "Postgres Estimated Time": 953.0893913896143,
+                                      "Actual Rows": 2609129,
+                                      "Node Type": "Seq Scan",
+                                      "Postgres Qerror": 1.0
+                                    }
+                                  ],
+                                  "Postgres Estimated Time": 8838.271504739252,
+                                  "Actual Rows": 2609129,
+                                  "Node Type": "Sort",
+                                  "Postgres Qerror": 8.838271504739252
+                                }
+                              ],
+                              "Postgres Estimated Time": 607.7162124937066,
+                              "Actual Rows": 2609129,
+                              "Node Type": "Merge Join",
+                              "Postgres Qerror": 1.0
+                            }
+                          ],
+                          "Postgres Estimated Time": 8838.271504739252,
+                          "Actual Rows": 2609129,
+                          "Node Type": "Sort",
+                          "Postgres Qerror": 7.487560513471988
+                        },
+                        {
+                          "Actual Loops": 1,
+                          "Actual Time": 132.519,
+                          "Our Estimated Time": 209.11876307680643,
+                          "Our Qerror": 1.0,
+                          "Nodes": [
+                            {
+                              "Actual Loops": 1,
+                              "Actual Time": 98.517,
+                              "Our Estimated Time": 129.3752427619633,
+                              "Our Qerror": 1.0,
+                              "Postgres Estimated Time": 129.3752427619633,
+                              "Actual Rows": 234997,
+                              "Node Type": "Seq Scan",
+                              "Postgres Qerror": 1.0
+                            }
+                          ],
+                          "Postgres Estimated Time": 853.6403407018029,
+                          "Actual Rows": 234997,
+                          "Node Type": "Sort",
+                          "Postgres Qerror": 1.0
+                        }
+                      ],
+                      "Postgres Estimated Time": 625.9610761888523,
+                      "Actual Rows": 2609129,
+                      "Node Type": "Merge Join",
+                      "Postgres Qerror": 1.0
+                    }
+                  ],
+                  "Postgres Estimated Time": 8951.932066122286,
+                  "Actual Rows": 5327324,
+                  "Node Type": "Sort",
+                  "Postgres Qerror": 5.4763031651842775
+                }
+              ],
+              "Postgres Estimated Time": 942.1808202128987,
+              "Actual Rows": 4073078,
+              "Node Type": "Merge Join",
+              "Postgres Qerror": 1.4174210000000003
+            },
+            {
+              "Actual Loops": 1,
+              "Actual Time": 15454.627999999999,
+              "Our Estimated Time": 14477.17623335265,
+              "Our Qerror": 1.067516741586352,
+              "Nodes": [
+                {
+                  "Actual Loops": 1,
+                  "Actual Time": 2792.333999999999,
+                  "Our Estimated Time": 5263.281661865747,
+                  "Our Qerror": 1.8849040486796167,
+                  "Nodes": [
+                    {
+                      "Actual Loops": 1,
+                      "Actual Time": 0.048,
+                      "Our Estimated Time": 0.012893668601910784,
+                      "Our Qerror": 1.0,
+                      "Nodes": [
+                        {
+                          "Actual Loops": 1,
+                          "Actual Time": 0.027,
+                          "Our Estimated Time": 0,
+                          "Our Qerror": 0,
+                          "Postgres Estimated Time": 3.0759066216146547,
+                          "Actual Rows": 113,
+                          "Node Type": "Seq Scan",
+                          "Postgres Qerror": 1.0
+                        }
+                      ],
+                      "Postgres Estimated Time": 0.12844404891569294,
+                      "Actual Rows": 111,
+                      "Node Type": "Sort",
+                      "Postgres Qerror": 1.0
+                    },
+                    {
+                      "Actual Loops": 1,
+                      "Actual Time": 5158.818,
+                      "Our Estimated Time": 6765.833208881934,
+                      "Our Qerror": 1.3115084131446262,
+                      "Nodes": [
+                        {
+                          "Actual Loops": 1,
+                          "Actual Time": 4796.905,
+                          "Our Estimated Time": 7132.5712516537105,
+                          "Our Qerror": 1.4869110919757034,
+                          "Postgres Estimated Time": 7132.5712516537105,
+                          "Actual Rows": 14835720,
+                          "Node Type": "Seq Scan",
+                          "Postgres Qerror": 1.4869110919757034
+                        }
+                      ],
+                      "Postgres Estimated Time": 56031.463218874145,
+                      "Actual Rows": 14835720,
+                      "Node Type": "Sort",
+                      "Postgres Qerror": 10.861298696498721
+                    }
+                  ],
+                  "Postgres Estimated Time": 3455.531174574282,
+                  "Actual Rows": 14835720,
+                  "Node Type": "Merge Join",
+                  "Postgres Qerror": 1.2375063923492975
+                }
+              ],
+              "Postgres Estimated Time": 68652.01596437229,
+              "Actual Rows": 185777409,
+              "Node Type": "Sort",
+              "Postgres Qerror": 4.442165541892842
+            }
+          ],
+          "Postgres Estimated Time": 29012.860602138426,
+          "Actual Rows": 177388547,
+          "Node Type": "Merge Join",
+          "Postgres Qerror": 1.3450171472275914
+        }
+      ],
+      "Postgres Estimated Time": 768563.9521309226,
+      "Actual Rows": 177388547,
+      "Node Type": "Sort",
+      "Postgres Qerror": 1.8163175772956066
+    }
+  ],
+  "Postgres Estimated Time": 124041.67925439056,
+  "Our Weighted Qerror": 1.4486580849179913,
+  "Node Type": "Aggregate",
+  "Actual Rows": 1303652,
+  "Actual Loops": 1,
+  "Actual Time": 100548.14500000002,
+  "Our Estimated Plan Time": 560874.959489785,
+  "Postgres Estimated Plan Time": 1117060.9748282554,
+  "Postgres Weighted Qerror": 1.8739093860184806,
+  "Postgres Qerror": 1.8480996906255682
+}

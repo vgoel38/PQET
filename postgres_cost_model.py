@@ -117,7 +117,7 @@ def postgres_cost_model(node, parent_node, query):
 		if node['Parent Relationship'] == 'Inner':
 			if 'Scan' in node['Plans'][0]['Node Type']:
 				is_unique = find_if_unique(node['Plans'][0], parent_node)
-		return pg_mat_rescan(node['Plans'][0]['Actual Rows'],  node['Actual Loops'], parent_node['Actual Rows'] * parent_node['Actual Loops'], is_unique)
+		return pg_mat_rescan(node['Plans'][0]['Actual Rows'], node['Plans'][0]['Actual Rows'] * node['Plans'][0]['Plan Width'], node['Actual Loops'], parent_node['Actual Rows'] * parent_node['Actual Loops'], is_unique)
 
 	#Nested Loop Join
 	elif node['Node Type'] == 'Nested Loop':
@@ -137,11 +137,17 @@ def postgres_cost_model(node, parent_node, query):
 		if node['Plans'][0]['Actual Loops'] > 1:
 			print('ERROR! Child of sort has multiple loops!')
 		if parent_node == {}:
-			return pg_sort('Outer', node['Plans'][0]['Actual Rows'], 0)
+			if node['Sort Method'] == 'quicksort':
+				return pg_sort('Outer', node['Plans'][0]['Actual Rows'], 0)
+			else:
+				return pg_ext_sort(node['Parent Relationship'], node['Plans'][0]['Actual Rows'], node['Plans'][0]['Actual Rows']*node['Plan Width'], 0)
 		else: 
 			if parent_node['Actual Loops'] > 1:
 				print('ERROR! Parent of Sort has multiple loops!')
-			return pg_sort(node['Parent Relationship'], node['Plans'][0]['Actual Rows'], parent_node['Actual Rows'] * parent_node['Actual Loops'])
+			if node['Sort Method'] == 'quicksort':
+				return pg_sort(node['Parent Relationship'], node['Plans'][0]['Actual Rows'], parent_node['Actual Rows'] * parent_node['Actual Loops'])
+			else:
+				return pg_ext_sort(node['Parent Relationship'], node['Plans'][0]['Actual Rows'], node['Plans'][0]['Actual Rows']*(node['Plan Width']+30), parent_node['Actual Rows'] * parent_node['Actual Loops'])
 
 	#Merge Join
 	elif node['Node Type'] == 'Merge Join':
@@ -205,8 +211,14 @@ def pg_index_scan(node, parent_node):
 			return 0
 
 #Materalize with rescan
-def pg_mat_rescan(input_card, num_loops, parent_output_card, is_unique):
+def pg_mat_rescan(input_card, input_bytes, num_loops, parent_output_card, is_unique):
 	materialisation_cost = (2 * CPU_OPERATOR_COST) * input_card
+
+	if input_bytes > 10*1024*1024:
+		BLCKSZ = 8192
+		num_pages = int(input_bytes / BLCKSZ)
+		materialisation_cost += SEQ_PAGE_COST * num_pages
+		print("external materialisation")
 
 	if not is_unique:
 		return materialisation_cost + CPU_OPERATOR_COST * input_card * num_loops
@@ -243,6 +255,34 @@ def pg_sort(node_type, input_card, parent_output_card):
 		return comparison_cost + rescan_cost
 	else:
 		print("Unidentified node type for sort")
+
+
+#External Sort
+def pg_ext_sort(node_type, input_card, input_bytes, parent_output_card):
+	BLCKSZ = 8192
+	sort_mem_bytes = 10*1024*1024
+	merge_order = 38
+	output_cost = 0
+
+	if input_card == 0 or input_bytes < sort_mem_bytes:
+		return 0
+	if node_type == 'Outer':
+		output_cost = CPU_OPERATOR_COST * input_card
+	elif node_type == 'Inner':
+		output_cost = CPU_OPERATOR_COST * (input_card + max(0, parent_output_card - input_card))
+	else:
+		print("Unidentified node type for sort")
+
+	comparison_cost = 2 * CPU_OPERATOR_COST * input_card * math.log(input_card,2)
+	
+	num_pages = math.ceil(input_bytes / BLCKSZ)
+	log_runs = math.ceil(math.log(math.log(input_bytes/sort_mem_bytes,2),math.log(merge_order,2)))
+	num_page_accesses = 2 * num_pages * log_runs
+	
+	print('input_bytes=', input_bytes, 'num_pages=',num_pages, 'log_runs=',log_runs, 'num_page_accesses=', num_page_accesses)
+	disk_cost = num_page_accesses * (SEQ_PAGE_COST * 0.75 + RAND_PAGE_COST * 0.25)
+
+	return comparison_cost + disk_cost + output_cost
 
 
 #Merge Join
@@ -301,4 +341,5 @@ def pg_groupby(input_card, output_card, num_groups_cols, num_agg_cols, num_filte
 
 if __name__ == "__main__":
 
-	print(pg_nlj(100000, 9000, 7642, 1, 1))
+	# print(pg_groupby(177388547, 1303652, 3, 3, 0))
+	print(pg_ext_sort('Outer', 36244344, 36244344*(42+31), 0))

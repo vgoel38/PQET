@@ -87,15 +87,18 @@ def main(file_plan, file_query):
 if __name__ == "__main__":
 
 	argv = sys.argv[1:]
-	opts, args = getopt.getopt(argv, "f:")
-	f = ''
+	opts, args = getopt.getopt(argv, "f:q:")
+	f1 = ''
+	f2 = ''
 	for opt, arg in opts:
 		if opt == "-f":
-			f = arg
+			f1 = arg
+		elif opt == "-q":
+			f2 = arg
 
-	# main('inputs/really_final_outputs/original/with_nlj/13b.sql', 'sample_plans/query')
+	# main('inputs/really_final_outputs/gb/10a.sql', 'sample_plans/query')
 	# main('input.json','sample_plans/query')
-	output_plan = main(f, 'sample_plans/query')
+	output_plan = main(f1, f2)
 	print('Actual Plan Time = ', output_plan['Actual Plan Time'])
 	print('Postgres Estimated Plan Time = ', output_plan['Postgres Estimated Plan Time'])
 	print('Our Estimated Plan Time = ', output_plan['Our Estimated Plan Time'])
